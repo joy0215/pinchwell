@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        .one {
+            text-align: center;
+            color: rgb(10, 10, 10);
+            margin-top: 75px;
+        }
+
+        .two {
+            margin-right: 10px;
+        }
+
+        .main {
+            width: 100%;
+            /* 或者你希望的宽度 */
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+        }
+
+        .search {
+            background-color: #ededed;
+            height: 45px;
+            justify-content: center;
+            /* 水平居中 */
+        }
+
+        .search {
+            border: none;
+            display: inline-block;
+        }
+
+        /* .username, .password{
+            height: 50px;
+            flex-basis: 100%; 
+            max-width: 400px;
+        } */
+
+        .input {
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+            flex-wrap: wrap;
+            /* 允许换行 */
+            flex-direction: column
+        }
+
+        .username,
+        .password {
+            width: 400px;
+            height: 45px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-family: 微軟正黑體;
+        }
+
+        .text {
+            width: 100%;
+            /* 或者你希望的宽度 */
+            display: flex;
+            justify-content: center;
+            /* 水平居中 */
+            align-items: center;
+            /* 垂直居中 */
+        }
+
+        .text > h3 {
+            font-family: 微軟正黑體;
+        }
+
+        .text > .x {
+            color: black;
+            text-decoration: none;
+            font-family: 微軟正黑體;
+            font-size: 20px;
+        }
+
+        .last {
+            margin-left: 58%;
+            background-color: blueviolet;
+            color: #fff;
+            border-radius: 30px;
+            height: 50px;
+            width: 75px;
+            font-size: 20px;
+        }
+
+        .last:hover {
+            background-color: #d886ec;
+        }
+
+        body {
+            background-color: #e6f7ff;
+            /* 淺藍色背景 */
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="one">輸入你的帳號密碼即可登入。</h1>
+    <div class="main">
+        <h3 class="two">國籍：台灣</h3>
+
+    </div>
+    <div class="input">
+        <input class="username" class="search" type="text" placeholder="請輸入帳號:">
+        <input class="password" class="search" type="text" placeholder="請輸入密碼:">
+    </div>
+
+    <div class="text">
+        <h3>繼續即代表我同意 掐好鞋店 的</h3>
+        <a class="x" href="https://agreementservice.svs.nike.com/rest/agreement?agreementType=privacyPolicy&location=tw&language=zh&requestType=redirect&uxId=4fd2d5e7db76e0f85a6bb56721bd51df">隱私權政策</a>
+        <h3>與</h3>
+        <a class="x" href="https://agreementservice.svs.nike.com/rest/agreement?agreementType=termsOfUse&location=tw&language=zh&requestType=redirect&uxId=4fd2d5e7db76e0f85a6bb56721bd51df">使用條款</a>
+    </div>
+    <input class="last" type="button" value="登入" style="border: none" />
+    
+</body>
+
+</html>

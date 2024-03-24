@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail</title>
+</head>
+<body>
+    <h1>Product Detail</h1>
+    <p>Name: {{ product.name }}</p>
+    <p>Description: {{ product.description }}</p>
+    <p>Price: ${{ product.price }}</p>
+    
+    <!-- Display the product image -->
+    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    
+    <!-- Display the size -->
+    <p>Size: {{ product.size }}</p>
+    
+    <p>Brand: {{ product.brand }}</p>
+    
+    <!-- Add a button to return to the product_list -->
+    <a href="{% url 'product_list' %}">
+        <button>Back to Product List</button>
+    </a>
+</body>
+</html>

@@ -1,0 +1,86 @@
+
+.one{
+    text-align:center;
+    color: rgb(10, 10, 10);
+    margin-top: 75px;
+}
+
+.two{
+    margin-right: 10px;
+}
+
+.main{
+    width: 100%; /* 或者你希望的宽度 */
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.search {
+    background-color: #ededed;
+    height: 45px;
+    justify-content: center; /* 水平居中 */
+  }
+
+.search {
+    border: none;
+    display: inline-block; }
+
+/* .username, .password{
+    height: 50px;
+    flex-basis: 100%; 
+    max-width: 400px;
+} */
+
+.input{
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    flex-wrap: wrap; /* 允许换行 */
+    flex-direction: column
+}
+
+.username, .password{
+    width: 400px;
+    height: 45px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-family: 微軟正黑體;
+}
+
+.text{
+    width: 100%; /* 或者你希望的宽度 */
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+}
+
+.text > h3 {
+    font-family: 微軟正黑體;
+}
+
+.text > .x{
+    color: black;
+    text-decoration: none;
+    font-family: 微軟正黑體;
+    font-size: 20px;
+}
+
+.last{
+    margin-left: 58%;
+    background-color: blueviolet;
+    color: #fff;
+    border-radius: 30px;
+    height: 50px;
+    width: 75px;
+    font-size: 20px;
+}
+
+.last:hover{
+    background-color: #d886ec;
+}
+
+body {
+    background-color: #e6f7ff; /* 淺藍色背景 */
+}

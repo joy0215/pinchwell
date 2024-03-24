@@ -1,0 +1,200 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>掐好鞋店</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="1.css">
+    <style>
+        /* 調整圖片大小 */
+        .logo {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px; /* 左右空白 */
+        }
+
+        .logo img {
+            height: auto ; /* 設置圖片高度 */
+            width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
+        }
+
+        /* 設置整個網頁的背景色 */
+        body {
+            background-color: #e6f7ff; /* 更淺的藍色 */
+        }
+
+        .product-carousel a:not(:first-child) {
+            display: none;
+        }
+
+        .product-carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero {
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 36px; /* 調整字體大小為36像素 */
+        }
+        
+        .hero p {
+            font-size: 28px; /* 調整字體大小為36像素 */
+        }
+
+        .product-carousel img {
+            width: 400px; /* 調整圖片寬度 */
+            height: auto; /* 根據比例自動調整高度 */
+        }
+        
+        
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <!-- 並排六張圖片 -->
+                <img src="{% static 'images/1.jpeg' %}" alt="Image 1">
+                <img src="{% static 'images/2.jpeg' %}" alt="Image 2">
+                <img src="{% static 'images/3.jpeg' %}" alt="Image 3">
+                <img src="{% static 'images/4.jpeg' %}" alt="Image 4">
+                <img src="{% static 'images/5.jpeg' %}" alt="Image 5">
+                <img src="{% static 'images/6.jpeg' %}" alt="Image 6">
+            </div>
+            
+            <!-- 粉紅方塊和連結 -->
+            <div style="position: relative;">
+                <div style="position: absolute; top: 20px; right: 20px;">
+
+                    <a href="login">
+                        <img src="{% static 'images/1.jpeg' %}" alt="Link Image" style="width: 60px; height: auto;">
+                    </a>
+                    
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <div style="padding: 30px; background-color: #FADBD8; border-radius: 10px; font-size: 36px; font-weight: bold; font-family: monospace;">
+                        掐好鞋店 Pinchwell Sneaker Store
+                    </div>
+                </div>
+            </div>
+            
+            <style>
+                .nav-links li a {
+                    font-size: 26px;
+                }
+            </style>
+
+            <ul class="nav-links" style="text-align: left;">
+                <li><a href="product_list.html">Pinchwell Sneaker Store Product Catalog</a></li>
+                <li><a href="marketing">About Us</a></li>
+            </ul>
+            
+            
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Hot Items This Month</h1>
+            <p>Everyone else has these shoes, why haven't you bought them yet?</p>
+            <a href="{% url 'product_list' %}" class="btn">View Our Product List</a>
+        </section>
+        
+        <!-- 新增圖片連結 -->
+        <div class="product-carousel">
+            <a href="{% url 'product_detail' 1 %}">
+                <img src="{% static 'images/product2.webp' %}" alt="Product 1">
+            </a>
+            <a href="{% url 'product_detail' 4 %}">
+                <img src="{% static 'images/image.webp' %}" alt="Product 2">
+            </a>
+            <a href="{% url 'product_detail' 3 %}">
+                <img src="{% static 'images/product1.webp' %}" alt="Product 3">
+            </a>
+            <a href="{% url 'product_detail' 5 %}">
+                <img src="{% static 'images/product3.webp' %}" alt="Product 4">
+            </a>
+        </div>
+        
+        
+
+        <section id="products" class="products">
+            <h2>Featured Products</h2>
+            <!-- 添加您的精選產品 -->
+        </section>
+
+        <section id="about" class="about">
+            <h2>About Us</h2>
+            <!-- 添加有關您公司的信息 -->
+        </section>
+
+        <section id="news" class="news">
+            <h2>Latest News</h2>
+            <!-- 添加您的最新消息或公告 -->
+        </section>
+
+        <section id="catalog" class="catalog">
+            <h2>E-Catalog</h2>
+            <!-- 添加您的電子型錄鏈接或展示您的產品 -->
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Contact Us</h2>
+            <!-- 添加您的聯繫信息或聯繫表單 -->
+        </section>
+    </main>
+
+    <footer style="background-color: #533d28; color: white; padding: 20px 0; margin-top: auto;">
+        <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+            <div style="background-color: #86634b; padding: 20px; border-radius: 5px;">
+                <h2 style="font-size: 20px; margin-bottom: 10px;">聯繫我們</h2>
+                <p>TEL: +886-4-24916100 | FAX: +886-4-24911185 | E-MAIL: pinchwell@gmail.com</p>
+                <p>NO. 321, Zong Zheng District, Taipei, Taiwan R.O.C.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript代碼 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const carouselItems = document.querySelectorAll('.product-carousel a');
+            let currentIndex = 0;
+        
+            function showNext() {
+                // 隱藏當前顯示的圖片
+                carouselItems[currentIndex].style.display = 'none';
+                // 更新索引，循環顯示三個不同的圖片
+                currentIndex = (currentIndex + 1) % carouselItems.length;
+                // 顯示下一個圖片
+                carouselItems[currentIndex].style.display = 'block';
+            }
+        
+            // 初始時隱藏除了第一個以外的圖片
+            for (let i = 1; i < carouselItems.length; i++) {
+                carouselItems[i].style.display = 'none';
+            }
+        
+            // 設置定時器，每隔一段時間顯示下一張圖片
+            setInterval(showNext, 2000); // 每隔2秒切換一次圖片
+        });
+
+    </script>
+    
+    
+    
+</body>
+
+</html>

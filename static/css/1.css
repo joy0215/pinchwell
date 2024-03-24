@@ -1,0 +1,63 @@
+/* styles.css */
+
+/* 全局樣式 */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 標題樣式 */
+h1 {
+    color: #333;
+}
+
+/* 鏈接樣式 */
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 導航菜單樣式 */
+nav {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+nav .menu-item {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+/* 按鈕樣式 */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* 頁腳樣式 */
+footer {
+    background-color: #f8f9fa;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.logo img {
+    width: 100px; /* 设置图像宽度为100像素 */
+    height: auto; /* 让浏览器根据宽度自动调整高度，以保持宽高比 */
+    float: left; /* 将图像向左浮动 */
+}
+
+
+
