@@ -74,13 +74,15 @@
                 <img src="{% static 'images/5.jpeg' %}" alt="Image 5">
                 <img src="{% static 'images/6.jpeg' %}" alt="Image 6">
             </div>
+
+            
             
             <!-- 粉紅方塊和連結 -->
             <div style="position: relative;">
                 <div style="position: absolute; top: 20px; right: 20px;">
 
                     <a href="login">
-                        <img src="{% static 'images/1.jpeg' %}" alt="Link Image" style="width: 60px; height: auto;">
+                        <img src="{% static 'images/images.png' %}" alt="Link Image" style="width: 60px; height: auto;">
                     </a>
                     
                 </div>
@@ -100,6 +102,7 @@
             <ul class="nav-links" style="text-align: left;">
                 <li><a href="product_list.html">Pinchwell Sneaker Store Product Catalog</a></li>
                 <li><a href="marketing">About Us</a></li>
+                <li><a href="login">Login and Be Our Member</a></li>
             </ul>
             
             
@@ -124,8 +127,8 @@
             <a href="{% url 'product_detail' 3 %}">
                 <img src="{% static 'images/product1.webp' %}" alt="Product 3">
             </a>
-            <a href="{% url 'product_detail' 5 %}">
-                <img src="{% static 'images/product3.webp' %}" alt="Product 4">
+            <a href="{% url 'product_detail' 6 %}">
+                <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5">
             </a>
         </div>
         
@@ -152,9 +155,9 @@
         </section>
 
         <section id="contact" class="contact">
-            <h2>Contact Us</h2>
-            <!-- 添加您的聯繫信息或聯繫表單 -->
+            <h2><a href="https://forms.gle/Frbvf62NQCXA8juC8">Contact Us</a></h2>
         </section>
+        
     </main>
 
     <footer style="background-color: #533d28; color: white; padding: 20px 0; margin-top: auto;">
@@ -188,12 +191,10 @@
             }
         
             // 設置定時器，每隔一段時間顯示下一張圖片
-            setInterval(showNext, 2000); // 每隔2秒切換一次圖片
+            setInterval(showNext, 1500); // 每隔1.5秒切換一次圖片
         });
 
     </script>
-    
-    
     
 </body>
 
