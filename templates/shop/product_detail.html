@@ -15,8 +15,16 @@
     <!-- Display the product image -->
     <img src="{{ product.image.url }}" alt="{{ product.name }}">
     
-    <!-- Display the size -->
-    <p>Size: {{ product.size }}</p>
+    <!-- Display the size as a dropdown list -->
+    <p>Size:
+        <select name="size">
+            {% for size_choice in product.SIZE_CHOICES %}
+                <option value="{{ size_choice.0 }}" {% if size_choice.0 == product.size %} selected {% endif %}>
+                    {{ size_choice.1 }}
+                </option>
+            {% endfor %}
+        </select>
+    </p>
     
     <p>Brand: {{ product.brand }}</p>
     
@@ -26,3 +34,4 @@
     </a>
 </body>
 </html>
+

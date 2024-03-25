@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            background-color: #e6f7ff;
+            /* 淺藍色背景 */
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .button-container button,
+        .button-container .login-link {
+            width: 48%; /* 調整按鈕寬度以避免太寬 */
+        }
+        
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-link {
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .button-row {
+            margin-bottom: 15px;
+        }
+        
+        .button-row label {
+            margin-right: 10px;
+        }
+        
+        .button-row input[type="radio"] {
+            display: inline-block;
+            margin-right: 5px;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>註冊</h1>
+        <form action="/register/" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="使用者名稱" required>
+            <input type="email" name="email" placeholder="電子郵件" required>
+            <input type="password" name="password" placeholder="密碼" required>
+            <input type="password" name="password_confirm" placeholder="確認密碼" required>
+            
+            <!-- 新增客戶和消費者的選擇按鈕 -->
+            <div class="button-row">
+                <label for="customer">客戶</label>
+                <input type="radio" id="customer" name="user_type" value="customer" required>
+    
+                <label for="store_owner">店家</label>
+                <input type="radio" id="store_owner" name="user_type" value="store_owner" required>
+            </div>
+            <!-- 結束新增 -->
+    
+            <button type="submit">註冊</button>
+        </form>
+        <a href="/login/" class="login-link">已經有帳號？立即登入</a>
+    </div>
+    
+    
+</body>
+
+</html>

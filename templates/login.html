@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
+        body {
+            background-color: #e6f7ff;
+            /* 淺藍色背景 */
+        }
+
         .one {
             text-align: center;
             color: rgb(10, 10, 10);
@@ -18,7 +23,7 @@
 
         .main {
             width: 100%;
-            /* 或者你希望的宽度 */
+            /* 或者你希望的寬度 */
             display: flex;
             justify-content: center;
             /* 水平居中 */
@@ -38,12 +43,6 @@
             display: inline-block;
         }
 
-        /* .username, .password{
-            height: 50px;
-            flex-basis: 100%; 
-            max-width: 400px;
-        } */
-
         .input {
             display: flex;
             justify-content: center;
@@ -51,8 +50,8 @@
             align-items: center;
             /* 垂直居中 */
             flex-wrap: wrap;
-            /* 允许换行 */
-            flex-direction: column
+            /* 允許換行 */
+            flex-direction: column;
         }
 
         .username,
@@ -67,7 +66,7 @@
 
         .text {
             width: 100%;
-            /* 或者你希望的宽度 */
+            /* 或者你希望的寬度 */
             display: flex;
             justify-content: center;
             /* 水平居中 */
@@ -75,35 +74,40 @@
             /* 垂直居中 */
         }
 
-        .text > h3 {
+        .text>h3 {
             font-family: 微軟正黑體;
         }
 
-        .text > .x {
+        .text>.x {
             color: black;
             text-decoration: none;
             font-family: 微軟正黑體;
             font-size: 20px;
         }
 
-        .last {
-            margin-left: 58%;
-            background-color: blueviolet;
+        .button-container {
+            text-align: center; /* 水平置中 */
+            margin-top: 20px; /* 頂部間距 */
+        }
+
+        .button {
+            background-color: pink;
             color: #fff;
             border-radius: 30px;
-            height: 50px;
-            width: 75px;
-            font-size: 20px;
+            height: 60px; /* 將按鈕高度放大 */
+            width: 200px; /* 將按鈕寬度放大 */
+            font-size: 24px; /* 將字體大小放大 */
+            text-align: center;
+            line-height: 60px; /* 文字垂直居中 */
+            text-decoration: none;
+            display: inline-block; /* 讓按鈕在一行顯示 */
+            margin: 0 10px; /* 左右間距 */
         }
 
-        .last:hover {
-            background-color: #d886ec;
+        .button:hover {
+            background-color: #ff7eb9;
         }
 
-        body {
-            background-color: #e6f7ff;
-            /* 淺藍色背景 */
-        }
     </style>
 </head>
 
@@ -111,21 +115,34 @@
     <h1 class="one">輸入你的帳號密碼即可登入。</h1>
     <div class="main">
         <h3 class="two">國籍：台灣</h3>
-
+        <!-- 新增一個單選按鈕選擇客戶或店家登入 -->
+        <form id="loginForm">
+            <input type="radio" id="customer" name="loginType" value="customer">
+            <label for="customer">客戶登入</label>
+            <br> <!-- 換行 -->
+            <input type="radio" id="store" name="loginType" value="store">
+            <label for="store">店家登入</label>
+        </form>
     </div>
     <div class="input">
         <input class="username" class="search" type="text" placeholder="請輸入帳號:">
         <input class="password" class="search" type="text" placeholder="請輸入密碼:">
     </div>
-
     <div class="text">
         <h3>繼續即代表我同意 掐好鞋店 的</h3>
         <a class="x" href="https://agreementservice.svs.nike.com/rest/agreement?agreementType=privacyPolicy&location=tw&language=zh&requestType=redirect&uxId=4fd2d5e7db76e0f85a6bb56721bd51df">隱私權政策</a>
         <h3>與</h3>
         <a class="x" href="https://agreementservice.svs.nike.com/rest/agreement?agreementType=termsOfUse&location=tw&language=zh&requestType=redirect&uxId=4fd2d5e7db76e0f85a6bb56721bd51df">使用條款</a>
     </div>
-    <input class="last" type="button" value="登入" style="border: none" />
-    
+    <!-- 添加返回首頁的按鈕 -->
+    <div class="button-container">
+        <a href="{% url 'index' %}" class="button">返回首頁</a>
+
+        <!-- 添加註冊按鈕 -->
+        <a href="{% url 'register_page' %}" class="button">註冊</a>
+    </div>
+
 </body>
+
 
 </html>
