@@ -1,13 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
+    <title>購物車</title>
+    <style>
+        .navbar {
+            background-color: #ffc0cb; /* 淡粉紅色背景 */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px; /* 調整字體大小 */
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif; /* 使用 Arial 字體 */
+            text-transform: uppercase; /* 文字轉換為大寫 */
+            letter-spacing: 2px; /* 文字間距 */
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #eaf6fc; /* 淺藍色背景 */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .cart-empty-message {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-empty-message p {
+            font-size: 18px;
+            color: #333;
+            margin: 0;
+        }
+        .checkout-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .checkout-button button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .checkout-button button:hover {
+            background-color: #0056b3;
+        }
+        .btn {
+            border: 2px solid #ccc;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: white;
+            color: #f08080;
+            text-decoration: none;
+            display: inline-block;
+        }
+    </style>
 </head>
+
+<!-- 左上角的標題 -->
+<div class="navbar">
+    Shopping Cart
+</div>
 <body>
-    <h1>Cart</h1>
-    <!-- Add your cart items here -->
+    <div class="container">
+        {% if cart_empty %}
+            <div class="cart-empty-message">
+                <p>購物車是空的，快去購物吧！</p>
+            </div>
+        {% else %}
+            <div class="cart-items">
+                <!-- 購物車內容 -->
+            </div>
+            <div class="total-price">
+                <p>總價: ${{ total_price }}</p>
+            </div>
+            <div class="checkout-button">
+                <button>結帳</button>
+            </div>
+        {% endif %}
+    </div>
+    <!-- 返回到產品列表的按鈕 -->
+    <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
+        Back to Product List
+    </a>
+    </div>
 </body>
 </html>

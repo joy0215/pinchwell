@@ -22,11 +22,11 @@ class Product(models.Model):
         ('Jordan', 'Jordan'),
         ('New Balance', 'New Balance'),
     )
-    
+
     def get_price(self):
         return self.price
 
-    get_price.short_description = 'Price'  # 修改顯示在管理界面中的欄位名稱
+    get_price.short_description = 'Price'
 
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -37,9 +37,14 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class Order(models.Model):
-    products = models.ManyToManyField(Product)  # 訂單中的產品
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)  # 訂單總價
-    shipping_address = models.TextField()  # 運送地址
-    created_at = models.DateTimeField(auto_now_add=True)  # 訂單建立時間
+    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    shipping_address = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    ordered = models.BooleanField(default=False)  # 新增 ordered 字段
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    size = models.CharField(max_length=10, choices=Product.SIZE_CHOICES)
