@@ -1,7 +1,7 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 
 <head>
     <meta charset="UTF-8">
@@ -15,12 +15,15 @@
         }
 
         .logo img {
-            height: auto ; /* 設置圖片高度 */
-            width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
+            height: auto;
+            /* 設置圖片高度 */
+            width: calc((100vw - 40px) / 6);
+            /* 計算每張圖片的寬度 */
         }
 
         body {
-            background-color: #e6f7ff; /* 浅蓝色背景 */
+            background-color: #e6f7ff;
+            /* 淺藍色背景 */
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
@@ -41,16 +44,6 @@
             margin-bottom: 20px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
         input[type="text"],
         input[type="password"] {
             width: 100%;
@@ -58,25 +51,25 @@
             font-size: 16px;
             border-radius: 5px;
             border: 1px solid #ccc;
+            margin-bottom: 15px;
+            /* 增加输入框和按钮之间的间距 */
         }
 
-        .button-container {
-            text-align: center;
-        }
-
-        .button {
-            background-color: #ff4d6d;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
+        .pink-btn {
+            width: 100%;
             padding: 12px 20px;
-            font-size: 16px;
+            border-radius: 5px;
+            border: none;
+            background-color: #ff69b4;
+            color: #fff;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            margin-bottom: 15px;
+            /* 增加输入框和按钮之间的间距 */
         }
 
-        .button:hover {
-            background-color: #ff3355;
+        .pink-btn:hover {
+            background-color: #ff5eaa;
         }
 
         .link {
@@ -95,7 +88,8 @@
         }
 
         .home-link a {
-            background-color: #1e90ff; /* 深蓝色背景 */
+            background-color: #1e90ff;
+            /* 深蓝色背景 */
             color: #fff;
             text-decoration: none;
             padding: 10px 20px;
@@ -104,7 +98,8 @@
         }
 
         .home-link a:hover {
-            background-color: #007bff; /* 深蓝色背景 */
+            background-color: #007bff;
+            /* 深蓝色背景 */
         }
     </style>
 </head>
@@ -122,30 +117,23 @@
                 <img src="{% static 'images/6.jpeg' %}" alt="Image 6">
             </div>
 
-        <div class="container">
-            <h1>Login</h1>
-            <form id="loginForm" method="post">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="username">Username:</label>
-                    {{ form.custom_username }}
+            <div class="container">
+                <h1>Login</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <input type="text" name="username" placeholder="用戶名或電子郵件" required>
+                    <input type="password" name="password" placeholder="密碼" required>
+                    <button type="submit" class="pink-btn">登入</button>
+                </form>
+
+                <p style="text-align: center; margin-top: 20px;">還沒有帳號？ <a href="{% url 'register' %}" class="link">註冊</a></p>
+                <div class="home-link">
+                    <a href="{% url 'index' %}">返回首頁</a>
                 </div>
-                <div class="form-group">
-                    <label for="password">Password:</label>
-                    {{ form.password }}
-                </div>
-                <div class="button-container">
-                    <!-- 添加登录按钮 -->
-                    <button type="submit" class="button">Login</button>
-                </div>
-            </form>
-            <p style="text-align: center; margin-top: 20px;">Don't have an account? <a href="{% url 'register_page' %}" class="link">Register</a></p>
-            <div class="home-link">
-                <a href="{% url 'index' %}">Back to Home</a>
             </div>
-        </div>
         </nav>
     </header>
 </body>
 
-    </html>
+</html>

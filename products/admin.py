@@ -16,3 +16,9 @@ class ProductAdmin(admin.ModelAdmin):
     display_price.short_description = 'Price'
 
 admin.site.register(Product, ProductAdmin)
+
+from django.contrib import admin
+from .models import UserProfile
+
+admin.site.register(UserProfile)
+
