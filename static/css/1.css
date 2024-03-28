@@ -1,63 +1,108 @@
-/* styles.css */
+        /* 粉紅方塊和連結 */
+        .header-content {
+            position: relative;
+        }
 
-/* 全局樣式 */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
+        .header-content img {
+            width: 60px;
+            height: auto;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
 
-/* 標題樣式 */
-h1 {
-    color: #333;
-}
+        .logo-container {
+            text-align: center;
+            margin-top: 20px;
+            padding: 30px;
+            background-color: #FADBD8;
+            border-radius: 10px;
+            font-size: 36px;
+            font-weight: bold;
+            font-family: monospace;
+        }
 
-/* 鏈接樣式 */
-a {
-    color: #007bff;
-    text-decoration: none;
-}
+        /* 調整圖片大小 */
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin-top: 20px; /* 添加間距 */
+        }
 
-a:hover {
-    text-decoration: underline;
-}
+        .card {
+            width: calc(50% - 20px); /* 每個卡片的寬度為視窗寬度的一半減去間距 */
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 4px solid #FADBD8; /* 淡粉紅色外框 */
+            background-color: white; /* 卡片背景色 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 卡片陰影 */
+        }
 
-/* 導航菜單樣式 */
-nav {
-    background-color: #f8f9fa;
-    padding: 10px;
-}
+        .card img {
+            width: 100%; /* 圖片寬度填滿卡片 */
+            max-width: 150px; /* 圖片最大寬度為150px */
+            height: auto;
+            display: block;
+            margin: 0 auto; /* 水平置中 */
+        }
 
-nav .menu-item {
-    display: inline-block;
-    margin-right: 20px;
-}
+        .card-content {
+            padding: 20px;
+            background-color: #BBFFEE;  /* 較淺的Tiffany綠色背景 */
+            text-align:center
+        }
+        
+        .nav-links li {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
 
-/* 按鈕樣式 */
-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-}
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 26px;
+        }
+        .logo {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px; /* 左右空白 */
+        }
 
-button:hover {
-    background-color: #0056b3;
-}
+        .logo img {
+            height: auto ; /* 設置圖片高度 */
+            width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
+        }
 
-/* 頁腳樣式 */
-footer {
-    background-color: #f8f9fa;
-    padding: 20px 0;
-    text-align: center;
-}
+        /* 設置整個網頁的背景色 */
+        body {
+            background-color: #e6f7ff; /* 更淺的藍色 */
+        }
 
-.logo img {
-    width: 100px; /* 设置图像宽度为100像素 */
-    height: auto; /* 让浏览器根据宽度自动调整高度，以保持宽高比 */
-    float: left; /* 将图像向左浮动 */
-}
+        .product-carousel a:not(:first-child) {
+            display: none;
+        }
 
+        .product-carousel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero {
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 36px; /* 調整字體大小為36像素 */
+        }
+        
+        .hero p {
+            font-size: 28px; /* 調整字體大小為36像素 */
+        }
 
-
+        .product-carousel img {
+            width: 400px; /* 調整圖片寬度 */
+            height: auto; /* 根據比例自動調整高度 */
+        }

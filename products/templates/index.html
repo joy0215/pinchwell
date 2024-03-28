@@ -11,53 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>掐好鞋店</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="1.css">
-    <style>
-        /* 調整圖片大小 */
-        .logo {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px; /* 左右空白 */
-        }
-
-        .logo img {
-            height: auto ; /* 設置圖片高度 */
-            width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
-        }
-
-        /* 設置整個網頁的背景色 */
-        body {
-            background-color: #e6f7ff; /* 更淺的藍色 */
-        }
-
-        .product-carousel a:not(:first-child) {
-            display: none;
-        }
-
-        .product-carousel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .hero {
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-size: 36px; /* 調整字體大小為36像素 */
-        }
-        
-        .hero p {
-            font-size: 28px; /* 調整字體大小為36像素 */
-        }
-
-        .product-carousel img {
-            width: 400px; /* 調整圖片寬度 */
-            height: auto; /* 根據比例自動調整高度 */
-        }
-        
-    </style>
+    <link rel="stylesheet" href="{% static 'css/1.css' %}">
 </head>
 
 <body>
@@ -97,12 +51,43 @@
                 }
             </style>
 
-            <ul class="nav-links" style="text-align: left;">
-                <li><a href="product_list.html">Pinchwell Sneaker Store Product Catalog</a></li>
-                <li><a href="marketing">About Us</a></li>
-                <li><a href="login">Login and Be Our Member</a></li>
-                <li><a href="cart">Check the Shopping Cart</a></li>
-            </ul>
+            <div class="container">
+                <div class="card">
+                    <img src={% static 'images/wishlist-heart.png' %} alt="Image 1">
+                    <div class="card-content">
+                        <h2>產品目錄</h2>
+                        <p>查看我們的產品目錄</p>
+                        <a href="product_list.html">前往產品目錄</a>
+                    </div>
+                </div>
+        
+                <div class="card">
+                    <img src={% static 'images/shoe-prints.png' %} alt="Image 2">
+                    <div class="card-content">
+                        <h2>關於我們</h2>
+                        <p>了解更多關於我們的資訊</p>
+                        <a href="marketing">前往關於我們</a>
+                    </div>
+                </div>
+        
+                <div class="card">
+                    <img src={% static 'images/registered.png' %} alt="Image 3">
+                    <div class="card-content">
+                        <h2>登入成為會員</h2>
+                        <p>立即登入成為我們的會員</p>
+                        <a href="login">前往登入</a>
+                    </div>
+                </div>
+        
+                <div class="card">
+                    <img src={% static 'images/cart-shopping-fast.png' %} alt="Image 4">
+                    <div class="card-content">
+                        <h2>查看購物車</h2>
+                        <p>查看您的購物車內的商品</p>
+                        <a href="cart">前往購物車</a>
+                    </div>
+                </div>
+            </div>
             
             
         </nav>
@@ -131,28 +116,6 @@
             </a>
         </div>
         
-        
-
-        <section id="products" class="products">
-            <h2>Featured Products</h2>
-            <!-- 添加您的精選產品 -->
-        </section>
-
-        <section id="about" class="about">
-            <h2>About Us</h2>
-            <!-- 添加有關您公司的信息 -->
-        </section>
-
-        <section id="news" class="news">
-            <h2>Latest News</h2>
-            <!-- 添加您的最新消息或公告 -->
-        </section>
-
-        <section id="catalog" class="catalog">
-            <h2>E-Catalog</h2>
-            <!-- 添加您的電子型錄鏈接或展示您的產品 -->
-        </section>
-
         <section id="contact" class="contact">
             <h2><a href="https://forms.gle/Frbvf62NQCXA8juC8">Contact Us</a></h2>
         </section>
