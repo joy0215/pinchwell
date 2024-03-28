@@ -21,4 +21,6 @@ urlpatterns = [
     path('register/', views.register, name='register'),  # 註冊頁面的URL
     path('marketing/', views.marketing_page, name='marketing_page'),
     path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('upcoming_products/', views.upcoming_products, name='upcoming_products'),
+    path('employee/login/', views.employee_login, name='employee_login'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

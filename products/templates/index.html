@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>掐好鞋店</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="{% static 'css/1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
 </head>
 
 <body>
@@ -26,6 +26,15 @@
                 <img src="{% static 'images/5.jpeg' %}" alt="Image 5">
                 <img src="{% static 'images/6.jpeg' %}" alt="Image 6">
             </div>
+
+            <div class="advertisement">
+                <marquee behavior="scroll" direction="left" scrollamount="5">
+                    <span>歡慶掐好鞋店上市 加權指數突破20000點!!!    </span>
+                    <span>全館球鞋類全部免運費    </span>
+                    <span>歡迎參觀選購      </span>
+                </marquee>
+            </div>
+            
 
             
             
@@ -87,6 +96,24 @@
                         <a href="cart">前往購物車</a>
                     </div>
                 </div>
+
+                <div class="card">
+                    <img src={% static 'images/calendar.png' %} alt="Image 5">
+                    <div class="card-content">
+                        <h2>查看日曆</h2>
+                        <p>查看即將開始發售的商品</p>
+                        <a href="upcoming_products">前往行事曆</a>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <img src={% static 'images/form.png' %} alt="Image 6">
+                    <div class="card-content">
+                        <h2>表單回饋</h2>
+                        <p>將對於掐好鞋店的想法表達給我們</p>
+                        <a href="https://forms.gle/Frbvf62NQCXA8juC8">表單回饋</a>
+                    </div>
+                </div>
             </div>
             
             
@@ -115,13 +142,7 @@
                 <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5">
             </a>
         </div>
-        
-        <section id="contact" class="contact">
-            <h2><a href="https://forms.gle/Frbvf62NQCXA8juC8">Contact Us</a></h2>
-        </section>
-        
     </main>
-
     <footer style="background-color: #533d28; color: white; padding: 20px 0; margin-top: auto;">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <div style="background-color: #86634b; padding: 20px; border-radius: 5px;">
@@ -129,9 +150,14 @@
                 <p>TEL: +886-4-24916100 | FAX: +886-4-24911185 | E-MAIL: pinchwell@gmail.com</p>
                 <p>NO. 321, Zong Zheng District, Taipei, Taiwan R.O.C.</p>
             </div>
+            <div style="margin-top: 20px;">
+                <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Icon 1" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.facebook.com/"><img src="{% static 'images/fb.png' %}" alt="Icon 2" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.youtube.com/"><img src="{% static 'images/yt.png' %}" alt="Icon 3" style="width: 24px; height: 24px;"></a>
+            </div>
         </div>
     </footer>
-
+    
     <!-- JavaScript代碼 -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {

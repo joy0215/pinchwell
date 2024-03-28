@@ -17,8 +17,12 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 
-from django.contrib import admin
 from .models import UserProfile
-
 admin.site.register(UserProfile)
+
+from .models import UpcomingProduct
+admin.site.register(UpcomingProduct)
+
+from .models import Employee
+admin.site.register(Employee)
 

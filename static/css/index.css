@@ -106,3 +106,14 @@
             width: 400px; /* 調整圖片寬度 */
             height: auto; /* 根據比例自動調整高度 */
         }
+
+        .advertisement {
+            background-color: #c0d7f5; /* 廣告區域的背景顏色 */
+            padding: 10px; /* 添加一些內邊距 */
+        }
+        
+        .advertisement marquee {
+            font-size: 18px; /* 設置文字大小 */
+            color: #333; /* 設置文字顏色 */
+        }
+        

@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>員工登入</title>
+    <link rel="stylesheet" href="{% static 'css/employee_login.css' %}">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>員工登入</h2>
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form class="login-form" method="post">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="username">用戶名:</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">密碼:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit">登入</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
+
