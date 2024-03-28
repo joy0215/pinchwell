@@ -11,6 +11,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from sneaker_store.forms import UserProfileForm
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -74,16 +75,40 @@ class ProductListView(TemplateView):
         context['products'] = products
         return context
 
-# 商品詳情視圖
-def product_detail(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, 'shop/product_detail.html', {'product': product})
-
-
 #即將發售商品日曆視圖
 def upcoming_products(request):
     upcoming_products = UpcomingProduct.objects.all()
     return render(request, 'shop/upcoming_products.html', {'upcoming_products': upcoming_products})
+
+from .models import Product, Inventory
+# 商品詳情視圖
+def product_detail(request, product_id):
+    product = Product.objects.get(pk=product_id)
+    inventory = Inventory.objects.filter(product=product)
+    return render(request, 'product_detail.html', {'product': product, 'inventory': inventory})
+
+def employee_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            employee = Employee.objects.get(username=username)
+            if employee.password == password:
+                # 登入成功，重定向到員工儀表板
+                login(request, employee)
+                messages.success(request, '員工登入成功!')
+                return redirect('employee_dashboard')  # 重定向到員工儀表板視圖
+            else:
+                messages.error(request, '密碼錯誤，請再試一次')
+        except Employee.DoesNotExist:
+            messages.error(request, '員工帳號並不存在，請聯繫主管')
+    
+    return render(request, 'employee_login.html')
+
+@login_required
+def employee_dashboard(request):
+    return render(request, 'employee_dashboard.html')
 
 # 添加商品到購物車視圖
 def add_to_cart(request, pk):
