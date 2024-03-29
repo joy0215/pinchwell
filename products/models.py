@@ -63,17 +63,29 @@ class UpcomingProduct(models.Model):
 
     def __str__(self):
         return self.name
-    
-class Employee(models.Model):
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    email = models.EmailField()
-    full_name = models.CharField(max_length=200)
 
+from django.db import models
+
+class Employee(models.Model):
+    profile_picture = models.ImageField(upload_to='employee_profile_pictures/', null=True, blank=True)
+    employee_id = models.CharField(max_length=100, default='', unique=True)  # 添加了預設值
+    full_name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.full_name
-    
+
+class EmployeeProfile(models.Model):
+    employee = models.OneToOneField(Employee, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.employee.full_name
+
+class Pinchwell(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=128)
+
+
 class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     shipping_address = models.TextField()

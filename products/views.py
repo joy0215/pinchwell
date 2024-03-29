@@ -1,16 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, Order ,OrderItem ,UpcomingProduct ,Employee
-
 from django.contrib.auth.forms import AuthenticationForm
-from django import forms
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from sneaker_store.forms import UserProfileForm
+from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm
 from django.contrib.auth.decorators import login_required
 
 
@@ -25,21 +23,27 @@ from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 
+from django.contrib.auth import authenticate, login
+
 def login_page(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+
+            # Authenticate user
+            user = authenticate(request, username=username, password=password)
             if user is not None:
+                # Log in the user
                 login(request, user)
-                return redirect('index')
+                return redirect('employee_dashboard')
             else:
                 messages.error(request, '無效的用戶名或密碼。')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
 
 import logging
 
@@ -54,12 +58,12 @@ def register(request):
         user_form = UserCreationForm(request.POST)
         profile_form = UserProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
+            user = user_form.save()  # 儲存用戶資訊
             profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
+            profile.user = user  # 將用戶與用戶設定的其他資訊關聯起來
+            profile.save()  # 儲存用戶設定的其他資訊
             messages.success(request, 'Registration successful!')
-            return redirect('index')  # 注册成功后重定向到首页或其他页面
+            return redirect('index')  # 註冊成功後重定向到首頁或其他頁面
     else:
         user_form = UserCreationForm()
         profile_form = UserProfileForm()
@@ -80,12 +84,9 @@ def upcoming_products(request):
     upcoming_products = UpcomingProduct.objects.all()
     return render(request, 'shop/upcoming_products.html', {'upcoming_products': upcoming_products})
 
-from .models import Product, Inventory
-# 商品詳情視圖
-def product_detail(request, product_id):
-    product = Product.objects.get(pk=product_id)
-    inventory = Inventory.objects.filter(product=product)
-    return render(request, 'product_detail.html', {'product': product, 'inventory': inventory})
+def product_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    return render(request, 'shop/product_detail.html', {'product': product})
 
 def employee_login(request):
     if request.method == 'POST':
@@ -105,6 +106,34 @@ def employee_login(request):
             messages.error(request, '員工帳號並不存在，請聯繫主管')
     
     return render(request, 'employee_login.html')
+
+
+# views.py
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
+from .models import Employee
+
+@login_required
+def employee_profile(request):
+    employee = Employee.objects.get(user=request.user)
+    if request.method == 'POST':
+        password_form = EmployeePasswordForm(request.POST)
+        if password_form.is_valid():
+            edit_form = EmployeeEditForm(request.POST, request.FILES, instance=employee)
+            if edit_form.is_valid():
+                edit_form.save()
+                messages.success(request, '員工資料已成功更新')
+                return redirect('employee_profile')
+        else:
+            messages.error(request, '無法驗證密碼')
+    else:
+        password_form = EmployeePasswordForm(initial={'username': request.user.username})
+        edit_form = EmployeeEditForm(instance=employee)
+    return render(request, 'employee_profile.html', {'password_form': password_form, 'edit_form': edit_form})
+
 
 @login_required
 def employee_dashboard(request):

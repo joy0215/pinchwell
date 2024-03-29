@@ -136,4 +136,3 @@ LOGIN_URL = 'login'
 
 # 指定登录成功后的重定向页面
 LOGIN_REDIRECT_URL = 'index'
-
