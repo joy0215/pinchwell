@@ -8,8 +8,10 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,PasswordForm, EditForm
+from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,PasswordForm, EditForm ,InventoryUpdateForm
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.db.models import Sum
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -222,14 +224,16 @@ def edit_employee_profile(request, employee_id):
         form = EmployeeEditForm(instance=employee)
     return render(request, 'edit_employee_profile.html', {'form': form})
 
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse
+from .models import Inventory, Product
+
 def inventory_query(request):
     if request.method == 'POST':
-        # 接收來自前端的查詢條件
         product_name = request.POST.get('product_name')
         brand = request.POST.get('brand')
         size = request.POST.get('size')
 
-        # 根據查詢條件查詢庫存信息
         inventories = Inventory.objects.all()
 
         if product_name:
@@ -239,11 +243,49 @@ def inventory_query(request):
         if size:
             inventories = inventories.filter(size__icontains=size)
 
-        # 將庫存信息傳遞給模板
         context = {'inventories': inventories}
         return render(request, 'inventory_query.html', context)
     else:
-        # 如果是 GET 請求，返回空的庫存列表
         inventories = Inventory.objects.none()
         context = {'inventories': inventories}
         return render(request, 'inventory_query.html', context)
+'''
+
+
+'''
+from .models import Product, Inventory
+
+
+def inventory_edit(request):
+    products = Product.objects.all()  # 獲取所有產品
+    total_stocks = {product.id: product.inventory_set.aggregate(total_stock=Sum('stock'))['total_stock'] for product in products}
+    context = {
+        'products': products,
+        'total_stocks': total_stocks,
+    }
+    return render(request, 'inventory_edit.html', context)
+
+def update_inventory(request, product_id):
+    if request.method == 'POST':
+        product = Product.objects.get(pk=product_id)
+        size = request.POST.get('size')
+        quantity = request.POST.get('quantity')
+        if size and quantity:
+            inventory, created = Inventory.objects.get_or_create(product=product, size=size)
+            if created:
+                inventory.stock = quantity
+            else:
+                inventory.stock += int(quantity)
+            inventory.save()
+            # 返回JSON數據以更新前端庫存顯示
+            return JsonResponse({'stock': inventory.stock})
+    # 如果沒有成功更新，返回空數據
+    return JsonResponse({}, status=400)
+
+def testform_view(request, product_id):
+    # 在此處理獲取庫存數據的邏輯
+    # 假設您已經從 Inventory 中獲取了相關的庫存數據，並將其傳遞給模板
+    inventory_data = {
+        # 在此添加庫存數據
+    }
+    return render(request, 'testform.html', inventory_data)

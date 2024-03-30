@@ -1,0 +1,112 @@
+<!-- inventory_edit.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/inventory_edit.css' %}">
+    <title>存貨編輯</title>
+</head>
+<body>
+    <h1>存貨編輯</h1>
+    <div class="inventory-container">
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <h3>{{ product.name }}</h3>
+            <form class="update-form" action="{% url 'update_inventory' product.id %}" method="post">
+                {% csrf_token %}
+                <select name="size">
+                    {% for size in product.inventory_set.all %}
+                    <option value="{{ size.size }}">{{ size.size }}</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity" value="0">
+                <button type="button" class="update-quantity-btn">更新數量</button>
+            </form>
+            <p>當前庫存： <span class="current-stock">{{ product.inventory_set.first.stock }}</span></p>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- 添加您的 JavaScript 代碼 -->
+    <script>
+        // 即時庫存更新
+        document.querySelectorAll('.update-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    form.querySelector('.current-stock').innerText = data.stock;
+                }
+            });
+        });
+    
+        // 提示訊息
+        document.querySelectorAll('.update-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    form.querySelector('.current-stock').innerText = data.stock;
+                    alert('庫存更新成功！');
+                } else {
+                    alert('更新庫存時發生錯誤！');
+                }
+            });
+        });
+    
+        // 動畫效果
+        document.querySelectorAll('.update-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    form.querySelector('.current-stock').innerText = data.stock;
+                    form.parentElement.style.backgroundColor = 'lightgreen';
+                    setTimeout(() => {
+                        form.parentElement.style.backgroundColor = 'white';
+                    }, 1000);
+                } else {
+                    form.parentElement.style.backgroundColor = 'lightcoral';
+                    setTimeout(() => {
+                        form.parentElement.style.backgroundColor = 'white';
+                    }, 1000);
+                }
+            });
+        });
+        // 更新數量按鈕事件
+        document.querySelectorAll('.update-form').forEach(form => {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    form.querySelector('.current-stock').innerText = data.stock;
+                    alert('庫存更新成功！');
+                } else {
+                    alert('更新庫存時發生錯誤！');
+                }
+        });
+    });
+</body>
+</html>

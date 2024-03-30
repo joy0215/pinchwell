@@ -1,0 +1,22 @@
+<!-- testform.html -->
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>庫存更新表單</title>
+</head>
+<body>
+    <h1>庫存更新表單</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% for size, quantity in inventory_data.items %}
+            <div>
+                <label for="size_{{ size }}">尺寸 {{ size }}:</label>
+                <input type="number" id="size_{{ size }}" name="size_{{ size }}" value="{{ quantity|default:0 }}">
+            </div>
+        {% endfor %}
+        <button type="submit">提交</button>
+    </form>
+</body>
+</html>
