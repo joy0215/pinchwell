@@ -5,12 +5,11 @@ from django.contrib.auth.forms import User ,UserCreationForm
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['birthdate', 'phone']  # 只包含 UserProfile 模型中的字段
+        fields = ['birthdate', 'phone']
 
 class UserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields
-
 
 class EmployeePasswordForm(forms.Form):
     password = forms.CharField(label='密碼', widget=forms.PasswordInput)
@@ -34,3 +33,14 @@ class EmployeeEditForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EmployeeEditForm, self).__init__(*args, **kwargs)
         self.fields['profile_picture'].required = False
+
+
+
+class PasswordForm(forms.Form):
+    password = forms.CharField(label='密碼', widget=forms.PasswordInput)
+
+class EditForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['full_name', 'profile_picture', 'employee_id']
+

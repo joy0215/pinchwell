@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product, Order ,OrderItem ,UpcomingProduct ,Employee
+from .models import Product, Order ,OrderItem ,UpcomingProduct ,Employee ,UserProfile,EmployeeProfile ,Inventory
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
@@ -8,10 +8,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm
+from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,PasswordForm, EditForm
 from django.contrib.auth.decorators import login_required
-
-
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -53,17 +51,20 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from sneaker_store.forms import UserCreationForm, UserProfileForm
 
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 def register(request):
     if request.method == 'POST':
         user_form = UserCreationForm(request.POST)
         profile_form = UserProfileForm(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()  # 儲存用戶資訊
+            user = user_form.save()  # 儲存用戶
             profile = profile_form.save(commit=False)
-            profile.user = user  # 將用戶與用戶設定的其他資訊關聯起來
-            profile.save()  # 儲存用戶設定的其他資訊
+            profile.user = user  # 關聯用戶資料到用戶
+            profile.save()  # 儲存用戶資料
             messages.success(request, 'Registration successful!')
-            return redirect('index')  # 註冊成功後重定向到首頁或其他頁面
+            return redirect('index')
     else:
         user_form = UserCreationForm()
         profile_form = UserProfileForm()
@@ -107,32 +108,31 @@ def employee_login(request):
     
     return render(request, 'employee_login.html')
 
-
-# views.py
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-
-from .models import Employee
-
 @login_required
 def employee_profile(request):
-    employee = Employee.objects.get(user=request.user)
+    try:
+        employee_profile = EmployeeProfile.objects.get(user=request.user)  # 根據用戶查詢 EmployeeProfile
+        employee = employee_profile.employee  # 獲取相關聯的 Employee 物件
+    except EmployeeProfile.DoesNotExist:
+        messages.error(request, 'Employee profile not found.')
+        return redirect('index')  # 如果找不到相應的 EmployeeProfile，重定向到首頁或其他頁面
+
     if request.method == 'POST':
         password_form = EmployeePasswordForm(request.POST)
         if password_form.is_valid():
             edit_form = EmployeeEditForm(request.POST, request.FILES, instance=employee)
             if edit_form.is_valid():
                 edit_form.save()
-                messages.success(request, '員工資料已成功更新')
+                messages.success(request, 'Employee data updated successfully.')
                 return redirect('employee_profile')
         else:
-            messages.error(request, '無法驗證密碼')
+            messages.error(request, 'Unable to verify password')
     else:
         password_form = EmployeePasswordForm(initial={'username': request.user.username})
         edit_form = EmployeeEditForm(instance=employee)
+
     return render(request, 'employee_profile.html', {'password_form': password_form, 'edit_form': edit_form})
+
 
 
 @login_required
@@ -205,3 +205,45 @@ def employee_login(request):
             messages.error(request, '員工帳號並不存在，請聯繫主管')
     
     return render(request, 'employee_login.html')
+
+def employee_profile_view(request):
+    employees = Employee.objects.all() 
+    return render(request, 'employee_profile.html', {'employees': employees})
+
+
+def edit_employee_profile(request, employee_id):
+    employee = Employee.objects.get(pk=employee_id)
+    if request.method == 'POST':
+        form = EmployeeEditForm(request.POST, instance=employee)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_profile')  # 重定向到員工資料頁面
+    else:
+        form = EmployeeEditForm(instance=employee)
+    return render(request, 'edit_employee_profile.html', {'form': form})
+
+def inventory_query(request):
+    if request.method == 'POST':
+        # 接收來自前端的查詢條件
+        product_name = request.POST.get('product_name')
+        brand = request.POST.get('brand')
+        size = request.POST.get('size')
+
+        # 根據查詢條件查詢庫存信息
+        inventories = Inventory.objects.all()
+
+        if product_name:
+            inventories = inventories.filter(product__name__icontains=product_name)
+        if brand:
+            inventories = inventories.filter(product__brand__icontains=brand)
+        if size:
+            inventories = inventories.filter(size__icontains=size)
+
+        # 將庫存信息傳遞給模板
+        context = {'inventories': inventories}
+        return render(request, 'inventory_query.html', context)
+    else:
+        # 如果是 GET 請求，返回空的庫存列表
+        inventories = Inventory.objects.none()
+        context = {'inventories': inventories}
+        return render(request, 'inventory_query.html', context)

@@ -6,29 +6,32 @@
     <title>員工介面</title>
     <style>
         body {
-            background-color: #FADBD8; 
+            background-color: #FADBD8;
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
+
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
-            background-color: #e6f7ff; 
+            background-color: #e6f7ff;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 50px;
         }
+
         h1 {
             color: #533d28; /* 深棕色 */
             text-align: center;
         }
+
         .buttons {
             display: flex;
             justify-content: space-around;
             margin-top: 30px;
         }
+
         .button {
             padding: 10px 20px;
             background-color: #ffffff; /* 白色 */
@@ -39,6 +42,7 @@
             font-size: 18px;
             transition: background-color 0.3s, color 0.3s;
         }
+
         .button:hover {
             background-color: #533d28; /* 深棕色 */
             color: #ffffff; /* 白色 */
@@ -49,10 +53,10 @@
     <div class="container">
         <h1>員工介面</h1>
         <div class="buttons">
-            <a href="#" class="button">功能1</a>
-            <a href="#" class="button">功能2</a>
-            <a href="#" class="button">功能3</a>
-            <a href="#" class="button">功能4</a>
+            <a href="{% url 'employee_profile' %}" class="button">員工資料</a>
+            <a href="{% url 'inventory_query' %}" class="button">存貨查詢</a>
+            <a href="#" class="button">存貨編輯</a>
+            <a href="#" class="button">庫存預警</a>
         </div>
     </div>
 </body>

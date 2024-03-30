@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profiles</title>
+    <link rel="stylesheet" href="{% static 'css/employee_profile.css' %}">  <!-- 引入自定義 CSS 文件 -->
+    <style>
+
+    </style>
+</head>
+<body>
+    <div class="title-container">
+        <h1 class="title">Employee Profiles</h1>
+    </div>
+    <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">Back to Dashboard</a> <!-- 回到 dashboard 的按鈕 -->
+    <div class="card-container">
+        {% for employee in employees %}
+        <div class="card">
+            <img src="{{ employee.profile_picture.url }}" alt="Profile Picture">
+            <div class="card-content">
+                <h2>{{ employee.full_name }}</h2>
+                <!-- 添加更多要顯示的員工資料 -->
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

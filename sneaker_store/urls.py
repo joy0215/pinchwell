@@ -1,5 +1,3 @@
-# urls.py
-
 from django.urls import path
 from django.contrib import admin
 from products import views
@@ -24,4 +22,8 @@ urlpatterns = [
     path('upcoming_products/', views.upcoming_products, name='upcoming_products'),
     path('employee/login/', views.employee_login, name='employee_login'),
     path('dashboard/', views.employee_dashboard, name='employee_dashboard'),
+    path('dashboard/employee_profile/', views.employee_profile_view, name='employee_profile'),  # 將視圖函數和URL路徑匹配
+    path('edit_employee_profile/', views.edit_employee_profile, name='edit_employee_profile'),
+    path('edit_employee_profile/<int:employee_id>/', views.edit_employee_profile, name='edit_employee_profile'),
+    path('inventory/', views.inventory_query, name='inventory_query'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

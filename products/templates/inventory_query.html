@@ -1,0 +1,43 @@
+<!-- inventory_query.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Query</title>
+    <link rel="stylesheet" href="{% static 'css/inventory_query.css' %}">  <!-- 引入自定義 CSS 文件 -->
+</head>
+<body>
+    <div class="container">
+        <h1>Inventory Query</h1>
+        <form action="{% url 'inventory_query' %}" method="post">
+            {% csrf_token %}
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name"><br>
+            <h3> </h3>
+            <label for="brand">Brand:</label>
+            <input type="text" id="brand" name="brand"><br>
+            <h3> </h3>
+            <label for="size">Size:</label>
+            <input type="text" id="size" name="size"><br>
+            <h3> </h3>
+            <button type="submit">Search</button>
+            <h3>Search History:</h3>
+        </form>
+        <div class="inventory-list">
+            {% for inventory in inventories %}
+                <div class="inventory-item">
+                    <p><strong>Product Name:</strong> {{ inventory.product.name }}</p>
+                    <p><strong>Brand:</strong> {{ inventory.product.brand }}</p>
+                    <p><strong>Size:</strong> {{ inventory.size }}</p>
+                    <p><strong>Stock:</strong> {{ inventory.stock }}</p>
+                </div>
+            {% empty %}
+                <p>No inventory found.</p>
+            {% endfor %}
+        </div>
+        <a href="{% url 'employee_dashboard' %}" class="btn-dashboard">Back to Dashboard</a>
+    </div>
+</body>
+</html>

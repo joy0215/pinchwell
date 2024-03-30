@@ -38,15 +38,7 @@
                 {% endfor %}
             </select>
         </p>
-        
-        <!-- Display inventory for each size -->
-        <p>Inventory:</p>
-        <ul>
-            {% for item in inventory %}
-                <li>{{ item.size }}: {{ item.stock }}</li>
-            {% endfor %}
-        </ul>
-        
+
     <!-- 返回到產品列表的按鈕 -->
     <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
         Back to Product List

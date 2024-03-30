@@ -65,7 +65,7 @@
             {% csrf_token %}
             <input type="text" name="username" placeholder="使用者名稱（僅限英文）" required><br>
             <input type="email" name="email" placeholder="電子郵件" required><br>
-            <input type="text" id="birthdate" name="birthdate" placeholder="出生年月日" required><br> <!-- 使用 type="text" -->
+            <input type="date" id="birthdate" name="birthdate" placeholder="出生年月日" required><br><!-- 使用 type="text" -->
             <input type="password" name="password1" placeholder="密碼" required><br>
             <input type="password" name="password2" placeholder="確認密碼" required><br>
             <button type="submit">註冊</button>
