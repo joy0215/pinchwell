@@ -1,13 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Order Confirmation</title>
+    <title>確認訂單</title>
+    <style>
+        /* CSS部分 */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fce4ec; /* 淺粉紅色背景 */
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff; /* 設置標題顏色 */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box; /* 調整輸入框大小計算方式 */
+        }
+        .cart-items {
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            padding: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+        .cart-item p {
+            margin: 5px 0;
+        }
+        .total-price {
+            text-align: right;
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .submit-button {
+            text-align: center;
+        }
+        .submit-button button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+        }
+        .submit-button button:hover {
+            background-color: #0056b3;
+        }
+        .back-to-cart {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .back-to-cart:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Order Confirmation</h1>
-    <!-- Display order confirmation details here -->
+    <a href="{% url 'cart' %}" class="back-to-cart">回去購物車</a>
+    <div class="container">
+        <h2>確認訂單</h2>
+        <form action="{% url 'order_confirmation' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="name">姓名:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">電話:</label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="address">住址:</label>
+                <input type="text" id="address" name="address" required>
+            </div>
+            <div class="form-group">
+                <label for="email">電子郵件:</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="cart-items">
+                <h3>訂單內容</h3>
+                {% for item in cart_items %}
+                    <div class="cart-item">
+                        <p>{{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="total-price">
+                總金額: ${{ total_price }}
+            </div>
+            <div class="submit-button">
+                <button type="submit">確認訂單</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

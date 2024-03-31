@@ -23,7 +23,8 @@
                     {% endfor %}
                 </select>
                 <input type="number" name="quantity" value="0">
-                <button type="button" class="update-quantity-btn">更新數量</button>
+                <!-- 更新數量按鈕改為連結到 testform -->
+                <a href="{% url 'testform' product_id=product.id %}" class="update-quantity-btn">編輯數量</a>
             </form>
             <p>當前庫存： <span class="current-stock">{{ product.inventory_set.first.stock }}</span></p>
         </div>
@@ -46,7 +47,7 @@
                 }
             });
         });
-    
+
         // 提示訊息
         document.querySelectorAll('.update-form').forEach(form => {
             form.addEventListener('submit', async (e) => {
@@ -65,7 +66,7 @@
                 }
             });
         });
-    
+
         // 動畫效果
         document.querySelectorAll('.update-form').forEach(form => {
             form.addEventListener('submit', async (e) => {
@@ -90,23 +91,6 @@
                 }
             });
         });
-        // 更新數量按鈕事件
-        document.querySelectorAll('.update-form').forEach(form => {
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const formData = new FormData(form);
-                const response = await fetch(form.action, {
-                    method: 'POST',
-                    body: formData
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    form.querySelector('.current-stock').innerText = data.stock;
-                    alert('庫存更新成功！');
-                } else {
-                    alert('更新庫存時發生錯誤！');
-                }
-        });
-    });
+    </script>
 </body>
 </html>

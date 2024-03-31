@@ -5,27 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>購物車</title>
     <style>
-        .navbar {
-            background-color: #ffc0cb; /* 淡粉紅色背景 */
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 28px; /* 調整字體大小 */
-            margin-bottom: 20px;
-            font-family: Arial, sans-serif; /* 使用 Arial 字體 */
-            text-transform: uppercase; /* 文字轉換為大寫 */
-            letter-spacing: 2px; /* 文字間距 */
-        }
         body {
-            font-family: Arial, sans-serif;
-            background-color: #eaf6fc; /* 淺藍色背景 */
+            font-family: 'Arial', sans-serif;
+            background-color: #e6f7ff;
             margin: 0;
             padding: 0;
         }
+        .navbar {
+            background-color: #FADBD8; /* 淡紅色背景 */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            letter-spacing: 2px;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .cart-empty-message {
             text-align: center;
@@ -37,43 +41,51 @@
         }
         .cart-empty-message p {
             font-size: 18px;
-            color: #333;
+            color: #555;
             margin: 0;
         }
         .checkout-button {
-            margin-top: 20px;
-            text-align: center;
+            text-align: right; /* 文字右對齊 */
+            margin-top: 40px; /* 垂直方向上的間距 */
         }
-        .checkout-button button {
-            padding: 10px 20px;
+        
+        .checkout-button .btn {
+            padding: 15px 30px;
             border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 16px;
+            border-radius: 8px;
+            background-color: #ff6b81;
+            color: white;
+            font-size: 20px;
             cursor: pointer;
             transition: background-color 0.3s;
+            text-decoration: none; /* 確保超連結沒有底線 */
         }
-        .checkout-button button:hover {
-            background-color: #0056b3;
+        
+        .checkout-button .btn:hover {
+            background-color: #ff4757;
         }
-        .btn {
-            border: 2px solid #ccc;
+        
+        .btn-back {
+            position: absolute;
+            top: 20px;
+            left: 20px;
             padding: 8px 15px;
             border-radius: 5px;
-            background-color: white;
-            color: #f08080;
+            background-color: #ff6b81;
+            color: white;
             text-decoration: none;
-            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        .btn-back:hover {
+            background-color: #ff4757;
         }
     </style>
 </head>
-
-<!-- 左上角的標題 -->
-<div class="navbar">
-    Shopping Cart
-</div>
 <body>
+    <div class="navbar">
+        購物車
+    </div>
+    <a href="{% url 'product_list' %}" class="btn-back">返回產品列表</a>
     <div class="container">
         {% if cart_empty %}
             <div class="cart-empty-message">
@@ -87,14 +99,17 @@
                 <p>總價: ${{ total_price }}</p>
             </div>
             <div class="checkout-button">
-                <button>結帳</button>
+                <a href="{% url 'order_confirmation' %}" class="btn">結帳</a>
             </div>
         {% endif %}
     </div>
-    <!-- 返回到產品列表的按鈕 -->
-    <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
-        Back to Product List
-    </a>
-    </div>
+
+    <script>
+        // 按鈕點擊事件處理
+        document.getElementById('checkout-btn').addEventListener('click', function() {
+            alert('您的訂單已成功提交！');
+        });
+    </script>
+
 </body>
 </html>

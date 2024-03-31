@@ -67,8 +67,13 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return self.user.username
+    
+class EmailAddress(models.Model):
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    email = models.EmailField()
 
-
+    def __str__(self):
+        return self.email
     
 class UpcomingProduct(models.Model):
     name = models.CharField(max_length=100)

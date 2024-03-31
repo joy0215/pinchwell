@@ -135,7 +135,16 @@ def employee_profile(request):
 
     return render(request, 'employee_profile.html', {'password_form': password_form, 'edit_form': edit_form})
 
+def low_stock_warning(request):
+    low_stock_products = Inventory.objects.filter(stock__lt=5)
+    all_products = Product.objects.all()  # 獲取所有球鞋
 
+    context = {
+        'low_stock_products': low_stock_products,
+        'all_products': all_products,  # 將所有球鞋傳遞到模板中
+    }
+
+    return render(request, 'low_stock_warning.html', context)
 
 @login_required
 def employee_dashboard(request):
@@ -249,10 +258,7 @@ def inventory_query(request):
         inventories = Inventory.objects.none()
         context = {'inventories': inventories}
         return render(request, 'inventory_query.html', context)
-'''
 
-
-'''
 from .models import Product, Inventory
 
 
@@ -265,27 +271,42 @@ def inventory_edit(request):
     }
     return render(request, 'inventory_edit.html', context)
 
+def testform_view(request, product_id):
+    # 獲取所有尺碼的庫存數據，以字典形式傳遞到模板
+    inventory_data = {}
+    inventory_records = Inventory.objects.filter(product_id=product_id)
+    for record in inventory_records:
+        inventory_data[record.size] = record.stock  # 更新此處獲取的屬性名稱
+
+    return render(request, 'testform.html', {'inventory_data': inventory_data, 'product_id': product_id})
+
 def update_inventory(request, product_id):
     if request.method == 'POST':
-        product = Product.objects.get(pk=product_id)
-        size = request.POST.get('size')
-        quantity = request.POST.get('quantity')
-        if size and quantity:
-            inventory, created = Inventory.objects.get_or_create(product=product, size=size)
-            if created:
-                inventory.stock = quantity
-            else:
-                inventory.stock += int(quantity)
-            inventory.save()
-            # 返回JSON數據以更新前端庫存顯示
-            return JsonResponse({'stock': inventory.stock})
+        # 更新庫存數據
+        for key, value in request.POST.items():
+            if key.startswith('size_'):
+                size = key.split('_')[1]
+                quantity = int(value)
+                inventory, created = Inventory.objects.get_or_create(product_id=product_id, size=size)
+                if created:
+                    inventory.stock = quantity
+                else:
+                    inventory.stock += quantity
+                inventory.save()
+        # 提取返回鏈接
+        return_link = request.POST.get('return_link', 'inventory/edit/')  # 使用返回鏈接或默認為首頁
+        return redirect(return_link)  # 重定向到返回鏈接
+    
     # 如果沒有成功更新，返回空數據
     return JsonResponse({}, status=400)
 
-def testform_view(request, product_id):
-    # 在此處理獲取庫存數據的邏輯
-    # 假設您已經從 Inventory 中獲取了相關的庫存數據，並將其傳遞給模板
-    inventory_data = {
-        # 在此添加庫存數據
-    }
-    return render(request, 'testform.html', inventory_data)
+
+def confirmation_view(request):
+    # 在這裡可以處理接收到的表單數據，並根據需要進行相應的處理
+    # 例如，保存訂單到數據庫等操作
+    if request.method == 'POST':
+        # 處理POST請求，例如保存表單數據
+        pass
+    else:
+        # 如果是GET請求，則渲染checkout.html模板
+        return render(request, 'order_confirmation.html')

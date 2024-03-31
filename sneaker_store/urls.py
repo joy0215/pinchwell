@@ -32,6 +32,8 @@ urlpatterns = [
     path('inventory/query/', views.inventory_query, name='inventory_query'),
     path('inventory/edit/', views.inventory_edit, name='inventory_edit'),
     path('inventory/update/<int:product_id>/', views.update_inventory, name='update_inventory'),
-    path('testform/<int:product_id>/', views.update_inventory, name='testform')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('testform/<int:product_id>/', views.testform_view, name='testform'),
+    path('order_confirmation/', views.confirmation_view, name='order_confirmation'),
+    path('low_stock_warning/', views.low_stock_warning, name='low_stock_warning'),
+    ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
