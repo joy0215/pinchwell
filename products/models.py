@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+import uuid
 class Product(models.Model):
     SIZE_CHOICES = (
         ('25.5cm', 'US 7.5'),
@@ -26,13 +27,22 @@ class Product(models.Model):
         ('New Balance', 'New Balance'),
     )
 
+    product_number = models.CharField(max_length=50, unique=True, null=True, blank=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     brand = models.CharField(max_length=50, choices=BRAND_CHOICES, default='YesMYdee')
     image = models.ImageField(upload_to='product_images/')
     size = models.CharField(max_length=10, choices=SIZE_CHOICES)
-    
+
+    def save(self, *args, **kwargs):
+        if not self.product_number:
+            self.product_number = self.generate_product_number()
+        super().save(*args, **kwargs)
+
+    def generate_product_number(self):
+        return 'PRD' + str(uuid.uuid4().hex)[:8]  # 使用 uuid 生成隨機數，然後加上 'PRD' 前綴
+
     def __str__(self):
         return self.name
 

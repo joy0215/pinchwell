@@ -2,14 +2,16 @@ from django import forms
 from products.models import UserProfile ,Employee ,Inventory
 from django.contrib.auth.forms import User ,UserCreationForm
 
+
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['birthdate', 'phone']
-
+        fields = ['birthdate', 'phone']  
+        
 class UserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields
+
 
 class EmployeePasswordForm(forms.Form):
     password = forms.CharField(label='密碼', widget=forms.PasswordInput)
