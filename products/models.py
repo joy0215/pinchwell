@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.contrib.auth.hashers import make_password, check_password
 
 import uuid
 class Product(models.Model):
@@ -119,6 +120,13 @@ class Pinchwell(models.Model):
     username = models.CharField(max_length=150, unique=True)
     password = models.CharField(max_length=128)
 
+    
+    def set_password(self, password):
+        self.password = make_password(password)
+
+    def check_password(self, password):
+        return check_password(password, self.password)
+
 
 class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -133,3 +141,15 @@ class OrderItem(models.Model):
 
 
 
+class SignupProfile(models.Model):
+    GENDER_CHOICES = (
+        ('M', 'Male'),
+        ('F', 'Female'),
+        ('O', 'Other'),
+    )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    location = models.CharField(max_length=100, help_text="Enter your location")
+    birthdate = models.DateField(null=True, blank=True)
+    bio = models.TextField(max_length=500, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)

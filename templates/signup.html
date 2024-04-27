@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .login-link {
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            appearance: none;  /* 移除預設的外觀 */
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>註冊</h1>
+        <form action="/signup/" method="post">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="使用者名稱（僅限英文）" required><br>
+            <input type="email" name="email" placeholder="電子郵件" required><br>
+            <input type="password" name="password" placeholder="密碼" required><br>
+            <!-- 移除確認密碼欄位或在後端處理 -->
+            <input type="text" name="location" placeholder="通訊地址" required><br>
+            <input type="date" id="birthdate" name="birthdate" placeholder="出生年月日" required><br>
+            <textarea name="bio" placeholder="自我介紹" rows="4" cols="50"></textarea><br>
+            <select id="gender" name="gender" required>
+                <option value="">選擇性別</option>
+                <option value="M">男性</option>
+                <option value="F">女性</option>
+                <option value="O">其他</option>
+            </select><br>
+            <button type="submit">註冊</button>
+        </form>
+        
+        <a href="/login/" class="login-link">已經有帳號？立即登入</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        flatpickr("#birthdate", {
+            dateFormat: "Y-m-d",
+            maxDate: new Date()
+        });
+
+
+        
+        window.onload = function() {
+            var form = document.querySelector("form");
+            form.addEventListener("submit", function(event) {
+                var username = document.querySelector("input[name='username']");
+                var email = document.querySelector("input[name='email']");
+                var password1 = document.querySelector("input[name='password1']");
+                var password2 = document.querySelector("input[name='password2']");
+                var location = document.querySelector("input[name='location']");
+                var birthdate = document.querySelector("input[name='birthdate']");
+                var gender = document.querySelector("select[name='gender']");
+            
+                if (!username.value || !email.value || !password1.value || !password2.value || !location.value || !birthdate.value || !gender.value) {
+                    alert("請填寫所有必填欄位。");
+                    event.preventDefault();
+                }
+            });
+        };   
+    </script>
+</body>
+
+</html>

@@ -127,13 +127,30 @@
                     <button type="submit" class="pink-btn">登入</button>
                 </form>
 
-                <p style="text-align: center; margin-top: 20px;">還沒有帳號？ <a href="{% url 'register' %}" class="link">註冊</a></p>
+                <p style="text-align: center; margin-top: 20px;">還沒有帳號？ <a href="{% url 'signup' %}" class="link">註冊</a></p>
                 <div class="home-link">
                     <a href="{% url 'index' %}">返回首頁</a>
                 </div>
             </div>
         </nav>
     </header>
+
+    <script>
+        window.onload = function() {
+            // 表單驗證
+            var form = document.querySelector("form");
+            form.addEventListener("submit", function(event) {
+                var username = document.querySelector("input[name='username']");
+                var password = document.querySelector("input[name='password']");
+        
+                if (!username.value || !password.value) {
+                    alert("請填寫所有必填欄位。");
+                    event.preventDefault();
+                }
+            });
+        };
+        </script>
+        
 </body>
 
 </html>

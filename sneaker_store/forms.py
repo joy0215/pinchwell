@@ -1,5 +1,5 @@
 from django import forms
-from products.models import UserProfile ,Employee ,Inventory
+from products.models import UserProfile ,Employee ,Inventory ,SignupProfile
 from django.contrib.auth.forms import User ,UserCreationForm
 
 
@@ -57,3 +57,17 @@ class EditForm(forms.ModelForm):
         model = Employee
         fields = ['full_name', 'profile_picture', 'employee_id']
 
+from django import forms
+from django.contrib.auth.models import User
+
+class SignupUserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password')
+
+class SignupProfileForm(forms.ModelForm):
+    class Meta:
+        model = SignupProfile
+        fields = ('location', 'birthdate', 'bio','gender')
