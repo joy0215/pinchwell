@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>客戶回饋</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e6f7ff; /* 淺藍 */
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .feedback-form, .feedback-list {
+            margin: 20px;
+            background-color: #ffffff; /* 白 */
+            border: 1px solid #ffc0cb; /* 粉紅邊框 */
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .feedback {
+            border: 1px solid #ffc0cb; /* 粉紅邊框 */
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background-color: #fffaf0; /* 淡粉紅背景色 */
+        }
+        .btn-primary {
+            background-color: #ff69b4; /* 粉紅色 */
+            border-color: #ff69b4; /* 粉紅色 */
+        }
+        .btn-primary:hover {
+            background-color: #ff1493; /* 深粉紅色 */
+            border-color: #ff1493; /* 深粉紅色 */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="feedback-form">
+            <h2>提交您的回饋</h2>
+            <form id="feedbackForm" class="needs-validation" novalidate>
+                <div class="form-group">
+                    <label for="name">姓名:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                    <div class="invalid-feedback">請輸入您的姓名。</div>
+                </div>
+                <div class="form-group">
+                    <label for="product">商品:</label>
+                    <textarea class="form-control" id="product" name="product" rows="1" required></textarea>
+                    <div class="invalid-feedback">請輸入您的商品。</div>
+                </div>
+                <div class="form-group">
+                    <label for="message">留言:</label>
+                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                    <div class="invalid-feedback">請輸入您的留言。</div>
+                </div>
+                <div class="form-group">
+                    <label>好感程度:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="liking" id="liking1" value="非常滿意" required>
+                        <label class="form-check-label" for="liking1">非常滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="liking" id="liking2" value="滿意">
+                        <label class="form-check-label" for="liking2">滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="liking" id="liking3" value="一般">
+                        <label class="form-check-label" for="liking3">一般</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="liking" id="liking4" value="不滿意">
+                        <label class="form-check-label" for="liking4">不滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="liking" id="liking5" value="非常不滿意">
+                        <label class="form-check-label" for="liking5">非常不滿意</label>
+                    </div>
+                    <div class="invalid-feedback">請選擇您的好感程度。</div>
+                </div>
+                <button type="submit" class="btn btn-primary">提交</button>
+            </form>
+        </div>
+
+        <div class="feedback-list">
+            <h2>其他客戶的回饋</h2>
+            <div id="feedbackContainer"></div>
+        </div>
+    </div>
+
+    <script>
+        // Bootstrap 表单验证
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (!this.checkValidity()) {
+                e.stopPropagation();
+                return;
+            }
+
+            // 获取表单数据
+            const name = document.getElementById('name').value;
+            const product = document.getElementById('product').value;
+            const message = document.getElementById('message').value;
+            const liking = document.querySelector('input[name="liking"]:checked').value;
+
+            // 创建反馈元素
+            const feedbackContainer = document.getElementById('feedbackContainer');
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.classList.add('feedback');
+            feedbackDiv.innerHTML = `<p><strong>${name}</strong></p><p>商品: ${product}</p><p>${message}</p><p>好感程度: ${liking}</p>`;
+
+            // 添加反馈到页面
+            feedbackContainer.appendChild(feedbackDiv);
+
+            // 清空表单
+            document.getElementById('feedbackForm').reset();
+            document.getElementById('feedbackForm').classList.remove('was-validated');
+
+            // 弹出感谢信息并重定向到主页面
+            alert('謝謝您的留言!');
+            window.location.href = 'index.html'; // 假设主页面是 index.html
+        });
+    </script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

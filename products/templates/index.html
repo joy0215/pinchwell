@@ -1,8 +1,4 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="zh-Hant">
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -12,6 +8,44 @@
     <title>掐好鞋店</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <style>
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .card {
+            position: relative;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #fff;
+            width: 200px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        .card img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+
+        .card-content {
+            padding: 10px;
+        }
+
+        .advertisement span {
+            padding-right: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -19,33 +53,28 @@
         <nav>
             <div class="logo">
                 <!-- 並排六張圖片 -->
-                <img src="{% static 'images/1.jpeg' %}" alt="Image 1">
-                <img src="{% static 'images/2.jpeg' %}" alt="Image 2">
-                <img src="{% static 'images/3.jpeg' %}" alt="Image 3">
-                <img src="{% static 'images/4.jpeg' %}" alt="Image 4">
-                <img src="{% static 'images/5.jpeg' %}" alt="Image 5">
-                <img src="{% static 'images/6.jpeg' %}" alt="Image 6">
+                <img src="{% static 'images/1.jpeg' %}" alt="Image 1" title="Image 1">
+                <img src="{% static 'images/2.jpeg' %}" alt="Image 2" title="Image 2">
+                <img src="{% static 'images/3.jpeg' %}" alt="Image 3" title="Image 3">
+                <img src="{% static 'images/4.jpeg' %}" alt="Image 4" title="Image 4">
+                <img src="{% static 'images/5.jpeg' %}" alt="Image 5" title="Image 5">
+                <img src="{% static 'images/6.jpeg' %}" alt="Image 6" title="Image 6">
             </div>
 
             <div class="advertisement">
                 <marquee behavior="scroll" direction="left" scrollamount="5">
-                    <span>歡慶掐好鞋店上市 加權指數突破20000點!!!    </span>
-                    <span>全館球鞋類全部免運費    </span>
-                    <span>歡迎參觀選購      </span>
+                    <span>歡慶掐好鞋店上市 加權指數突破20000點!!!</span>
+                    <span>全館球鞋類全部免運費</span>
+                    <span>歡迎參觀選購</span>
                 </marquee>
             </div>
-            
 
-            
-            
             <!-- 粉紅方塊和連結 -->
             <div style="position: relative;">
                 <div style="position: absolute; top: 20px; right: 20px;">
-
                     <a href="login">
-                        <img src="{% static 'images/images.png' %}" alt="Link Image" style="width: 60px; height: auto;">
+                        <img src="{% static 'images/images.png' %}" alt="Link Image" style="width: 60px; height: auto;" title="Login">
                     </a>
-                    
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
                     <div style="padding: 30px; background-color: #FADBD8; border-radius: 10px; font-size: 36px; font-weight: bold; font-family: monospace;">
@@ -53,96 +82,94 @@
                     </div>
                 </div>
             </div>
-            
-            <style>
-                .nav-links li a {
-                    font-size: 26px;
-                }
-            </style>
-
-            <div class="container">
-                <div class="card">
-                    <img src={% static 'images/wishlist-heart.png' %} alt="Image 1">
-                    <div class="card-content">
-                        <h2>產品目錄</h2>
-                        <p>查看我們的產品目錄</p>
-                        <a href="product_list.html">前往產品目錄</a>
-                    </div>
-                </div>
-        
-                <div class="card">
-                    <img src={% static 'images/shoe-prints.png' %} alt="Image 2">
-                    <div class="card-content">
-                        <h2>關於我們</h2>
-                        <p>了解更多關於我們的資訊</p>
-                        <a href="marketing">前往關於我們</a>
-                    </div>
-                </div>
-        
-                <div class="card">
-                    <img src={% static 'images/registered.png' %} alt="Image 3">
-                    <div class="card-content">
-                        <h2>登入成為會員</h2>
-                        <p>立即登入成為我們的會員</p>
-                        <a href="login">前往登入</a>
-                    </div>
-                </div>
-        
-                <div class="card">
-                    <img src={% static 'images/cart-shopping-fast.png' %} alt="Image 4">
-                    <div class="card-content">
-                        <h2>查看購物車</h2>
-                        <p>查看您的購物車內的商品</p>
-                        <a href="cart">前往購物車</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src={% static 'images/calendar.png' %} alt="Image 5">
-                    <div class="card-content">
-                        <h2>查看日曆</h2>
-                        <p>查看即將開始發售的商品</p>
-                        <a href="upcoming_products">前往行事曆</a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <img src={% static 'images/form.png' %} alt="Image 6">
-                    <div class="card-content">
-                        <h2>表單回饋</h2>
-                        <p>將對於掐好鞋店的想法表達給我們</p>
-                        <a href="https://forms.gle/Frbvf62NQCXA8juC8">表單回饋</a>
-                    </div>
-                </div>
-            </div>
-            
-            
         </nav>
     </header>
 
     <main>
+        <div class="container">
+            <div class="card">
+                <a href="product_list.html">
+                    <img src="{% static 'images/wishlist-heart.png' %}" alt="Image 1" title="前往產品目錄">
+                </a>
+                <div class="card-content">
+                    <h2>產品目錄</h2>
+                    <p>查看我們的產品目錄</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <a href="marketing">
+                    <img src="{% static 'images/shoe-prints.png' %}" alt="Image 2" title="前往關於我們">
+                </a>
+                <div class="card-content">
+                    <h2>關於我們</h2>
+                    <p>了解更多關於我們的資訊</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <a href="login">
+                    <img src="{% static 'images/registered.png' %}" alt="Image 3" title="前往登入">
+                </a>
+                <div class="card-content">
+                    <h2>登入成為會員</h2>
+                    <p>立即登入成為我們的會員</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <a href="cart">
+                    <img src="{% static 'images/cart-shopping-fast.png' %}" alt="Image 4" title="前往購物車">
+                </a>
+                <div class="card-content">
+                    <h2>查看購物車</h2>
+                    <p>查看您的購物車內的商品</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <a href="upcoming_products">
+                    <img src="{% static 'images/calendar.png' %}" alt="Image 5" title="前往日曆">
+                </a>
+                <div class="card-content">
+                    <h2>查看日曆</h2>
+                    <p>查看即將開始發售的商品</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <a href="https://forms.gle/Frbvf62NQCXA8juC8">
+                    <img src="{% static 'images/form.png' %}" alt="Image 6" title="表單回饋">
+                </a>
+                <div class="card-content">
+                    <h2>表單回饋</h2>
+                    <p>將對於掐好鞋店的想法表達給我們</p>
+                </div>
+            </div>
+        </div>
+
         <section class="hero">
             <h1>Hot Items This Month</h1>
             <p>Everyone else has these shoes, why haven't you bought them yet?</p>
             <a href="{% url 'product_list' %}" class="btn">View Our Product List</a>
         </section>
-        
-        <!-- 新增圖片連結 -->
+
         <div class="product-carousel">
             <a href="{% url 'product_detail' 7 %}">
-                <img src="{% static 'images/aj6_unc_white.webp' %}" alt="Product 7">
+                <img src="{% static 'images/aj6_unc_white.webp' %}" alt="Product 7" title="Product 7">
             </a>
             <a href="{% url 'product_detail' 8 %}">
-                <img src="{% static 'images/ja1dragon.webp' %}" alt="Product 8">
+                <img src="{% static 'images/ja1dragon.webp' %}" alt="Product 8" title="Product 8">
             </a>
             <a href="{% url 'product_detail' 9 %}">
-                <img src="{% static 'images/dame4.webp' %}" alt="Product 9">
+                <img src="{% static 'images/dame4.webp' %}" alt="Product 9" title="Product 9">
             </a>
             <a href="{% url 'product_detail' 6 %}">
-                <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5">
+                <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5" title="Product 5">
             </a>
         </div>
     </main>
+
     <footer style="background-color: #533d28; color: white; padding: 20px 0; margin-top: auto;">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
             <div style="background-color: #86634b; padding: 20px; border-radius: 5px;">
@@ -151,19 +178,19 @@
                 <p>NO. 321, Zong Zheng District, Taipei, Taiwan R.O.C.</p>
             </div>
             <div style="margin-top: 20px;">
-                <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Icon 1" style="width: 24px; height: 24px;"></a>
-                <a href="https://www.facebook.com/"><img src="{% static 'images/fb.png' %}" alt="Icon 2" style="width: 24px; height: 24px;"></a>
-                <a href="https://www.youtube.com/"><img src="{% static 'images/yt.png' %}" alt="Icon 3" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Icon 1" title="Instagram" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.facebook.com/"><img src="{% static 'images/fb.png' %}" alt="Icon 2" title="Facebook" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.youtube.com/"><img src="{% static 'images/yt.png' %}" alt="Icon 3" title="YouTube" style="width: 24px; height: 24px;"></a>
             </div>
         </div>
     </footer>
-    
+
     <!-- JavaScript代碼 -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const carouselItems = document.querySelectorAll('.product-carousel a');
             let currentIndex = 0;
-        
+
             function showNext() {
                 // 隱藏當前顯示的圖片
                 carouselItems[currentIndex].style.display = 'none';
@@ -172,18 +199,16 @@
                 // 顯示下一個圖片
                 carouselItems[currentIndex].style.display = 'block';
             }
-        
+
             // 初始時隱藏除了第一個以外的圖片
             for (let i = 1; i < carouselItems.length; i++) {
                 carouselItems[i].style.display = 'none';
             }
-        
+
             // 設置定時器，每隔一段時間顯示下一張圖片
             setInterval(showNext, 1500); // 每隔1.5秒切換一次圖片
         });
-
     </script>
-    
 </body>
 
 </html>

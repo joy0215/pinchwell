@@ -8,13 +8,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         body {
-            background-color: #f0f0f0;
+            background-color: #e6f7ff;
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .container {
             max-width: 400px;
-            margin: 0 auto;
             padding: 20px;
             border-radius: 10px;
             background-color: #fff;
@@ -24,47 +28,43 @@
 
         h1 {
             margin-bottom: 20px;
-            color: #333;
+            color: #ff69b4;
         }
 
-        input, textarea {
+        input, textarea, select, button {
             width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border-radius: 5px;
-            border: 1px solid #ccc;
+            border: 1px solid #ff69b4;
             box-sizing: border-box;
         }
 
         button {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: none;
-            background-color: #007bff;
+            background-color: #ff69b4;
             color: #fff;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            border: none;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #ff1493;
         }
 
         .login-link {
             margin-top: 20px;
-            color: #007bff;
+            color: #ff69b4;
             text-decoration: none;
+            display: block;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
         }
 
         select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-            appearance: none;  /* 移除預設的外觀 */
+            appearance: none;
             background-color: #fff;
         }
     </style>
@@ -78,7 +78,6 @@
             <input type="text" name="username" placeholder="使用者名稱（僅限英文）" required><br>
             <input type="email" name="email" placeholder="電子郵件" required><br>
             <input type="password" name="password" placeholder="密碼" required><br>
-            <!-- 移除確認密碼欄位或在後端處理 -->
             <input type="text" name="location" placeholder="通訊地址" required><br>
             <input type="date" id="birthdate" name="birthdate" placeholder="出生年月日" required><br>
             <textarea name="bio" placeholder="自我介紹" rows="4" cols="50"></textarea><br>
@@ -100,26 +99,6 @@
             dateFormat: "Y-m-d",
             maxDate: new Date()
         });
-
-
-        
-        window.onload = function() {
-            var form = document.querySelector("form");
-            form.addEventListener("submit", function(event) {
-                var username = document.querySelector("input[name='username']");
-                var email = document.querySelector("input[name='email']");
-                var password1 = document.querySelector("input[name='password1']");
-                var password2 = document.querySelector("input[name='password2']");
-                var location = document.querySelector("input[name='location']");
-                var birthdate = document.querySelector("input[name='birthdate']");
-                var gender = document.querySelector("select[name='gender']");
-            
-                if (!username.value || !email.value || !password1.value || !password2.value || !location.value || !birthdate.value || !gender.value) {
-                    alert("請填寫所有必填欄位。");
-                    event.preventDefault();
-                }
-            });
-        };   
     </script>
 </body>
 
