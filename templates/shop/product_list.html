@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,19 +10,33 @@
         body {
             background-color: #eaf6fc; /* 淺藍色背景 */
             margin: 0; /* 清除預設邊距 */
+            display: flex; /* 使用flex布局 */
+            flex-direction: column; /* 垂直排列 */
+            align-items: center; /* 水平居中 */
+        }
+        .container {
+            display: flex; /* 使用flex布局 */
+            width: 100%;
+            max-width: 1200px; /* 設置最大寬度 */
+            padding: 20px;
+        }
+        .content {
+            flex: 1; /* 主内容占据剩余空间 */
+            padding-right: 20px;
+        }
+        .product-grid {
+            display: grid; /* 使用grid布局 */
+            grid-template-columns: repeat(4, 1fr); /* 每行四個 */
+            gap: 10px; /* 設置間距 */
         }
         .product-card {
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 10px;
-            margin: 10px;
-            width: 300px; /* 固定寬度 */
-            height: auto;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
-            display: inline-block;
-            vertical-align: top;
             background-color: #fff; /* 白色背景 */
+            box-sizing: border-box; /* 包括内边距和边框在内 */
         }
         .product-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -63,6 +78,7 @@
             font-family: Arial, sans-serif; /* 使用 Arial 字體 */
             text-transform: uppercase; /* 文字轉換為大寫 */
             letter-spacing: 2px; /* 文字間距 */
+            width: 100%;
         }
         .home-link {
             position: absolute;
@@ -81,6 +97,30 @@
             background-color: #ffc0cb; /* 粉紅色背景 */
             color: white; /* 白色文字 */
         }
+        .ad-sidebar {
+            width: 300px; /* 固定寬度 */
+            background-color: #fbf3e8; /* 白色背景 */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 1px solid #ccc;
+            text-align: justify; /* 文字兩端對齊 */
+        }
+        .ad-sidebar h2 {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .ad-sidebar p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .ad-sidebar .ad-banner {
+            width: 50%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -93,25 +133,38 @@
     Product List
 </div>
 
-<!-- 搜尋表單 -->
-<div class="search-container">
-    <form action="" method="GET">
-        <input type="text" placeholder="Search for products" name="q">
-        <input type="submit" value="Search">
-    </form>
-</div>
+<div class="container">
+    <div class="content">
+        <!-- 搜尋表單 -->
+        <div class="search-container">
+            <form action="" method="GET">
+                <input type="text" placeholder="Search for products" name="q">
+                <input type="submit" value="Search">
+            </form>
+        </div>
 
-<!-- 產品列表 -->
-{% for product in products %}
-<a href="{% url 'product_detail' pk=product.pk %}" style="text-decoration: none; color: inherit;">
-    <div class="product-card">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-        <p>{{ product.name }}</p>
-        <p>Price: ${{ product.price }}</p>
-        <p>Brand: {{ product.brand }}</p>
+        <!-- 產品列表 -->
+        <div class="product-grid">
+            {% for product in products %}
+            <a href="{% url 'product_detail' pk=product.pk %}" style="text-decoration: none; color: inherit;">
+                <div class="product-card">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    <p>{{ product.name }}</p>
+                    <p>Price: ${{ product.price }}</p>
+                    <p>Brand: {{ product.brand }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
     </div>
-</a>
-{% endfor %}
+
+    <!-- 廣告欄 -->
+    <div class="ad-sidebar">
+        <h2></h2>
+        <p></p>
+        <img src="{% static 'images/ad.png' %}" alt="广告横幅" class="ad-banner">
+    </div>
+</div>
 
 </body>
 </html>
