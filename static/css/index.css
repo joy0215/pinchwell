@@ -21,6 +21,7 @@
     font-weight: bold;
     font-family: monospace;
 }
+
 .title-container {
     padding: 20px;
     background-color: #FADBD8;
@@ -51,7 +52,7 @@
     text-align: center;
     background-color: #fff;
     width: 200px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s;
 }
 
@@ -98,14 +99,20 @@ body {
     background-color: #e6f7ff; /* 更淺的藍色 */
 }
 
-.product-carousel a:not(:first-child) {
-    display: none;
-}
-
+/* 产品轮播 */
 .product-carousel {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.product-carousel a:not(:first-child) {
+    display: none;
+}
+
+.product-carousel img {
+    width: 400px; /* 調整圖片寬度 */
+    height: auto; /* 根據比例自動調整高度 */
 }
 
 .hero {
@@ -120,11 +127,7 @@ body {
     font-size: 28px; /* 調整字體大小為28像素 */
 }
 
-.product-carousel img {
-    width: 400px; /* 調整圖片寬度 */
-    height: auto; /* 根據比例自動調整高度 */
-}
-
+/* 广告滚动 */
 .advertisement {
     background-color: #c0d7f5; /* 廣告區域的背景顏色 */
     padding: 10px; /* 添加一些內邊距 */
@@ -139,6 +142,7 @@ body {
     padding-right: 100px;
 }
 
+/* 广告幻灯片样式 */
 .advertisement-banner {
     position: relative;
     max-width: 100%;
@@ -161,6 +165,12 @@ body {
     min-width: 100%;
     height: 100%;
     object-fit: cover; /* 确保图片按比例填充容器 */
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.ad-slide.active {
+    opacity: 1;
 }
 
 button.prev, button.next {
@@ -172,6 +182,7 @@ button.prev, button.next {
     border: none;
     padding: 10px;
     cursor: pointer;
+    z-index: 2;
 }
 
 button.prev {
@@ -182,7 +193,7 @@ button.next {
     right: 10px;
 }
 
-/* 浮动动画效果 */
+/* 按钮浮动效果 */
 @keyframes float {
     0%, 100% {
         transform: translateY(0);
@@ -207,5 +218,39 @@ button.next {
 }
 
 .btn:hover {
-    background-color: #0056b3
+    background-color: #0056b3;
 }
+
+/* 导航栏样式 */
+nav {
+    background-color: #333;
+    padding: 10px 0;
+}
+
+nav .logo img {
+    margin-right: 10px;
+}
+
+nav .advertisement {
+    color: white;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .logo img {
+        width: 50px;
+        height: auto;
+    }
+    .btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+.container {
+margin-top: 20px;
+}
+
+.feedback-form, .feedback-list {
+margin: 20px;
+background-color: #ffffff; /* 白 */
+border: 1px solid #ffc0cb;}

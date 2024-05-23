@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>客戶回饋</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="index.css">
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #e6f7ff; /* 淺藍 */
+            text-align: center; /* 文字置中 */
         }
         .container {
             margin-top: 20px;
         }
         .feedback-form, .feedback-list {
-            margin: 20px;
+            margin: 20px auto; /* 自動左右邊距居中 */
             background-color: #ffffff; /* 白 */
             border: 1px solid #ffc0cb; /* 粉紅邊框 */
             border-radius: 10px;
             padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 添加陰影 */
+            max-width: 600px; /* 設置最大寬度 */
         }
         .feedback {
             border: 1px solid #ffc0cb; /* 粉紅邊框 */
@@ -26,18 +30,46 @@
             margin-bottom: 10px;
             border-radius: 5px;
             background-color: #fffaf0; /* 淡粉紅背景色 */
+            animation: fadeIn 1s; /* 淡入效果 */
         }
         .btn-primary {
             background-color: #ff69b4; /* 粉紅色 */
             border-color: #ff69b4; /* 粉紅色 */
+            transition: background-color 0.3s, transform 0.3s;
         }
         .btn-primary:hover {
             background-color: #ff1493; /* 深粉紅色 */
             border-color: #ff1493; /* 深粉紅色 */
+            transform: scale(1.1); /* 放大效果 */
         }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .feedback:hover {
+            background-color: #ffebee; /* 更淺的粉紅背景色 */
+            border-color: #ff69b4; /* 更亮的粉紅邊框 */
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">回饋系統</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/">主頁</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <div class="feedback-form">
             <h2>提交您的回饋</h2>
@@ -49,7 +81,7 @@
                 </div>
                 <div class="form-group">
                     <label for="product">商品:</label>
-                    <textarea class="form-control" id="product" name="product" rows="1" required></textarea>
+                    <input type="text" class="form-control" id="product" name="product" required>
                     <div class="invalid-feedback">請輸入您的商品。</div>
                 </div>
                 <div class="form-group">
@@ -58,41 +90,88 @@
                     <div class="invalid-feedback">請輸入您的留言。</div>
                 </div>
                 <div class="form-group">
-                    <label>好感程度:</label><br>
+                    <label>商品滿意度:</label><br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="liking" id="liking1" value="非常滿意" required>
-                        <label class="form-check-label" for="liking1">非常滿意</label>
+                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction1" value="非常滿意" required>
+                        <label class="form-check-label" for="productSatisfaction1">非常滿意</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="liking" id="liking2" value="滿意">
-                        <label class="form-check-label" for="liking2">滿意</label>
+                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction2" value="滿意">
+                        <label class="form-check-label" for="productSatisfaction2">滿意</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="liking" id="liking3" value="一般">
-                        <label class="form-check-label" for="liking3">一般</label>
+                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction3" value="一般">
+                        <label class="form-check-label" for="productSatisfaction3">一般</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="liking" id="liking4" value="不滿意">
-                        <label class="form-check-label" for="liking4">不滿意</label>
+                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction4" value="不滿意">
+                        <label class="form-check-label" for="productSatisfaction4">不滿意</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="liking" id="liking5" value="非常不滿意">
-                        <label class="form-check-label" for="liking5">非常不滿意</label>
+                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction5" value="非常不滿意">
+                        <label class="form-check-label" for="productSatisfaction5">非常不滿意</label>
                     </div>
-                    <div class="invalid-feedback">請選擇您的好感程度。</div>
+                    <div class="invalid-feedback">請選擇您的商品滿意度。</div>
+                </div>
+                <div class="form-group">
+                    <label>品質滿意度:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction1" value="非常滿意" required>
+                        <label class="form-check-label" for="qualitySatisfaction1">非常滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction2" value="滿意">
+                        <label class="form-check-label" for="qualitySatisfaction2">滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction3" value="一般">
+                        <label class="form-check-label" for="qualitySatisfaction3">一般</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction4" value="不滿意">
+                        <label class="form-check-label" for="qualitySatisfaction4">不滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction5" value="非常不滿意">
+                        <label class="form-check-label" for="qualitySatisfaction5">非常不滿意</label>
+                    </div>
+                    <div class="invalid-feedback">請選擇您的品質滿意度。</div>
+                </div>
+                <div class="form-group">
+                    <label>運送速度滿意度:</label><br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction1" value="非常滿意" required>
+                        <label class="form-check-label" for="deliverySatisfaction1">非常滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction2" value="滿意">
+                        <label class="form-check-label" for="deliverySatisfaction2">滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction3" value="一般">
+                        <label class="form-check-label" for="deliverySatisfaction3">一般</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction4" value="不滿意">
+                        <label class="form-check-label" for="deliverySatisfaction4">不滿意</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction5" value="非常不滿意">
+                        <label class="form-check-label" for="deliverySatisfaction5">非常不滿意</label>
+                    </div>
+                    <div class="invalid-feedback">請選擇您的運送速度滿意度。</div>
                 </div>
                 <button type="submit" class="btn btn-primary">提交</button>
             </form>
         </div>
 
-        <div class="feedback-list">
-            <h2>其他客戶的回饋</h2>
-            <div id="feedbackContainer"></div>
-        </div>
-    </div>
+        
+
+    <footer class="footer">
+        <p>&copy; 2024 回饋系統. 掐好保留所有權利.</p>
+    </footer>
 
     <script>
-        // Bootstrap 表单验证
         (function() {
             'use strict';
             window.addEventListener('load', function() {
@@ -117,28 +196,32 @@
                 return;
             }
 
-            // 获取表单数据
             const name = document.getElementById('name').value;
             const product = document.getElementById('product').value;
             const message = document.getElementById('message').value;
-            const liking = document.querySelector('input[name="liking"]:checked').value;
+            const productSatisfaction = document.querySelector('input[name="productSatisfaction"]:checked').value;
+            const qualitySatisfaction = document.querySelector('input[name="qualitySatisfaction"]:checked').value;
+            const deliverySatisfaction = document.querySelector('input[name="deliverySatisfaction"]:checked').value;
 
-            // 创建反馈元素
             const feedbackContainer = document.getElementById('feedbackContainer');
             const feedbackDiv = document.createElement('div');
             feedbackDiv.classList.add('feedback');
-            feedbackDiv.innerHTML = `<p><strong>${name}</strong></p><p>商品: ${product}</p><p>${message}</p><p>好感程度: ${liking}</p>`;
+            feedbackDiv.innerHTML = `
+                <p><strong>${name}</strong></p>
+                <p>商品: ${product}</p>
+                <p>${message}</p>
+                <p>商品滿意度: ${productSatisfaction}</p>
+                <p>品質滿意度: ${qualitySatisfaction}</p>
+                <p>運送速度滿意度: ${deliverySatisfaction}</p>
+            `;
 
-            // 添加反馈到页面
             feedbackContainer.appendChild(feedbackDiv);
 
-            // 清空表单
             document.getElementById('feedbackForm').reset();
             document.getElementById('feedbackForm').classList.remove('was-validated');
 
-            // 弹出感谢信息并重定向到主页面
             alert('謝謝您的留言!');
-            window.location.href = 'index.html'; // 假设主页面是 index.html
+            window.location.href = '/'; // 重定向到主頁
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

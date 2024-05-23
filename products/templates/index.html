@@ -9,52 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <style>
-        /* 按钮浮动效果 */
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            font-size: 16px;
-            color: white;
-            background-color: #007BFF;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.3s;
-            animation: float 2s infinite;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-        /* 导航栏样式 */
-        nav {
-            background-color: #333;
-            padding: 10px 0;
-        }
-        nav .logo img {
-            margin-right: 10px;
-        }
-        nav .advertisement {
-            color: white;
-        }
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .logo img {
-                width: 50px;
-                height: auto;
-            }
-            .btn {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
+        .advertisement-banner img {
+            display: block;
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -181,10 +139,10 @@
         <div class="advertisement-banner">
             <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
             <div class="ad-slides">
-                <img src="{% static 'images/ad1.jpeg' %}" alt="Ad 1" class="ad-slide">
-                <img src="{% static 'images/ad2.jpeg' %}" alt="Ad 2" class="ad-slide">
-                <img src="{% static 'images/ad3.jpeg' %}" alt="Ad 3" class="ad-slide">
-                <img src="{% static 'images/ad4.jpeg' %}" alt="Ad 4" class="ad-slide">
+                <img src="{% static 'images/ad1.png' %}" alt="Ad 1" class="ad-slide">
+                <img src="{% static 'images/ad2.png' %}" alt="Ad 2" class="ad-slide">
+                <img src="{% static 'images/ad3.jpg' %}" alt="Ad 3" class="ad-slide">
+                <img src="{% static 'images/ad4.jpg' %}" alt="Ad 4" class="ad-slide">
             </div>
             <button class="next" onclick="changeSlide(1)">&#10095;</button>
         </div>
@@ -221,6 +179,35 @@
 
             setInterval(showNext, 1500);
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            const adSlides = document.querySelectorAll('.ad-slide');
+            let currentAdIndex = 0;
+
+            function showAdSlide(index) {
+                adSlides.forEach((slide, i) => {
+                    slide.classList.remove('active');
+                    if (i === index) {
+                        slide.classList.add('active');
+                    }
+                });
+
+                const adSlidesContainer = document.querySelector('.ad-slides');
+                const slideWidth = adSlides[0].offsetWidth;
+                adSlidesContainer.style.transform = `translateX(${-index * slideWidth}px)`;
+            }
+
+            function changeSlide(direction) {
+                currentAdIndex = (currentAdIndex + direction + adSlides.length) % adSlides.length;
+                showAdSlide(currentAdIndex);
+            }
+
+            showAdSlide(currentAdIndex);
+            setInterval(() => changeSlide(1), 3000); // 每3秒切換一次
+
+            document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
+            document.querySelector('.next').addEventListener('click', () => changeSlide(1));
+        });
     </script>
 </body>
+
 </html>

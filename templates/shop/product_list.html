@@ -3,31 +3,30 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product List</title>
     <style>
         body {
-            background-color: #eaf6fc; /* 淺藍色背景 */
-            margin: 0; /* 清除預設邊距 */
-            display: flex; /* 使用flex布局 */
-            flex-direction: column; /* 垂直排列 */
-            align-items: center; /* 水平居中 */
+            background-color: #eaf6fc;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .container {
-            display: flex; /* 使用flex布局 */
+            display: flex;
             width: 100%;
-            max-width: 1200px; /* 設置最大寬度 */
+            max-width: 1200px;
             padding: 20px;
         }
         .content {
-            flex: 1; /* 主内容占据剩余空间 */
+            flex: 1;
             padding-right: 20px;
         }
         .product-grid {
-            display: grid; /* 使用grid布局 */
-            grid-template-columns: repeat(4, 1fr); /* 每行四個 */
-            gap: 10px; /* 設置間距 */
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
         }
         .product-card {
             border: 1px solid #ccc;
@@ -35,15 +34,15 @@
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: box-shadow 0.3s ease;
-            background-color: #fff; /* 白色背景 */
-            box-sizing: border-box; /* 包括内边距和边框在内 */
+            background-color: #fff;
+            box-sizing: border-box;
         }
         .product-card:hover {
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
         .product-card img {
-            width: 100%; /* 圖片寬度設置為100% */
-            height: auto; /* 高度自動調整 */
+            width: 100%;
+            height: auto;
             border-radius: 5px;
             margin-bottom: 10px;
         }
@@ -69,41 +68,54 @@
             background-color: #0056b3;
         }
         .navbar {
-            background-color: #ffc0cb; /* 淡粉紅色背景 */
+            background-color: #ffc0cb;
             color: white;
             padding: 20px;
             text-align: center;
-            font-size: 28px; /* 調整字體大小 */
+            font-size: 28px;
             margin-bottom: 20px;
-            font-family: Arial, sans-serif; /* 使用 Arial 字體 */
-            text-transform: uppercase; /* 文字轉換為大寫 */
-            letter-spacing: 2px; /* 文字間距 */
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             width: 100%;
+            position: relative;
         }
-        .home-link {
+        .home-link, .cart-link {
             position: absolute;
             top: 20px;
-            left: 20px;
             text-decoration: none;
-            font-size: 18px; /* 調整字體大小 */
-            padding: 15px 30px; /* 增加內邊距 */
-            border: 2px solid #ffc0cb; /* 粉紅色外框 */
-            border-radius: 15px; /* 圓角 */
-            color: #ffc0cb; /* 粉紅色文字 */
-            background-color: white; /* 白色背景 */
+            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 15px;
+            background-color: white;
             transition: background-color 0.3s, color 0.3s;
+            z-index: 1000; /* 确保按钮在最上层 */
+        }
+        .home-link {
+            left: 20px;
+            border: 2px solid #ffc0cb;
+            color: #ffc0cb;
         }
         .home-link:hover {
-            background-color: #ffc0cb; /* 粉紅色背景 */
-            color: white; /* 白色文字 */
+            background-color: #ffc0cb;
+            color: white;
+        }
+        .cart-link {
+            right: 20px;
+            border: 2px solid #007bff;
+            color: #007bff;
+        }
+        .cart-link:hover {
+            background-color: #007bff;
+            color: white;
         }
         .ad-sidebar {
-            width: 300px; /* 固定寬度 */
-            background-color: #fbf3e8; /* 白色背景 */
+            width: 300px;
+            background-color: #fbf3e8;
             padding: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             border-left: 1px solid #ccc;
-            text-align: justify; /* 文字兩端對齊 */
+            text-align: justify;
         }
         .ad-sidebar h2 {
             font-size: 24px;
@@ -127,6 +139,9 @@
 
 <!-- 左上角的回首頁按鈕 -->
 <a href="{% url 'index' %}" class="home-link">Home</a>
+
+<!-- 右上角的查看购物车按鈕 -->
+<a href="{% url 'cart' %}" class="cart-link">View Cart</a>
 
 <!-- 左上角的標題 -->
 <div class="navbar">
@@ -160,8 +175,8 @@
 
     <!-- 廣告欄 -->
     <div class="ad-sidebar">
-        <h2></h2>
-        <p></p>
+        <h2>Special Offer</h2>
+        <p>Get 20% off on your first purchase!</p>
         <img src="{% static 'images/ad.png' %}" alt="广告横幅" class="ad-banner">
     </div>
 </div>

@@ -8,13 +8,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+    <style>
+        /* Add custom styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+        }
+
+        .cart-container {
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%; /* Increase the maximum width to 90% */
+            width: 90%; /* Make sure the width is also 90% */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        select, input[type="number"], input[type="submit"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            width: 80px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+        }
+
+        input[type="submit"] {
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #555;
+        }
+
+        .empty-cart {
+            text-align: center;
+            color: #777;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .total-price {
+            text-align: right;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body>
 
 <div class="navbar">
     Shopping Cart
 </div>
-
+<h1> </h1>
+<a href="{% url 'product_list' %}" class="btn">Back to Product List</a>
 <div class="cart-container">
     {% if cart %}
         <table>
@@ -24,52 +119,135 @@
                     <th>Size</th>
                     <th>Price</th>
                     <th>Quantity</th>
-                    <th>Total</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in cart %}
-                    <tr>
-                        <td>{{ item.product.name }}</td>
-                        <td>
-                            <form action="{% url 'update_cart' item.product.pk %}" method="post">
-                                {% csrf_token %}
-                                <select name="size">
-                                    {% for size_choice in item.product.SIZE_CHOICES %}
-                                        <option value="{{ size_choice.0 }}" {% if size_choice.0 == item.size %} selected {% endif %}>
-                                            {{ size_choice.1 }}
-                                        </option>
-                                    {% endfor %}
-                                </select>
-                                <input type="submit" value="Update">
-                            </form>
-                        </td>
-                        <td>${{ item.price }}</td>
-                        <td>
-                            <form action="{% url 'update_cart' item.product.pk %}" method="post">
-                                {% csrf_token %}
-                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
-                                <input type="submit" value="Update">
-                            </form>
-                        </td>
-                        <td>${{ item.total_price }}</td>
-                        <td>
-                            <form action="{% url 'remove_from_cart' item.product.pk %}" method="post">
-                                {% csrf_token %}
-                                <input type="submit" value="Remove">
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
+                <tr>
+                    <td>{{ item.product.name }}</td>
+                    <td>
+                        <form class="size-form" action="{% url 'update_cart' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <select name="size">
+                                {% for size_choice in item.product.SIZE_CHOICES %}
+                                    <option value="{{ size_choice.0 }}" {% if size_choice.0 == item.size %} selected {% endif %}>
+                                        {{ size_choice.1 }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <input type="submit" value="Update">
+                        </form>
+                    </td>
+                    <td>${{ item.price }}</td>
+                    <td>
+                        <form class="quantity-form" action="{% url 'update_cart' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                            <input type="submit" value="Update">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'remove_from_cart' item.product.id %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="size" value="item.size">
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+                
+            {% endfor %}
+
             </tbody>
         </table>
-        <p>Total: ${{ cart.get_total_price }}</p>
-        <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+        <p class="total-price">Total: ${{ cart.get_total_price }}</p>
+        <a href="/login" class="btn">Proceed to Checkout</a>
     {% else %}
-        <p>Your cart is empty.</p>
+        <p class="empty-cart">Your cart is empty.</p>
     {% endif %}
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const sizeForms = document.querySelectorAll(".size-form");
+    const quantityForms = document.querySelectorAll(".quantity-form");
+    const removeForms = document.querySelectorAll(".remove-form");
+
+    sizeForms.forEach(form => {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const url = form.getAttribute("action");
+
+            fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Error updating cart.");
+                }
+            }).catch(error => {
+                console.error("Error updating cart:", error);
+            });
+        });
+    });
+
+    quantityForms.forEach(form => {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const url = form.getAttribute("action");
+
+            fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Error updating cart.");
+                }
+            }).catch(error => {
+                console.error("Error updating cart:", error);
+            });
+        });
+    });
+
+    removeForms.forEach(form => {
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const url = form.getAttribute("action");
+
+            fetch(url, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                }
+            }).then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Error removing product.");
+                }
+            }).catch(error => {
+                console.error("Error removing product:", error);
+            });
+        });
+    });
+});
+
+</script>
+
 </body>
 </html>
+

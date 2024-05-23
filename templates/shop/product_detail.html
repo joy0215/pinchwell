@@ -25,7 +25,7 @@
         <p>Brand: {{ product.brand }}</p>
         
         <p>Size:</p>
-        <form action="{% url 'add_to_cart' product.pk %}" method="post">
+        <form id="cart-form" action="{% url 'add_to_cart' product.pk %}" method="post">
             {% csrf_token %}
             <select name="size">
                 {% for size_choice in product.SIZE_CHOICES %}
@@ -40,6 +40,42 @@
         </a>
     </div>
 </div>
+
+<script>
+document.getElementById('cart-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // 阻止默认表单提交行为
+
+    // 获取表单数据
+    var formData = new FormData(this);
+
+    // 发送AJAX请求
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // 如果请求成功，重定向到产品列表页面
+            window.location.href = "{% url 'product_list' %}";
+        } else {
+            // 处理错误情况
+            alert('Failed to add to cart. Please try again.');
+        }
+    })
+    .catch(error => {
+        // 处理网络错误
+        alert('Network error. Please try again.');
+    });
+});
+
+</script>
+<script>
+
+    </script>
+    
 
 </body>
 </html>

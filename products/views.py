@@ -12,6 +12,9 @@ from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEd
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Sum
+from .cart import Cart
+from django.http import HttpResponseBadRequest
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -162,23 +165,17 @@ def low_stock_warning(request):
 def employee_dashboard(request):
     return render(request, 'employee_dashboard.html')
 
-
-from .cart import Cart
+@login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     size = request.POST.get('size')
     if not size:
-        # Handle case when size is not provided
-        return redirect('product_detail', product_id=product_id)  # Or any other error handling
+        messages.error(request, "Please select a size.")
+        return redirect('product_detail', product_id=product_id)
     cart = Cart(request)
     cart.add(product=product, size=size)
+    messages.success(request, "Product added to cart successfully.")
     return redirect('cart')
-
-
-def cart(request):
-    cart = Cart(request)
-    return render(request, 'shop/cart.html', {'cart': cart})
-
 
 @login_required
 def update_cart(request, product_id):
@@ -188,31 +185,42 @@ def update_cart(request, product_id):
         quantity = request.POST.get('quantity')
         
         if size and quantity:
-            cart = Cart(request)
-            cart.update(product=product, size=size, quantity=int(quantity))
+            try:
+                quantity = int(quantity)
+                cart = Cart(request)
+                cart.add(product=product, size=size, quantity=quantity, update_quantity=True)
+                messages.success(request, "Cart updated successfully.")
+            except ValueError:
+                messages.error(request, "Invalid quantity. Please enter a valid number.")
         else:
-            # Handle error case where size or quantity is missing
-            # You can redirect to the cart page with an error message
-            return redirect('cart')  # Or any other error handling
-
+            messages.error(request, "Size or quantity is missing.")
     return redirect('cart')
+
+import logging
+
+logger = logging.getLogger(__name__)
 
 @login_required
 def remove_from_cart(request, product_id):
     if request.method == 'POST':
-        product = get_object_or_404(Product, pk=product_id)
-        size = request.POST.get('size')  # 获取要删除的产品的尺寸信息
-        cart = Cart(request)
-        
-        # 从购物车中删除匹配的产品和尺寸
-        cart.remove(product_id, size)
-        
-        if cart.is_empty():
-            # 如果购物车为空，可以执行相应的操作
-            # 例如，重定向到购物车页面并显示特定的消息
+        size = request.POST.get('size')
+        if size:
+            cart = Cart(request)
+            cart.remove(product_id, size)
+            messages.success(request, "Product removed from cart successfully.")
+            if cart.is_empty():
+                messages.info(request, "Your cart is now empty.")
             return redirect('cart')
+        else:
+            return JsonResponse({'error': 'Invalid request. Please provide size.'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request. Please use POST method.'}, status=400)
+    
+@login_required
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'shop/cart.html', {'cart': cart})
 
-    return redirect('cart')
 # 結賬視圖
 @login_required
 def checkout(request):

@@ -51,3 +51,9 @@ class Cart:
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
         self.session.modified = True
+    
+    def update(self, product_id, size, quantity):
+        size_key = f"{product_id}_{size}"
+        if size_key in self.cart:
+            self.cart[size_key]['quantity'] = quantity
+            self.save()
