@@ -242,6 +242,10 @@ from django.contrib.auth.forms import UserCreationForm
 def marketing_page(request):
     return render(request, 'marketing/marketing.html')
 
+def feedback(request):
+    return render(request, 'marketing/feedback.html')
+
+
 def employee_login(request):
     if request.method == 'POST':
         username = request.POST.get('username')

@@ -36,6 +36,7 @@ urlpatterns = [
     path('order_confirmation/', views.confirmation_view, name='order_confirmation'),
     path('low_stock_warning/', views.low_stock_warning, name='low_stock_warning'),
     path('update_cart/<int:product_id>/', views.update_cart, name='update_cart'),
+    path('feedback/', views.feedback, name='feedback'),
     path('remove_from_cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
