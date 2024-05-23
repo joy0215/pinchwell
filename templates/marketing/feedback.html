@@ -203,19 +203,20 @@
             const qualitySatisfaction = document.querySelector('input[name="qualitySatisfaction"]:checked').value;
             const deliverySatisfaction = document.querySelector('input[name="deliverySatisfaction"]:checked').value;
 
-            const feedbackContainer = document.getElementById('feedbackContainer');
-            const feedbackDiv = document.createElement('div');
-            feedbackDiv.classList.add('feedback');
-            feedbackDiv.innerHTML = `
-                <p><strong>${name}</strong></p>
-                <p>商品: ${product}</p>
-                <p>${message}</p>
-                <p>商品滿意度: ${productSatisfaction}</p>
-                <p>品質滿意度: ${qualitySatisfaction}</p>
-                <p>運送速度滿意度: ${deliverySatisfaction}</p>
-            `;
+            // 添加回饋內容的代碼
+            // const feedbackContainer = document.getElementById('feedbackContainer');
+            // const feedbackDiv = document.createElement('div');
+            // feedbackDiv.classList.add('feedback');
+            // feedbackDiv.innerHTML = `
+            //     <p><strong>${name}</strong></p>
+            //     <p>商品: ${product}</p>
+            //     <p>${message}</p>
+            //     <p>商品滿意度: ${productSatisfaction}</p>
+            //     <p>品質滿意度: ${qualitySatisfaction}</p>
+            //     <p>運送速度滿意度: ${deliverySatisfaction}</p>
+            // `;
 
-            feedbackContainer.appendChild(feedbackDiv);
+            // feedbackContainer.appendChild(feedbackDiv);
 
             document.getElementById('feedbackForm').reset();
             document.getElementById('feedbackForm').classList.remove('was-validated');
