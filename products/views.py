@@ -162,26 +162,57 @@ def low_stock_warning(request):
 def employee_dashboard(request):
     return render(request, 'employee_dashboard.html')
 
-# 添加商品到購物車視圖
-def add_to_cart(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    if request.method == 'POST':
-        selected_size = request.POST.get('size')
-        order, created = Order.objects.get_or_create(user=request.user, ordered=False)
-        order.products.add(product)
-        order_item, created = OrderItem.objects.get_or_create(order=order, product=product, size=selected_size)
-        messages.success(request, '商品已成功添加到購物車！')
-        return redirect('product_detail', pk=pk)
-    else:
-        return redirect('product_detail', pk=pk)
 
-# 購物車視圖
-@login_required
+from .cart import Cart
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    size = request.POST.get('size')
+    if not size:
+        # Handle case when size is not provided
+        return redirect('product_detail', product_id=product_id)  # Or any other error handling
+    cart = Cart(request)
+    cart.add(product=product, size=size)
+    return redirect('cart')
+
+
 def cart(request):
-    cart_items = []  # 您的購物車邏輯應該在這裡獲取購物車中的商品列表
-    total_price = sum(item.price for item in cart_items) if cart_items else 0
-    return render(request, 'shop/cart.html', {'cart_items': cart_items, 'total_price': total_price})
+    cart = Cart(request)
+    return render(request, 'shop/cart.html', {'cart': cart})
 
+
+@login_required
+def update_cart(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=product_id)
+        size = request.POST.get('size')
+        quantity = request.POST.get('quantity')
+        
+        if size and quantity:
+            cart = Cart(request)
+            cart.update(product=product, size=size, quantity=int(quantity))
+        else:
+            # Handle error case where size or quantity is missing
+            # You can redirect to the cart page with an error message
+            return redirect('cart')  # Or any other error handling
+
+    return redirect('cart')
+
+@login_required
+def remove_from_cart(request, product_id):
+    if request.method == 'POST':
+        product = get_object_or_404(Product, pk=product_id)
+        size = request.POST.get('size')  # 获取要删除的产品的尺寸信息
+        cart = Cart(request)
+        
+        # 从购物车中删除匹配的产品和尺寸
+        cart.remove(product_id, size)
+        
+        if cart.is_empty():
+            # 如果购物车为空，可以执行相应的操作
+            # 例如，重定向到购物车页面并显示特定的消息
+            return redirect('cart')
+
+    return redirect('cart')
 # 結賬視圖
 @login_required
 def checkout(request):

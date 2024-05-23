@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,15 +10,12 @@
 </head>
 <body>
 
-<!-- 左上角的標題 -->
 <div class="navbar">
     Product Detail
 </div>
 
-<!-- 產品詳細信息 -->
 <div class="product-detail-container">
     <div class="product-detail-image">
-        <!-- Display the product image -->
         <img src="{{ product.image.url }}" alt="{{ product.name }}">
     </div>
     <div class="product-detail-info">
@@ -28,29 +24,21 @@
         <p>Price: ${{ product.price }}</p>
         <p>Brand: {{ product.brand }}</p>
         
-        <!-- Display the size as a dropdown list -->
-        <p>Size:
+        <p>Size:</p>
+        <form action="{% url 'add_to_cart' product.pk %}" method="post">
+            {% csrf_token %}
             <select name="size">
                 {% for size_choice in product.SIZE_CHOICES %}
-                    <option value="{{ size_choice.0 }}" {% if size_choice.0 == product.size %} selected {% endif %}>
-                        {{ size_choice.1 }}
-                    </option>
+                    <option value="{{ size_choice.0 }}">{{ size_choice.1 }}</option>
                 {% endfor %}
             </select>
-        </p>
+            <input type="submit" value="加入購物車">
+        </form>
 
-    <!-- 返回到產品列表的按鈕 -->
-    <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
-        Back to Product List
-    </a>
+        <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
+            Back to Product List
+        </a>
     </div>
-
-    <!-- 在商品詳細信息的底部新增加入購物車按鈕 -->
-    <form action="{% url 'add_to_cart' product.pk %}" method="post">
-        {% csrf_token %}
-        <input type="submit" value="加入購物車">
-    </form>
-
 </div>
 
 </body>

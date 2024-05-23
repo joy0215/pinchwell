@@ -1,119 +1,211 @@
-        /* 粉紅方塊和連結 */
-        .header-content {
-            position: relative;
-        }
+/* 粉紅方塊和連結 */
+.header-content {
+    position: relative;
+}
 
-        .header-content img {
-            width: 60px;
-            height: auto;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+.header-content img {
+    width: 60px;
+    height: auto;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
 
-        .logo-container {
-            text-align: center;
-            margin-top: 20px;
-            padding: 30px;
-            background-color: #FADBD8;
-            border-radius: 10px;
-            font-size: 36px;
-            font-weight: bold;
-            font-family: monospace;
-        }
+.logo-container {
+    text-align: center;
+    margin-top: 20px;
+    padding: 30px;
+    background-color: #FADBD8;
+    border-radius: 10px;
+    font-size: 36px;
+    font-weight: bold;
+    font-family: monospace;
+}
+.title-container {
+    padding: 20px;
+    background-color: #FADBD8;
+    border-radius: 10px;
+    font-size: 2rem; /* 32px */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    margin: 20px auto;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+}
 
-        /* 調整圖片大小 */
-        .container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 20px; /* 添加間距 */
-        }
+/* 調整圖片大小 */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
 
-        .card {
-            width: calc(50% - 20px); /* 每個卡片的寬度為視窗寬度的一半減去間距 */
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 4px solid #FADBD8; /* 淡粉紅色外框 */
-            background-color: white; /* 卡片背景色 */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 卡片陰影 */
-        }
+.card {
+    position: relative;
+    margin: 20px;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 15px; /* 增加圆弧效果 */
+    text-align: center;
+    background-color: #fff;
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
 
-        .card img {
-            width: 100%; /* 圖片寬度填滿卡片 */
-            max-width: 150px; /* 圖片最大寬度為150px */
-            height: auto;
-            display: block;
-            margin: 0 auto; /* 水平置中 */
-        }
+.card:hover {
+    transform: scale(1.05);
+}
 
-        .card-content {
-            padding: 20px;
-            background-color: #BBFFEE;  /* 較淺的Tiffany綠色背景 */
-            text-align:center
-        }
-        
-        .nav-links li {
-            list-style-type: none;
-            margin-bottom: 20px;
-        }
+.card img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
 
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-size: 26px;
-        }
-        .logo {
-            display: flex;
-            justify-content: space-between;
-            padding: 0 20px; /* 左右空白 */
-        }
+.card-content {
+    padding: 20px;
+    background-color: #BBFFEE;  /* 較淺的Tiffany綠色背景 */
+    text-align: center;
+}
 
-        .logo img {
-            height: auto ; /* 設置圖片高度 */
-            width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
-        }
+.nav-links li {
+    list-style-type: none;
+    margin-bottom: 20px;
+}
 
-        /* 設置整個網頁的背景色 */
-        body {
-            background-color: #e6f7ff; /* 更淺的藍色 */
-        }
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-size: 26px;
+}
 
-        .product-carousel a:not(:first-child) {
-            display: none;
-        }
+.logo {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px; /* 左右空白 */
+}
 
-        .product-carousel {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .hero {
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-size: 36px; /* 調整字體大小為36像素 */
-        }
-        
-        .hero p {
-            font-size: 28px; /* 調整字體大小為36像素 */
-        }
+.logo img {
+    height: auto; /* 設置圖片高度 */
+    width: calc((100vw - 40px) / 6); /* 計算每張圖片的寬度 */
+}
 
-        .product-carousel img {
-            width: 400px; /* 調整圖片寬度 */
-            height: auto; /* 根據比例自動調整高度 */
-        }
+/* 設置整個網頁的背景色 */
+body {
+    background-color: #e6f7ff; /* 更淺的藍色 */
+}
 
-        .advertisement {
-            background-color: #c0d7f5; /* 廣告區域的背景顏色 */
-            padding: 10px; /* 添加一些內邊距 */
-        }
-        
-        .advertisement marquee {
-            font-size: 18px; /* 設置文字大小 */
-            color: #333; /* 設置文字顏色 */
-        }
-        
+.product-carousel a:not(:first-child) {
+    display: none;
+}
+
+.product-carousel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero {
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 36px; /* 調整字體大小為36像素 */
+}
+
+.hero p {
+    font-size: 28px; /* 調整字體大小為28像素 */
+}
+
+.product-carousel img {
+    width: 400px; /* 調整圖片寬度 */
+    height: auto; /* 根據比例自動調整高度 */
+}
+
+.advertisement {
+    background-color: #c0d7f5; /* 廣告區域的背景顏色 */
+    padding: 10px; /* 添加一些內邊距 */
+}
+
+.advertisement marquee {
+    font-size: 18px; /* 設置文字大小 */
+    color: #333; /* 設置文字顏色 */
+}
+
+.advertisement span {
+    padding-right: 100px;
+}
+
+.advertisement-banner {
+    position: relative;
+    max-width: 100%;
+    margin: 20px auto;
+    overflow: hidden;
+    background: #f0f0f0; /* 可选：设置背景颜色以突出广告区域 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ad-slides {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+    aspect-ratio: 32 / 9; /* 设置宽高比例，例如32:9，这样高度会更低 */
+}
+
+.ad-slide {
+    min-width: 100%;
+    height: 100%;
+    object-fit: cover; /* 确保图片按比例填充容器 */
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+/* 浮动动画效果 */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.3s;
+    animation: float 2s infinite;
+}
+
+.btn:hover {
+    background-color: #0056b3
+}

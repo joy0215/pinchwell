@@ -14,7 +14,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('product_list.html', ProductListView.as_view(), name='product_list'),
     path('products/<int:pk>/', views.product_detail, name='product_detail'),
-    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('cart/', views.cart, name='cart'),
     path('checkout/', views.checkout, name='checkout'),
     path('complete_order/', views.complete_order, name='complete_order'),
@@ -22,7 +22,7 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),  # 登入頁面的URL
     path('signup/', views.signup, name='signup'),  # 註冊頁面的URL
     path('marketing/', views.marketing_page, name='marketing_page'),
-    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('upcoming_products/', views.upcoming_products, name='upcoming_products'),
     path('employee/login/', views.employee_login, name='employee_login'),
     path('dashboard/', views.employee_dashboard, name='employee_dashboard'),
@@ -35,5 +35,7 @@ urlpatterns = [
     path('testform/<int:product_id>/', views.testform_view, name='testform'),
     path('order_confirmation/', views.confirmation_view, name='order_confirmation'),
     path('low_stock_warning/', views.low_stock_warning, name='low_stock_warning'),
+    path('update_cart/<int:product_id>/', views.update_cart, name='update_cart'),
+    path('remove_from_cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -9,41 +9,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <style>
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
+        /* 按钮浮动效果 */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
         }
-
-        .card {
-            position: relative;
-            margin: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
             border-radius: 5px;
+            text-decoration: none;
             text-align: center;
-            background-color: #fff;
-            width: 200px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            transition: background-color 0.3s;
+            animation: float 2s infinite;
         }
-
-        .card:hover {
-            transform: scale(1.05);
+        .btn:hover {
+            background-color: #0056b3;
         }
-
-        .card img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 10px;
+        /* 导航栏样式 */
+        nav {
+            background-color: #333;
+            padding: 10px 0;
         }
-
-        .card-content {
-            padding: 10px;
+        nav .logo img {
+            margin-right: 10px;
         }
-
-        .advertisement span {
-            padding-right: 20px;
+        nav .advertisement {
+            color: white;
+        }
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .logo img {
+                width: 50px;
+                height: auto;
+            }
+            .btn {
+                font-size: 14px;
+                padding: 8px 16px;
+            }
         }
     </style>
 </head>
@@ -52,13 +63,12 @@
     <header>
         <nav>
             <div class="logo">
-                <!-- 並排六張圖片 -->
-                <img src="{% static 'images/1.jpeg' %}" alt="Image 1" title="Image 1">
-                <img src="{% static 'images/2.jpeg' %}" alt="Image 2" title="Image 2">
-                <img src="{% static 'images/3.jpeg' %}" alt="Image 3" title="Image 3">
-                <img src="{% static 'images/4.jpeg' %}" alt="Image 4" title="Image 4">
-                <img src="{% static 'images/5.jpeg' %}" alt="Image 5" title="Image 5">
-                <img src="{% static 'images/6.jpeg' %}" alt="Image 6" title="Image 6">
+                <img src="{% static 'images/1.jpeg' %}" alt="Image 1" title="">
+                <img src="{% static 'images/2.jpeg' %}" alt="Image 2" title="">
+                <img src="{% static 'images/3.jpeg' %}" alt="Image 3" title="">
+                <img src="{% static 'images/4.jpeg' %}" alt="Image 4" title="">
+                <img src="{% static 'images/5.jpeg' %}" alt="Image 5" title="">
+                <img src="{% static 'images/6.jpeg' %}" alt="Image 6" title="">
             </div>
 
             <div class="advertisement">
@@ -69,7 +79,6 @@
                 </marquee>
             </div>
 
-            <!-- 粉紅方塊和連結 -->
             <div style="position: relative;">
                 <div style="position: absolute; top: 20px; right: 20px;">
                     <a href="login">
@@ -77,7 +86,7 @@
                     </a>
                 </div>
                 <div style="text-align: center; margin-top: 20px;">
-                    <div style="padding: 30px; background-color: #FADBD8; border-radius: 10px; font-size: 36px; font-weight: bold; font-family: monospace;">
+                    <div class="title-container">
                         掐好鞋店 Pinchwell Sneaker Store
                     </div>
                 </div>
@@ -156,17 +165,28 @@
 
         <div class="product-carousel">
             <a href="{% url 'product_detail' 7 %}">
-                <img src="{% static 'images/aj6_unc_white.webp' %}" alt="Product 7" title="Product 7">
+                <img src="{% static 'images/aj6_unc_white.webp' %}" alt="Product 7" title=" ">
             </a>
             <a href="{% url 'product_detail' 8 %}">
-                <img src="{% static 'images/ja1dragon.webp' %}" alt="Product 8" title="Product 8">
+                <img src="{% static 'images/ja1dragon.webp' %}" alt="Product 8" title=" ">
             </a>
             <a href="{% url 'product_detail' 9 %}">
-                <img src="{% static 'images/dame4.webp' %}" alt="Product 9" title="Product 9">
+                <img src="{% static 'images/dame4.webp' %}" alt="Product 9" title="">
             </a>
             <a href="{% url 'product_detail' 6 %}">
-                <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5" title="Product 5">
+                <img src="{% static 'images/aj1_low_dior.webp' %}" alt="Product 5" title="">
             </a>
+        </div>
+
+        <div class="advertisement-banner">
+            <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+            <div class="ad-slides">
+                <img src="{% static 'images/ad1.jpeg' %}" alt="Ad 1" class="ad-slide">
+                <img src="{% static 'images/ad2.jpeg' %}" alt="Ad 2" class="ad-slide">
+                <img src="{% static 'images/ad3.jpeg' %}" alt="Ad 3" class="ad-slide">
+                <img src="{% static 'images/ad4.jpeg' %}" alt="Ad 4" class="ad-slide">
+            </div>
+            <button class="next" onclick="changeSlide(1)">&#10095;</button>
         </div>
     </main>
 
@@ -184,31 +204,23 @@
             </div>
         </div>
     </footer>
-
-    <!-- JavaScript代碼 -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const carouselItems = document.querySelectorAll('.product-carousel a');
             let currentIndex = 0;
 
             function showNext() {
-                // 隱藏當前顯示的圖片
                 carouselItems[currentIndex].style.display = 'none';
-                // 更新索引，循環顯示三個不同的圖片
                 currentIndex = (currentIndex + 1) % carouselItems.length;
-                // 顯示下一個圖片
                 carouselItems[currentIndex].style.display = 'block';
             }
 
-            // 初始時隱藏除了第一個以外的圖片
             for (let i = 1; i < carouselItems.length; i++) {
                 carouselItems[i].style.display = 'none';
             }
 
-            // 設置定時器，每隔一段時間顯示下一張圖片
-            setInterval(showNext, 1500); // 每隔1.5秒切換一次圖片
+            setInterval(showNext, 1500);
         });
     </script>
 </body>
-
 </html>

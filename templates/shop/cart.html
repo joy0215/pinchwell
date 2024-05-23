@@ -1,115 +1,75 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>購物車</title>
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #e6f7ff;
-            margin: 0;
-            padding: 0;
-        }
-        .navbar {
-            background-color: #FADBD8; /* 淡紅色背景 */
-            color: white;
-            padding: 20px;
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 20px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            letter-spacing: 2px;
-            border-bottom-left-radius: 10px;
-            border-bottom-right-radius: 10px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .cart-empty-message {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .cart-empty-message p {
-            font-size: 18px;
-            color: #555;
-            margin: 0;
-        }
-        .checkout-button {
-            text-align: right; /* 文字右對齊 */
-            margin-top: 40px; /* 垂直方向上的間距 */
-        }
-        
-        .checkout-button .btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 8px;
-            background-color: #ff6b81;
-            color: white;
-            font-size: 20px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none; /* 確保超連結沒有底線 */
-        }
-        
-        .checkout-button .btn:hover {
-            background-color: #ff4757;
-        }
-        
-        .btn-back {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 8px 15px;
-            border-radius: 5px;
-            background-color: #ff6b81;
-            color: white;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .btn-back:hover {
-            background-color: #ff4757;
-        }
-    </style>
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
 </head>
 <body>
-    <div class="navbar">
-        購物車
-    </div>
-    <a href="{% url 'product_list' %}" class="btn-back">返回產品列表</a>
-    <div class="container">
-        {% if cart_empty %}
-            <div class="cart-empty-message">
-                <p>購物車是空的，快去購物吧！</p>
-            </div>
-        {% else %}
-            <div class="cart-items">
-                <!-- 購物車內容 -->
-            </div>
-            <div class="total-price">
-                <p>總價: ${{ total_price }}</p>
-            </div>
-            <div class="checkout-button">
-                <a href="{% url 'order_confirmation' %}" class="btn">結帳</a>
-            </div>
-        {% endif %}
-    </div>
 
-    <script>
-        // 按鈕點擊事件處理
-        document.getElementById('checkout-btn').addEventListener('click', function() {
-            alert('您的訂單已成功提交！');
-        });
-    </script>
+<div class="navbar">
+    Shopping Cart
+</div>
+
+<div class="cart-container">
+    {% if cart %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Size</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cart %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>
+                            <form action="{% url 'update_cart' item.product.pk %}" method="post">
+                                {% csrf_token %}
+                                <select name="size">
+                                    {% for size_choice in item.product.SIZE_CHOICES %}
+                                        <option value="{{ size_choice.0 }}" {% if size_choice.0 == item.size %} selected {% endif %}>
+                                            {{ size_choice.1 }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <input type="submit" value="Update">
+                            </form>
+                        </td>
+                        <td>${{ item.price }}</td>
+                        <td>
+                            <form action="{% url 'update_cart' item.product.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                                <input type="submit" value="Update">
+                            </form>
+                        </td>
+                        <td>${{ item.total_price }}</td>
+                        <td>
+                            <form action="{% url 'remove_from_cart' item.product.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Remove">
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Total: ${{ cart.get_total_price }}</p>
+        <a href="{% url 'checkout' %}" class="btn">Proceed to Checkout</a>
+    {% else %}
+        <p>Your cart is empty.</p>
+    {% endif %}
+</div>
 
 </body>
 </html>
