@@ -4,8 +4,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/product_list.css' %}">
     <title>Product List</title>
+    <style>
+        body {
+            background-color: #eaf6fc;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+        }
+        .content {
+            flex: 1;
+            padding-right: 20px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+        .product-card {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+            background-color: #fff;
+            box-sizing: border-box;
+            opacity: 1;
+            display: block;
+        }
+        .product-card.hide {
+            opacity: 0;
+            transform: scale(0.95);
+            display: none;
+        }
+        .product-card.show {
+            opacity: 1;
+            transform: scale(1);
+            display: block;
+        }
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .search-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .search-container input[type=text] {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .navbar {
+            background-color: #ffc0cb;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-family: Arial, sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            width: 100%;
+            position: relative;
+        }
+        .home-link, .cart-link {
+            position: absolute;
+            top: 20px;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 15px 30px;
+            border-radius: 15px;
+            background-color: white;
+            transition: background-color 0.3s, color 0.3s;
+            z-index: 1000; /* 确保按钮在最上层 */
+        }
+        .home-link {
+            left: 20px;
+            border: 2px solid #ffc0cb;
+            color: #ffc0cb;
+        }
+        .home-link:hover {
+            background-color: #ffc0cb;
+            color: white;
+        }
+        .cart-link {
+            right: 20px;
+            border: 2px solid #007bff;
+            color: #007bff;
+        }
+        .cart-link:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .ad-sidebar {
+            width: 300px;
+            background-color: #fbf3e8;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-left: 1px solid #ccc;
+            text-align: justify;
+        }
+        .ad-sidebar h2 {
+            font-size: 24px;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .ad-sidebar p {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .ad-sidebar .ad-banner {
+            width: 50%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productList = document.querySelector('.product-grid');
+            const searchInput = document.createElement('input');
+            searchInput.setAttribute('type', 'text');
+            searchInput.setAttribute('placeholder', 'Search for products');
+            searchInput.classList.add('search-input');
+            document.querySelector('.search-container').appendChild(searchInput);
+
+            searchInput.addEventListener('keyup', function() {
+                const filter = searchInput.value.toLowerCase();
+                const cards = Array.from(productList.querySelectorAll('.product-card'));
+
+                cards.forEach(card => {
+                    const name = card.querySelector('p:first-of-type').textContent.toLowerCase();
+                    if (name.includes(filter)) {
+                        card.classList.remove('hide');
+                        card.classList.add('show');
+                    } else {
+                        card.classList.remove('show');
+                        card.classList.add('hide');
+                    }
+                });
+
+                const filteredCards = cards.filter(card => card.classList.contains('show'));
+
+                filteredCards.sort((a, b) => {
+                    const nameA = a.querySelector('p:first-of-type').textContent.toLowerCase();
+                    const nameB = b.querySelector('p:first-of-type').textContent.toLowerCase();
+                    if (nameA < nameB) return -1;
+                    if (nameA > nameB) return 1;
+                    return 0;
+                });
+
+                filteredCards.forEach(card => {
+                    productList.appendChild(card);
+                });
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -22,19 +191,15 @@
 
 <div class="container">
     <div class="content">
-        <!-- 搜尋表單 -->
+        <!-- 搜尋容器 -->
         <div class="search-container">
-            <form action="" method="GET">
-                <input type="text" placeholder="Search for products" name="q">
-                <input type="submit" value="Search">
-            </form>
         </div>
 
         <!-- 產品列表 -->
         <div class="product-grid">
             {% for product in products %}
             <a href="{% url 'product_detail' pk=product.pk %}" style="text-decoration: none; color: inherit;">
-                <div class="product-card">
+                <div class="product-card show">
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     <p>{{ product.name }}</p>
                     <p>Price: ${{ product.price }}</p>
