@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 
@@ -10,27 +9,29 @@
     <style>
         body {
             background-color: #e6f7ff; /* 淺藍色背景 */
-            font-family: Arial, sans-serif; /* 字體設置 */
+            font-family: 'Roboto', Arial, sans-serif; /* 字體設置 */
             margin: 0;
             padding: 0;
         }
 
         .container {
             max-width: 800px; /* 最大寬度 */
-            margin: 0 auto; /* 水平居中 */
+            margin: 20px auto; /* 水平居中，增加頂部空間 */
             padding: 20px; /* 內邊距 */
             background-color: #ffffff; /* 背景顏色 */
             border-radius: 10px; /* 圓角 */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影 */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* 增加陰影 */
         }
 
         h1 {
             text-align: center; /* 標題置中 */
+            color: #333; /* 文字顏色 */
         }
 
         p {
-            line-height: 1.6; /* 行高 */
+            line-height: 1.8; /* 增加行高 */
             margin-bottom: 20px; /* 底部間距 */
+            color: #555; /* 文字顏色 */
         }
 
         table {
@@ -40,16 +41,47 @@
         }
 
         th, td {
-            padding: 8px; /* 單元格內邊距 */
+            padding: 10px; /* 單元格內邊距 */
             text-align: left; /* 文字靠左 */
             border-bottom: 1px solid #ddd; /* 底部邊框 */
         }
 
         th {
             background-color: #f2f2f2; /* 表頭背景色 */
+            color: #333; /* 表頭文字顏色 */
         }
 
-        /* 响應式設置 */
+        a {
+            color: #4CAF50; /* 超鏈接顏色 */
+            text-decoration: none; /* 移除下劃線 */
+        }
+
+        a:hover {
+            text-decoration: underline; /* 滑鼠移動上去時的效果 */
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #45a049;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            vertical-align: middle; /* 圖標和文字對齊 */
+            margin-left: 8px; /* 圖標與文字的間距 */
+        }
+
+        /* 響應式設置 */
         @media (max-width: 600px) {
             .container {
                 padding: 10px; /* 小屏幕時減少內邊距 */
@@ -81,55 +113,54 @@
 
                 "我們的產品堅固耐用，以滿足您的需求。"<br>
     
-                "我們的品牌是可靠的選擇，與我們一起您不會後悔。</p>
+                "我們的品牌是可靠的選擇，與我們一起您不會後悔。"</p>
 
-                <table>
-                    <tr>
-                        <td>1. 簡單而快速的購物體驗</td>
-                    </tr>
-                    <tr>
-                        <td>2. 及時庫存更新</td>
-                    </tr>
-                    <tr>
-                        <td>3. 互動社群功能</td>
-                    </tr>
-                    <tr>
-                        <td>4. 簡易支付系統</td>
-                    </tr>
-                    <tr>
-                        <td>5. 迅速的客戶服務回應</td>
-                    </tr>
-                </table>
+            <table>
+                <tr>
+                    <td>1. 簡單而快速的購物體驗</td>
+                </tr>
+                <tr>
+                    <td>2. 及時庫存更新</td>
+                </tr>
+                <tr>
+                    <td>3. 互動社群功能</td>
+                </tr>
+                <tr>
+                    <td>4. 簡易支付系統</td>
+                </tr>
+                <tr>
+                    <td>5. 迅速的客戶服務回應</td>
+                </tr>
+            </table>
                 
 
-        <h2>聯絡我們</h2>
-        <p>這是我們在各大社群媒體的連結 歡迎大家追蹤和按讚訂閱</p>
+            <h2>聯絡我們</h2>
+            <p>這是我們在各大社群媒體的連結 歡迎大家追蹤和按讚訂閱</p>
 
-        <table>
-            <tr>
-                <td>1. Instagram: joy_0215_wu <a href="https://www.instagram.com/joy_0215_wu/"><img src={% static 'images/ig.png' %} alt="Icon 1" style="width: 24px; height: 24px;"></a></td>
-            </tr>
-            <tr>
-                <td>2. YouTube:掐好鞋店<a href="https://www.youtube.com/"><img src={% static 'images/yt.png' %} alt="Icon 1" style="width: 24px; height: 24px;"></a></td>
-            </tr>
-            <tr>
-                <td>3. Facebook:掐好鞋店-全台唯一粉絲專頁<a href="https://www.facebook.com/"><img src={% static 'images/fb.png' %} alt="Icon 1" style="width: 24px; height: 24px;"></a></a></td>
-            </tr>
-            <tr>
-                <td>4. 電子郵件:11056017@ntub.edu.tw</a></td>
-            </tr>
-            <tr>
-                <td>5. 電話:0917294647 , 0917294347</a></td>
-            </tr>
-        </table>
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'index' %}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;">回首頁</a>
-        </div>
-        
-        
+            <table>
+                <tr>
+                    <td>1. Instagram: joy_0215_wu <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Instagram Icon" class="icon"></a></td>
+                </tr>
+                <tr>
+                    <td>2. YouTube:掐好鞋店<a href="https://www.youtube.com/"><img src="{% static 'images/yt.png' %}" alt="YouTube Icon" class="icon"></a></td>
+                </tr>
+                <tr>
+                    <td>3. Facebook:掐好鞋店-全台唯一粉絲專頁<a href="https://www.facebook.com/"><img src="{% static 'images/fb.png' %}" alt="Facebook Icon" class="icon"></a></td>
+                </tr>
+                <tr>
+                    <td>4. 電子郵件: 11056017@ntub.edu.tw</td>
+                </tr>
+                <tr>
+                    <td>5. 電話: 0917294647 , 0917294347</td>
+                </tr>
+            </table>
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="{% url 'index' %}" class="btn">回首頁</a>
+            </div>
         </div>
     </div>
 
 </body>
 
 </html>
+

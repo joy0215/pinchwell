@@ -25,39 +25,51 @@ class CustomAuthenticationForm(AuthenticationForm):
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+import logging
+
+
+logger = logging.getLogger(__name__)
+
 def login_page(request):
     form = AuthenticationForm()  # 先定義 form 變數
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        logger.info(f'Trying to log in with username: {username}')
+
         # 先檢查是否為 Pinchwell 使用者
         try:
             pinchwell_user = Pinchwell.objects.get(username=username)
-            if pinchwell_user.check_password(password):  # 假設 PinchwellUser 有 check_password 方法
+            if pinchwell_user.check_password(password):  # 假設 Pinchwell 有 check_password 方法
+                logger.info('Pinchwell user authenticated')
                 # 如果密碼正確，則導向 dashboard
                 return redirect('employee_dashboard')
+            else:
+                logger.info('Pinchwell user authentication failed')
         except Pinchwell.DoesNotExist:
-            pass  # 如果不是 Pinchwell 使用者，則繼續檢查是否為一般使用者
+            logger.info('Not a Pinchwell user')
 
         # 再檢查是否為一般使用者
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                # Log in the user
+                logger.info('General user authenticated')
+                # 登錄用戶
                 login(request, user)
                 return redirect('index')
             else:
+                logger.info('General user authentication failed')
                 messages.error(request, '無效的用戶名或密碼。')
+        else:
+            logger.info('Form validation failed')
+            messages.error(request, '無效的用戶名或密碼。')
 
     return render(request, 'login.html', {'form': form})
-
 import logging
 
 logger = logging.getLogger(__name__)
-from django.contrib.auth import authenticate, login
-from django.contrib import messages
 from django.shortcuts import render, redirect
 
 

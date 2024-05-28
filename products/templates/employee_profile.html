@@ -1,30 +1,100 @@
-<!DOCTYPE html>
 {% load static %}
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Profiles</title>
-    <link rel="stylesheet" href="{% static 'css/employee_profile.css' %}">  <!-- 引入自定義 CSS 文件 -->
+    <title>員工個人資料</title>
+    <link rel="stylesheet" href="{% static 'css/employee_profile.css' %}">
     <style>
+        body {
+            background-color: #F5F5F5; /* 淺灰色背景 */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
+        .container {
+            background-color: #ffffff; /* 白色背景 */
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 柔和的陰影 */
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .title {
+            color: #333333; /* 深灰色 */
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid #FF5733; /* 橙色邊框 */
+        }
+
+        .profile-details {
+            text-align: left;
+            color: #555555; /* 中灰色 */
+        }
+
+        .profile-details h2 {
+            color: #333333; /* 深灰色 */
+            font-size: 1.5em;
+            margin: 0 0 10px 0;
+        }
+
+        .profile-details p {
+            margin: 5px 0;
+            font-size: 1.1em;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FF5733; /* 明亮的橙色 */
+            color: #ffffff; /* 白色文字 */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 小陰影增加立體感 */
+        }
+
+        .btn:hover {
+            background-color: #C70039; /* 深橙色 */
+            transform: translateY(-3px); /* 懸停時上移效果 */
+        }
     </style>
 </head>
+
 <body>
-    <div class="title-container">
-        <h1 class="title">Employee Profiles</h1>
-    </div>
-    <a href="{% url 'employee_dashboard' %}" class="btn btn-primary">Back to Dashboard</a> <!-- 回到 dashboard 的按鈕 -->
-    <div class="card-container">
-        {% for employee in employees %}
-        <div class="card">
-            <img src="{{ employee.profile_picture.url }}" alt="Profile Picture">
-            <div class="card-content">
-                <h2>{{ employee.full_name }}</h2>
-                <!-- 添加更多要顯示的員工資料 -->
-            </div>
+    <div class="container">
+        <h1 class="title">個人資料</h1>
+        <img src="{{ employee.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+        <div class="profile-details">
+            <h2>{{ employee.full_name }}</h2>
+            <p>職位: {{ employee.position }}</p>
+            <p>電子郵件: {{ employee.email }}</p>
+            <p>電話: {{ employee.phone }}</p>
+            <p>地址: {{ employee.address }}</p>
+            <!-- 添加更多個人資料 -->
         </div>
-        {% endfor %}
+        <a href="{% url 'employee_dashboard' %}" class="btn">返回儀表板</a> <!-- 回到 dashboard 的按鈕 -->
     </div>
 </body>
+
 </html>

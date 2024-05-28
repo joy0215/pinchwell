@@ -1,13 +1,101 @@
-<!-- inventory_edit.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/inventory_edit.css' %}">
     <title>存貨編輯</title>
+    <style>
+        body {
+            background-color: #F5F5F5; /* 淺灰色背景 */
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333333; /* 深灰色 */
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .inventory-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .product-card {
+            background-color: #ffffff; /* 白色背景 */
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 柔和的陰影 */
+            overflow: hidden;
+            max-width: 300px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: auto;
+            border-bottom: 1px solid #e0e0e0; /* 底部邊框 */
+            margin-bottom: 20px;
+        }
+
+        .product-card h3 {
+            color: #333333; /* 深灰色 */
+            font-size: 1.5em;
+            margin: 0 0 10px 0;
+        }
+
+        .update-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .update-form select,
+        .update-form input {
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #cccccc; /* 淺灰色邊框 */
+            border-radius: 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .update-quantity-btn {
+            display: inline-block;
+            margin: 0 auto;
+            padding: 10px 20px;
+            background-color: #FF5733; /* 明亮的橙色 */
+            color: #ffffff; /* 白色文字 */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1em;
+            text-align: center;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 小陰影增加立體感 */
+        }
+
+        .update-quantity-btn:hover {
+            background-color: #C70039; /* 深橙色 */
+            transform: translateY(-3px); /* 懸停時上移效果 */
+        }
+
+        .current-stock {
+            color: #333333; /* 深灰色 */
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
     <h1>存貨編輯</h1>
     <div class="inventory-container">
@@ -23,14 +111,12 @@
                     {% endfor %}
                 </select>
                 <input type="number" name="quantity" value="0">
-                <!-- 更新數量按鈕改為連結到 testform -->
-                <a href="{% url 'testform' product_id=product.id %}" class="update-quantity-btn">編輯數量</a>
+                <button type="submit" class="update-quantity-btn">編輯數量</button>
             </form>
             <p>當前庫存： <span class="current-stock">{{ product.inventory_set.first.stock }}</span></p>
         </div>
         {% endfor %}
     </div>
-    <!-- 添加您的 JavaScript 代碼 -->
     <script>
         // 即時庫存更新
         document.querySelectorAll('.update-form').forEach(form => {
@@ -93,4 +179,6 @@
         });
     </script>
 </body>
+
 </html>
+ 

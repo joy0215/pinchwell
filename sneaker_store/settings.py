@@ -138,3 +138,4 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'index'
 
 CART_SESSION_ID = 'cart'
+

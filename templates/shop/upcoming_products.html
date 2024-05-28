@@ -9,7 +9,9 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            background-color: #e6f7ff;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s ease-in-out;
         }
 
         .container {
@@ -22,6 +24,8 @@
             text-align: center;
             margin-bottom: 30px;
             color: #333;
+            font-family: 'Indie Flower', cursive;
+            font-size: 2.5em;
         }
 
         ul {
@@ -40,17 +44,19 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-        }
-        body {
-            background-color: #e6f7ff; /* 更淺的藍色 */
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
+        li:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
 
         img {
             width: 100%;
             height: auto;
             display: block;
-            border-radius: 8px 8px 0 0;
         }
 
         .product-info {
@@ -75,15 +81,110 @@
             font-size: 14px;
             color: #999;
         }
-        
+
+        .btn {
+            position: absolute;
+            top: 35px;
+            left: 10px;
+            border: 2px solid #ccc;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background-color: white;
+            color: #f08080;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #f08080;
+            color: white;
+        }
+
+        /* 模態視窗的樣式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 搜尋框樣式 */
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .search-bar input {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: #f08080;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>即將開始販售的商品</h1>
-        <ul>
+
+        <!-- 搜尋框 -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="搜尋商品...">
+        </div>
+
+        <ul id="productList">
             {% for product in upcoming_products %}
-                <li>
+                <li data-name="{{ product.name }}" data-description="{{ product.description }}" data-start-date="{{ product.start_date }}">
                     <img src="{{ product.image.url }}" alt="{{ product.name }}">
                     <div class="product-info">
                         <h2>{{ product.name }}</h2>
@@ -93,9 +194,86 @@
                 </li>
             {% endfor %}
         </ul>
-        <!-- 返回到產品列表的按鈕 -->
-        <a href="{% url 'index' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
-            回首頁</a>
+        <a href="{% url 'index' %}" class="btn">回首頁</a>
     </div>
+
+    <!-- 模態視窗 -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <p id="modalDescription"></p>
+            <p class="start-date" id="modalStartDate"></p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('li');
+            const modal = document.getElementById('myModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalDescription = document.getElementById('modalDescription');
+            const modalStartDate = document.getElementById('modalStartDate');
+            const span = document.getElementsByClassName('close')[0];
+            const searchInput = document.getElementById('searchInput');
+            const productList = document.getElementById('productList');
+
+            // 卡片點擊事件
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    modalTitle.textContent = this.getAttribute('data-name');
+                    modalDescription.textContent = this.getAttribute('data-description');
+                    modalStartDate.textContent = '開始販售日期: ' + this.getAttribute('data-start-date');
+                    modal.style.display = 'block';
+                });
+            });
+
+            // 關閉模態視窗
+            span.onclick = function() {
+                modal.style.display = 'none';
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+
+            // 搜尋功能
+            searchInput.addEventListener('keyup', function() {
+                const filter = searchInput.value.toLowerCase();
+                const cards = productList.getElementsByTagName('li');
+
+                Array.from(cards).forEach(card => {
+                    const name = card.getAttribute('data-name').toLowerCase();
+                    if (name.includes(filter)) {
+                        card.style.display = '';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+
+            // 淡入效果
+            const options = {
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, options);
+
+            cards.forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(50px)';
+                observer.observe(card);
+            });
+        });
+    </script>
 </body>
 </html>
