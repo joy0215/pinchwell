@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{% static 'css/product_detail.css' %}">
     <title>Product Detail</title>
 </head>
+<style>
+    #cart-button-img {
+    width: 80px;
+    /* 可根據需要調整高度 */
+    /* height: auto; */
+}
+    </style>>
 <body>
 
 <div class="navbar">
@@ -20,9 +27,11 @@
     </div>
     <div class="product-detail-info">
         <h1>{{ product.name }}</h1>
-        <p>Description: {{ product.description }}</p>
-        <p>Price: ${{ product.price }}</p>
-        <p>Brand: {{ product.brand }}</p>
+        <p>產品介紹： {{ product.description }}</p>
+        <p> </p>
+        <p>產品價格： ${{ product.price }}</p>
+        <p> </p>
+        <p>產品品牌： {{ product.brand }}</p>
         
         <p>Size:</p>
         <form id="cart-form" action="{% url 'add_to_cart' product.pk %}" method="post">
@@ -32,7 +41,8 @@
                     <option value="{{ size_choice.0 }}">{{ size_choice.1 }}</option>
                 {% endfor %}
             </select>
-            <input type="submit" value="加入購物車">
+            <input type="image" id="cart-button-img" src="{% static 'images/add_to_cart_button.png' %}" alt="加入購物車">
+
         </form>
 
         <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
@@ -43,12 +53,12 @@
 
 <script>
 document.getElementById('cart-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // 阻止默认表单提交行为
+    event.preventDefault(); // 阻止默认表單提交行為
 
-    // 获取表单数据
+    // 獲取表單數據
     var formData = new FormData(this);
 
-    // 发送AJAX请求
+    // 發送AJAX請求
     fetch(this.action, {
         method: 'POST',
         body: formData,
@@ -58,15 +68,15 @@ document.getElementById('cart-form').addEventListener('submit', function(event) 
     })
     .then(response => {
         if (response.ok) {
-            // 如果请求成功，重定向到产品列表页面
+            // 如果請求成功，重定向到產品列表頁面
             window.location.href = "{% url 'product_list' %}";
         } else {
-            // 处理错误情况
+            // 處理錯誤情況
             alert('Failed to add to cart. Please try again.');
         }
     })
     .catch(error => {
-        // 处理网络错误
+        // 處理網絡錯誤
         alert('Network error. Please try again.');
     });
 });

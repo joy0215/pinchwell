@@ -32,7 +32,7 @@
     text-align: center;
     margin: 20px auto;
     width: 80%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(168, 7, 7, 0.1);
     max-width: 600px;
 }
 
@@ -52,7 +52,7 @@
     text-align: center;
     background-color: #fff;
     width: 200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(165, 164, 164, 0.1);
     transition: transform 0.2s;
 }
 
@@ -254,3 +254,77 @@ margin-top: 20px;
 margin: 20px;
 background-color: #ffffff; /* 白 */
 border: 1px solid #ffc0cb;}
+.advertisement-banner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 新增的样式规则 */
+.card-content {
+    transition: color 0.3s ease;
+}
+
+.card:hover .card-content {
+    color: rgb(245, 163, 248); /* 鼠标悬停时修改文字颜色为蓝色 */
+    
+}
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px) rotate(-5deg); }
+    50% { transform: translateX(5px) rotate(5deg); }
+    75% { transform: translateX(-5px) rotate(-5deg); }
+    100% { transform: translateX(0); }
+}
+
+
+.card:hover .card-content h2 {
+    animation: shake 0.5s ease infinite;
+}
+.advertisement-banner img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+.long-banner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px; /* Adjust the height as needed */
+    background-color: #533d28;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 999; /* Ensure it's above other content */
+}
+
+.long-banner h2 {
+    font-size: 24px; /* Adjust the font size as needed */
+    margin-bottom: 5px;
+}
+
+.long-banner p {
+    font-size: 14px; /* Adjust the font size as needed */
+    margin-bottom: 10px;
+}
+
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: white;
+}
+.header-container .logo img {
+    width: 50px;
+    height: auto;
+    margin-right: 10px;
+}
+.header-right {
+    display: flex;
+    align-items: center;
+}
