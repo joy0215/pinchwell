@@ -37,10 +37,17 @@
 
             <div style="position: relative;">
                 <div style="position: absolute; top: 20px; right: 20px;">
-                    <a href="login">
-                        <img src="{% static 'images/images.png' %}" alt="Link Image" style="width: 60px; height: auto;" title="Login">
-                    </a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'edit' %}">
+                            <img src="{% static 'images/logout.png' %}" alt="Logged In" style="width: 60px; height: auto;" title="Logged In">
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}">
+                            <img src="{% static 'images/images.png' %}" alt="Link Image" style="width: 60px; height: auto;" title="Login">
+                        </a>
+                    {% endif %}
                 </div>
+                
                 <div style="text-align: center; margin-top: 20px;">
                     <div class="title-container">
                         掐好鞋店 Pinchwell Sneaker Store

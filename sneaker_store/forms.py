@@ -1,6 +1,31 @@
 from django import forms
-from products.models import UserProfile ,Employee ,Inventory ,SignupProfile
+from products.models import UserProfile ,Employee ,Inventory ,SignupProfile, Member
 from django.contrib.auth.forms import User ,UserCreationForm
+import datetime
+
+
+class SignupForm(forms.ModelForm):
+    member_id = forms.CharField(label='會員編號', required=False, widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+
+    class Meta:
+        model = Member
+        fields = ['member_id', 'username', 'password', 'email', 'phone_number', 'birthdate', 'gender', 'bio']
+        widgets = {
+            'password': forms.PasswordInput(),
+            'birthdate': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+        today = datetime.date.today()
+        time_now = datetime.datetime.now().strftime('%H%M%S')
+        date_str = today.strftime('%Y%m%d')
+        self.fields['member_id'].initial = f'VIP{date_str}{time_now}'
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(label='Username')
+    password = forms.CharField(label='Password', widget=forms.PasswordInput)
 
 
 class UserProfileForm(forms.ModelForm):
@@ -71,3 +96,4 @@ class SignupProfileForm(forms.ModelForm):
     class Meta:
         model = SignupProfile
         fields = ('location', 'birthdate', 'bio','gender')
+

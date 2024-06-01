@@ -1,113 +1,33 @@
+<!-- member_edit.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>會員資料編輯</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #fce6e8; /* 淺粉紅 */
-            margin: 0;
-            padding: 0;
-        }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        div {
-            background-color: #c7eaf4; /* 淺藍 */
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 600px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        form {
-            margin-top: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-            color: #555;
-        }
-        input[type="text"],
-        input[type="email"],
-        input[type="tel"],
-        input[type="password"],
-        input[type="file"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button[type="submit"],
-        a.button {
-            background-color: #48c9b0; /* 淺綠 */
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
-        }
-        button[type="submit"]:hover,
-        a.button:hover {
-            background-color: #16a085; /* 深綠 */
-        }
-    </style>
+    <title>Edit Member Profile</title>
+    <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>會員資料編輯</h1>
-    <div>
-        <h2>個人資料</h2>
-        <div id="currentProfile">
-            <p>目前姓名：joy</p>
-            <p>目前電子郵件：joy946@gmail.com</p>
-            <p>目前電話號碼：123456789</p>
-        </div>
-        <form>
-            <label for="name">姓名：</label>
-            <input type="text" id="name" name="name"><br><br>
-            <label for="email">電子郵件：</label>
-            <input type="email" id="email" name="email"><br><br>
-            <label for="phone">電話號碼：</label>
-            <input type="tel" id="phone" name="phone"><br><br>
-            <button type="submit">儲存更改</button>
-        </form>
-    </div>
 
-    <div>
-        <h2>密碼更改</h2>
-        <div id="currentPassword">
-            <p>目前密碼：********</p>
-        </div>
-        <form>
-            <label for="newPassword">新密碼：</label>
-            <input type="password" id="newPassword" name="newPassword"><br><br>
-            <label for="confirmPassword">確認新密碼：</label>
-            <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
-            <button type="submit">儲存更改</button>
-        </form>
-    </div>
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Member Profile</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+    </form>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-3">Logout</button>
+    </form>
+</div>
 
-    <div>
-        <h2>頭像更改</h2>
-        <div id="currentAvatar">
-            <p>目前頭像：<img src="current_avatar.jpg" alt="Current Avatar"></p>
-        </div>
-        <form>
-            <label for="avatar">上傳新頭像：</label>
-            <input type="file" id="avatar" name="avatar" accept="image/*"><br><br>
-            <button type="submit">儲存更改</button>
-        </form>
-    </div>
+<!-- Include Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- 回首頁的按鈕 -->
-    <a href="#" class="button">回首頁</a>
 </body>
 </html>

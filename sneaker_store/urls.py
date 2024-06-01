@@ -7,7 +7,7 @@ from django.contrib import admin
 from products import views
 from django.conf import settings
 from django.conf.urls.static import static
-from products.views import ProductListView
+from products.views import ProductListView,MemberUpdateView
 
 urlpatterns = [
     path('', views.index, name='index'), 
@@ -38,5 +38,7 @@ urlpatterns = [
     path('add_to_cart/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
     path('update_cart/<int:product_id>/', views.update_cart, name='update_cart'),
     path('remove_from_cart/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('edit/', MemberUpdateView.as_view(), name='edit'),
+    path('logout/', views.logout_view, name='logout'),
     ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

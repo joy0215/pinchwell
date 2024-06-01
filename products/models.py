@@ -5,8 +5,86 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.hashers import make_password, check_password
-
+from datetime import datetime
 import uuid
+
+
+class Pincher(models.Model):
+    employee_id = models.CharField(max_length=5, unique=True, primary_key=True)
+    full_name = models.CharField(max_length=200)
+    position = models.CharField(max_length=100)
+    year_joined = models.IntegerField()
+    phone_number = models.CharField(max_length=15, unique=True)
+    birthdate = models.DateField()
+    password = models.CharField(max_length=128)
+
+    def save(self, *args, **kwargs):
+        if not self.employee_id:
+            last_employee = Pincher.objects.order_by('-employee_id').first()
+            if last_employee:
+                last_id = int(last_employee.employee_id[2:])
+                new_id = f"PW{last_id + 1:03d}"
+            else:
+                new_id = "PW001"
+            self.employee_id = new_id
+        self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
+    def check_password(self, password):
+        return check_password(password, self.password)
+
+    def __str__(self):
+        return self.full_name
+
+class Member(models.Model):
+    member_id = models.CharField(max_length=17, unique=True, primary_key=True)
+    username = models.CharField(max_length=150, unique=True)
+    password = models.CharField(max_length=128)
+    email = models.EmailField(unique=True)
+    phone_number = models.CharField(max_length=15, unique=True)
+    birthdate = models.DateField()
+    gender = models.CharField(max_length=1, choices=(
+        ('M', '男性'),
+        ('F', '女性'),
+        ('O', '其他性別'),
+    ))
+    bio = models.TextField(max_length=500, blank=True)
+
+    def save(self, *args, **kwargs):
+        if not self.member_id:
+            date_part = datetime.now().strftime("%Y%m%d")
+            last_member = Member.objects.filter(member_id__startswith=f"VIP{date_part}").order_by('-member_id').first()
+            if last_member:
+                last_number = int(last_member.member_id[7:])
+                new_number = last_number + 1
+            else:
+                new_number = 1
+            self.member_id = f"VIP{date_part}{new_number:04d}"
+        self.password = make_password(self.password)
+        super().save(*args, **kwargs)
+
+    def check_password(self, password):
+        return check_password(password, self.password)
+
+    def __str__(self):
+        return self.username
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Product(models.Model):
     SIZE_CHOICES = (
         ('25.5cm', 'US 7.5'),

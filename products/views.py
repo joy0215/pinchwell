@@ -1,19 +1,35 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product, Pinchwell,Order ,OrderItem ,UpcomingProduct ,Employee ,UserProfile,EmployeeProfile ,Inventory
+from .models import Product, Member ,UpcomingProduct ,Employee ,EmployeeProfile ,Inventory
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login, authenticate
-from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,PasswordForm, EditForm ,InventoryUpdateForm
+from django.contrib.auth import login, authenticate , logout
+from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Sum
 from .cart import Cart
-from django.http import HttpResponseBadRequest
+from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from .models import Member
+
+
+class MemberUpdateView(LoginRequiredMixin, UpdateView):
+    model = Member
+    fields = ['username', 'email', 'phone_number', 'birthdate', 'gender', 'bio']
+    template_name = 'member_edit.html'
+    success_url = reverse_lazy('index')  # 編輯成功後重定向到主頁
+
+    def get_object(self, queryset=None):
+        return self.request.user  # 返回當前登入的用戶
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')  # 登出後重定向到主頁或其他頁面
 
 
 class CustomAuthenticationForm(AuthenticationForm):
@@ -30,75 +46,51 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from .models import Member  # 假設你的使用者模型是 Member
+
 def login_page(request):
-    form = AuthenticationForm()  # 先定義 form 變數
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        logger.info(f'Trying to log in with username: {username}')
-
-        # 先檢查是否為 Pinchwell 使用者
-        try:
-            pinchwell_user = Pinchwell.objects.get(username=username)
-            if pinchwell_user.check_password(password):  # 假設 Pinchwell 有 check_password 方法
-                logger.info('Pinchwell user authenticated')
-                # 如果密碼正確，則導向 dashboard
-                return redirect('employee_dashboard')
-            else:
-                logger.info('Pinchwell user authentication failed')
-        except Pinchwell.DoesNotExist:
-            logger.info('Not a Pinchwell user')
-
-        # 再檢查是否為一般使用者
-        form = AuthenticationForm(request, request.POST)
-        if form.is_valid():
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                logger.info('General user authenticated')
-                # 登錄用戶
-                login(request, user)
-                return redirect('index')
-            else:
-                logger.info('General user authentication failed')
-                messages.error(request, '無效的用戶名或密碼。')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            messages.success(request, '登入成功！')
+            return redirect('index')  # 重定向到主頁
         else:
-            logger.info('Form validation failed')
             messages.error(request, '無效的用戶名或密碼。')
 
-    return render(request, 'login.html', {'form': form})
-import logging
+    return render(request, 'login.html')
 
-logger = logging.getLogger(__name__)
 from django.shortcuts import render, redirect
+from sneaker_store.forms import SignupForm
 
+from django.contrib.auth.hashers import make_password
 
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from sneaker_store.forms import SignupUserForm, SignupProfileForm
 def signup(request):
     if request.method == 'POST':
-        user_form = SignupUserForm(request.POST)
-        profile_form = SignupProfileForm(request.POST)
+        form = SignupForm(request.POST)
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)  # 加密密碼
-            user.save()
+        if form.is_valid():
+            member = form.save(commit=False)
+            password = form.cleaned_data.get('password')  # 獲取密碼
+            member.password = make_password(password)  # 加密密碼
+            member.save()
 
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.save()
-
-            return redirect('login')  # 或者你想要導向的頁面
+            return redirect('index')  # 導向到登錄頁面
         else:
-            print(user_form.errors, profile_form.errors)  # 印出錯誤訊息
+            print(form.errors)  # 印出錯誤訊息
     else:
-        user_form = SignupUserForm()
-        profile_form = SignupProfileForm()
+        form = SignupForm()
 
-    return render(request, 'signup.html', {'user_form': user_form, 'profile_form': profile_form})
+    return render(request, 'signup.html', {'form': form})
+
+
+
 # 商品列表視圖
 class ProductListView(TemplateView):
     template_name = 'shop/product_list.html'

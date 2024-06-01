@@ -120,13 +120,19 @@
 
             <div class="container">
                 <h1>Login</h1>
-                <form method="post">
+                <form method="post" action="{% url 'login' %}">
                     {% csrf_token %}
-                    {{ form.non_field_errors }}
-                    <input type="text" name="username" placeholder="用戶名或電子郵件" required>
-                    <input type="password" name="password" placeholder="密碼" required>
-                    <button type="submit" class="pink-btn">登入</button>
+                    <div>
+                        <label for="username">用戶名：</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div>
+                        <label for="password">密碼：</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <button type="submit">登入</button>
                 </form>
+                
 
                 <p style="text-align: center; margin-top: 20px;">還沒有帳號？ <a href="{% url 'signup' %}" class="link">註冊</a></p>
                 <div class="home-link">
