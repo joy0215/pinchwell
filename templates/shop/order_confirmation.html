@@ -1,132 +1,292 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>確認訂單</title>
+    <title>訂單確認</title>
+    <link rel="stylesheet" href="{% static 'css/confirmation.css' %}">
     <style>
-        /* CSS部分 */
         body {
             font-family: Arial, sans-serif;
-            background-color: #fce4ec; /* 淺粉紅色背景 */
+            background-color: #f7f7f7;
             margin: 0;
             padding: 0;
         }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h2 {
+
+        .navbar {
+            background-color: #333;
+            color: white;
             text-align: center;
+            padding: 10px 0;
+            font-size: 24px;
+        }
+
+        .confirmation-container {
+            margin: 50px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%; 
+            width: 90%; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
             margin-bottom: 20px;
-            color: #007bff; /* 設置標題顏色 */
+            color: #333;
         }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .form-group input[type="text"] {
+
+        form {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box; /* 調整輸入框大小計算方式 */
-        }
-        .cart-items {
             margin-bottom: 20px;
         }
-        .cart-item {
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="email"] {
+            width: calc(100% - 20px);
             padding: 10px;
-            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
         }
-        .cart-item p {
-            margin: 5px 0;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            vertical-align: middle;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+            margin-left: 10px; /* 調整按鈕位置 */
+        }
+
+        .btn:hover {
+            background-color: #555;
+        }
+
         .total-price {
             text-align: right;
-            font-weight: bold;
-            font-size: 18px;
+            margin-top: 20px;
+            font-size: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .customer-details {
+            width: 100%;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
             margin-bottom: 20px;
         }
-        .submit-button {
-            text-align: center;
+
+        .customer-details h2 {
+            margin-top: 0;
         }
-        .submit-button button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
-            font-size: 18px;
+
+        .customer-details p {
+            margin: 5px 0;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s;
-            display: inline-block;
         }
-        .submit-button button:hover {
-            background-color: #0056b3;
-        }
-        .back-to-cart {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #007bff;
-            color: #fff;
+
+        .close:hover,
+        .close:focus {
+            color: black;
             text-decoration: none;
-            transition: background-color 0.3s;
-        }
-        .back-to-cart:hover {
-            background-color: #0056b3;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <a href="{% url 'cart' %}" class="back-to-cart">回去購物車</a>
-    <div class="container">
-        <h2>確認訂單</h2>
-        <form action="{% url 'order_confirmation' %}" method="post">
-            {% csrf_token %}
-            <div class="form-group">
+
+    <div class="confirmation-container">
+        <h2>訂單確認</h2>
+        <form id="customer-form">
+            <div class="customer-details">
+                <h2>您的訂單</h2>
                 <label for="name">姓名:</label>
                 <input type="text" id="name" name="name" required>
-            </div>
-            <div class="form-group">
+    
+                <label for="email">郵件地址:</label>
+                <input type="email" id="email" name="email" required>
+    
+                <label for="address">地址:</label>
+                <input type="text" id="address" name="address" required>
+    
                 <label for="phone">電話:</label>
                 <input type="text" id="phone" name="phone" required>
             </div>
-            <div class="form-group">
-                <label for="address">住址:</label>
-                <input type="text" id="address" name="address" required>
-            </div>
-            <div class="form-group">
-                <label for="email">電子郵件:</label>
-                <input type="text" id="email" name="email" required>
-            </div>
-            <div class="cart-items">
-                <h3>訂單內容</h3>
-                {% for item in cart_items %}
-                    <div class="cart-item">
-                        <p>{{ item.product.name }} - ${{ item.product.price }} x {{ item.quantity }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-            <div class="total-price">
-                總金額: ${{ total_price }}
-            </div>
-            <div class="submit-button">
-                <button type="submit">確認訂單</button>
-            </div>
         </form>
+    
+        <table>
+            <thead>
+                <tr>
+                    <th>產品</th>
+                    <th>尺寸</th>
+                    <th>價格</th>
+                    <th>數量</th>
+                    <th>總計</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Add order items here -->
+                <tr>
+                    <td>產品名稱</td>
+                    <td>尺寸</td>
+                    <td>$10.00</td>
+                    <td>3</td>
+                    <td>$30.00</td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="total-price">總計: $35.00</p>
+        <button id="confirmOrderMainBtn" class="btn" style="float: right;">確認訂單</button>
     </div>
+
+    <!-- 第一個模態窗口 (二次確認) -->
+    <div id="secondConfirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>請確認您的訂單</h2>
+            <p>您是否確定要提交此訂單？</p>
+            <button id="confirmOrderBtn" class="btn">確認</button>
+            <button id="cancelOrderBtn" class="btn">取消</button>
+        </div>
+    </div>
+
+    <!-- 第二個模態窗口 (成功信息) -->
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>訂單確認</h2>
+            <p>您的訂單已成功下訂。</p>
+            <button class="btn" id="thankYouBtn">返回主畫面</button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const secondConfirmModal = document.getElementById("secondConfirmModal");
+        const successModal = document.getElementById("successModal");
+        const confirmOrderMainBtn = document.getElementById("confirmOrderMainBtn");
+        const confirmOrderBtn = document.getElementById("confirmOrderBtn");
+        const cancelOrderBtn = document.getElementById("cancelOrderBtn");
+        const thankYouBtn = document.getElementById("thankYouBtn");
+        const closeBtns = document.querySelectorAll(".close");
+
+        confirmOrderMainBtn.addEventListener("click", function(event) {
+            event.preventDefault();  // 防止表單提交
+            showModal(secondConfirmModal);
+        });
+
+        confirmOrderBtn.addEventListener("click", function() {
+            hideModal(secondConfirmModal);
+            showModal(successModal);
+        });
+
+        cancelOrderBtn.addEventListener("click", function() {
+            hideModal(secondConfirmModal);
+        });
+
+        thankYouBtn.addEventListener("click", function() {
+            hideModal(successModal);
+            // 在這裡添加返回主畫面的邏輯
+            window.location.href = '/';  // 假設主畫面的 URL 是 '/'
+        });
+
+        closeBtns.forEach(function(btn) {
+            btn.addEventListener("click", function() {
+                const modal = this.closest(".modal");
+                hideModal(modal);
+            });
+        });
+
+        function showModal(modal) {
+            modal.style.display = "block";
+        }
+
+        function hideModal(modal) {
+            modal.style.display = "none";
+        }
+    });
+    </script>
+    
 </body>
 </html>
