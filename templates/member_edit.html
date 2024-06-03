@@ -55,6 +55,7 @@
 <div class="container mt-5">
     <h2 class="mb-4">編輯會員資料</h2>
     <form id="edit-member-form" method="post">
+        {% csrf_token %}
         <div class="form-group">
             <label for="name">姓名</label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -83,6 +84,7 @@
         <button type="submit" class="btn btn-primary btn-block">儲存變更</button>
     </form>
     <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
         <button type="submit" class="btn btn-danger btn-block mt-3">登出</button>
     </form>
 </div>

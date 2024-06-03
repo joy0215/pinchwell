@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Member ,UpcomingProduct ,Employee ,EmployeeProfile ,Inventory
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView ,View 
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate , logout
@@ -248,6 +248,15 @@ def index(request):
     user = request.user if request.user.is_authenticated else None
     return render(request, 'index.html', {'user': user})
 
+@login_required
+def edit(request):
+    return render(request, 'edit.html')
+
+class OrdersView(View):
+    def get(self, request):
+            # 处理获取订单的逻辑
+            return render(request, 'orders.html')  # 渲染订单页面模板
+
 from django.contrib.auth.forms import UserCreationForm
 
 # 行銷頁面視圖
@@ -369,3 +378,6 @@ def confirmation_view(request):
     else:
         # 如果是GET請求，則渲染checkout.html模板
         return render(request, 'order_confirmation.html')
+def orders(request):
+
+    return render(request, 'pinchwell/orders.html')

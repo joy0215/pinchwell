@@ -86,15 +86,27 @@
                 </div>
             </div>
 
+            {% if user.is_authenticated %}
             <div class="card">
-                <a href="login">
-                    <img src="{% static 'images/registered.png' %}" alt="Image 3" title="前往登入">
+                <a href="{% url 'orders' %}">
+                    <img src="{% static 'images/product6.png' %}" alt="Image 6" title="查看我的訂單">
                 </a>
                 <div class="card-content">
-                    <h2>登入成為會員</h2>
-                    <p>立即登入成為我們的會員</p>
+                    <h2>查看我的訂單</h2>
+                    <p>查看您所有的訂單</p>
                 </div>
             </div>
+            {% else %}
+            <div class="card">
+                <a href="signup">
+                    <img src="{% static 'images/registered.png' %}" alt="Image 3" title="前往註冊">
+                </a>
+                <div class="card-content">
+                    <h2>加入會員</h2>
+                    <p>立即註冊成為我們的會員</p>
+                </div>
+            </div>
+            {% endif %}
 
             <div class="card">
                 <a href="cart">
@@ -168,57 +180,42 @@
                 <p>NO. 321, Zong Zheng District, Taipei, Taiwan R.O.C.</p>
             </div>
             <div style="margin-top: 20px;">
-                <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Icon 1" title="Instagram" style="width: 24px; height: 24px;"></a>
-                <a href="https://www.facebook.com/"><img src="{% static 'images/fb.png' %}" alt="Icon 2" title="Facebook" style="width: 24px; height: 24px;"></a>
-                <a href="https://www.youtube.com/"><img src="{% static 'images/yt.png' %}" alt="Icon 3" title="YouTube" style="width: 24px; height: 24px;"></a>
+                <a href="https://www.instagram.com/joy_0215_wu/"><img src="{% static 'images/ig.png' %}" alt="Instagram" style="width: 40px; height: auto; margin: 0 10px;"></a>
+                <a href="https://www.youtube.com/@NEQLI"><img src="{% static 'images/ytb.png' %}" alt="YouTube" style="width: 40px; height: auto; margin: 0 10px;"></a>
+            </div>
+            <div style="background-color: #86634b; padding: 20px; border-radius: 5px; margin-top: 20px;">
+                <h2 style="font-size: 20px; margin-bottom: 10px;">營業時間</h2>
+                <p>週一至週五: 10:00 AM - 8:00 PM</p>
+                <p>週六及週日: 12:00 PM - 6:00 PM</p>
             </div>
         </div>
+        <div style="background-color: #86634b; padding: 10px; border-radius: 5px; margin-top: 20px; text-align: center;">
+            <p>&copy; 2023 掐好鞋店. All rights reserved.</p>
+        </div>
     </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const carouselItems = document.querySelectorAll('.product-carousel a');
-            let currentIndex = 0;
+        var currentSlide = 0;
+        var slides = document.getElementsByClassName("ad-slide");
 
-            function showNext() {
-                carouselItems[currentIndex].style.display = 'none';
-                currentIndex = (currentIndex + 1) % carouselItems.length;
-                carouselItems[currentIndex].style.display = 'block';
+        function showSlide(slideIndex) {
+            for (var i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
             }
+            slides[slideIndex].style.display = "block";
+        }
 
-            for (let i = 1; i < carouselItems.length; i++) {
-                carouselItems[i].style.display = 'none';
+        function changeSlide(n) {
+            currentSlide += n;
+            if (currentSlide >= slides.length) {
+                currentSlide = 0;
+            } else if (currentSlide < 0) {
+                currentSlide = slides.length - 1;
             }
+            showSlide(currentSlide);
+        }
 
-            setInterval(showNext, 1500);
-        });
-        document.addEventListener('DOMContentLoaded', function () {
-            const adSlides = document.querySelectorAll('.ad-slide');
-            let currentAdIndex = 0;
-
-            function showAdSlide(index) {
-                adSlides.forEach((slide, i) => {
-                    slide.classList.remove('active');
-                    if (i === index) {
-                        slide.classList.add('active');
-                    }
-                });
-
-                const adSlidesContainer = document.querySelector('.ad-slides');
-                const slideWidth = adSlides[0].offsetWidth;
-                adSlidesContainer.style.transform = `translateX(${-index * slideWidth}px)`;
-            }
-
-            function changeSlide(direction) {
-                currentAdIndex = (currentAdIndex + direction + adSlides.length) % adSlides.length;
-                showAdSlide(currentAdIndex);
-            }
-
-            showAdSlide(currentAdIndex);
-            setInterval(() => changeSlide(1), 3000); // 每3秒切換一次
-
-            document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
-            document.querySelector('.next').addEventListener('click', () => changeSlide(1));
-        });
+        showSlide(currentSlide);
     </script>
 </body>
 </html>
