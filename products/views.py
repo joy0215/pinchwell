@@ -255,7 +255,7 @@ def edit(request):
 class OrdersView(View):
     def get(self, request):
             # 处理获取订单的逻辑
-            return render(request, 'orders.html')  # 渲染订单页面模板
+            return render(request, 'shop/cart.html')  # 渲染订单页面模板
 
 from django.contrib.auth.forms import UserCreationForm
 

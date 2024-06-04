@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>訂單目錄</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .orders-list {
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: -30px;
+            border-radius: 8px;
+        }
+        .orders-list h2 {
+            margin-top: 0;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .orders-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .orders-list li {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .orders-list li:last-child {
+            border-bottom: none;
+        }
+        .orders-list a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+        }
+        .orders-list a:hover {
+            background-color: #f1f1f1;
+        }
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+        }
+        .order-info span {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>訂單目錄</h1>
+    </div>
+    <div class="orders-list">
+        <h2>我的訂單</h2>
+        <ul>
+            <li>
+                <a href="order_detail.html?order_id=12345">
+                    <div class="order-info">
+                        <span>訂單號: #12345</span>
+                        <span>日期: 2024-06-01</span>
+                        <span>總金額: $2500</span>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="order_detail.html?order_id=12346">
+                    <div class="order-info">
+                        <span>訂單號: #12346</span>
+                        <span>日期: 2024-05-25</span>
+                        <span>總金額: $1800</span>
+                    </div>
+                </a>
+            </li>
+            <!-- 更多訂單列表 -->
+        </ul>
+    </div>
+</div>
+
+</body>
+</html>
