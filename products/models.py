@@ -69,23 +69,16 @@ class Member(models.Model):
     def __str__(self):
         return self.username
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# 產品模型
 class Product(models.Model):
+    product_code = models.CharField(max_length=50, unique=False, verbose_name='商品編號',default="PRO000")
+    name = models.CharField(max_length=255, verbose_name='商品名稱')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='商品價格')
+    description = models.TextField(verbose_name='商品介紹')
+    brand = models.CharField(max_length=255, verbose_name='品牌')
+    photo = models.ImageField(upload_to='product_photos/', verbose_name='照片')
+
+    # 尺寸選項
     SIZE_CHOICES = (
         ('25.5cm', 'US 7.5'),
         ('26cm', 'US 8'),
@@ -98,55 +91,61 @@ class Product(models.Model):
         ('29.5cm', 'US 11.5'),
         ('30cm', 'US 12'),
     )
-
-    BRAND_CHOICES = (
-        ('Nike', 'Nike'),
-        ('Adidas', 'Adidas'),
-        ('Jordan', 'Jordan'),
-        ('New Balance', 'New Balance'),
-    )
-
-    product_number = models.CharField(max_length=50, unique=True, null=True, blank=True)
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    brand = models.CharField(max_length=50, choices=BRAND_CHOICES, default='YesMYdee')
-    image = models.ImageField(upload_to='product_images/')
-    size = models.CharField(max_length=10, choices=SIZE_CHOICES)
-
-    def save(self, *args, **kwargs):
-        if not self.product_number:
-            self.product_number = self.generate_product_number()
-        super().save(*args, **kwargs)
-
-    def generate_product_number(self):
-        return 'PRD' + str(uuid.uuid4().hex)[:8]  # 使用 uuid 生成隨機數，然後加上 'PRD' 前綴
+    size = models.CharField(max_length=10, choices=SIZE_CHOICES, verbose_name='尺寸')
 
     def __str__(self):
         return self.name
 
+# 庫存模型
 class Inventory(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    size = models.CharField(max_length=10, choices=Product.SIZE_CHOICES)
-    stock = models.PositiveIntegerField(default=0)
-    min_order_quantity = models.PositiveIntegerField(default=1)  # 最小訂購量
-    max_capacity = models.PositiveIntegerField(default=1000)  # 最大容量
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='inventories', verbose_name='商品編號')
+    size = models.CharField(max_length=10, choices=Product.SIZE_CHOICES, verbose_name='尺寸')
+    quantity = models.PositiveIntegerField(default= 0 ,verbose_name='庫存量')
 
     class Meta:
         unique_together = ('product', 'size')
+        verbose_name = '庫存'
+        verbose_name_plural = '庫存'
 
-@receiver(post_save, sender=Product)
-def create_or_update_inventory(sender, instance, created, **kwargs):
-    sizes = instance.SIZE_CHOICES
-    for size in sizes:
-        if created:
-            Inventory.objects.create(product=instance, size=size[0], stock=0)  # 如果是新建 Product 記錄，則創建相應的 Inventory 記錄，並初始化庫存量為0
-        else:
-            try:
-                inventory = Inventory.objects.get(product=instance, size=size[0])
-                inventory.save()  # 如果是更新 Product 記錄，則同步更新相應的 Inventory 記錄
-            except Inventory.DoesNotExist:
-                pass  # 如果相應的庫存記錄不存在，則忽略這個尺寸的庫存
+    def __str__(self):
+        return f'{self.product.name} - {self.size}'
+
+# 購物車模型
+class Cart(models.Model):
+    order_code = models.CharField(max_length=50, unique=True, verbose_name='訂單編號')
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='carts', verbose_name='顧客編號')
+    inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='carts', verbose_name='產品編號')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='價格')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='總價')
+    quantity = models.PositiveIntegerField(verbose_name='數量')
+    shipping_address = models.CharField(max_length=255, verbose_name='運送地址')
+
+    def __str__(self):
+        return self.order_code
+
+# 回饋模型
+class Feedback(models.Model):
+    feedback_code = models.CharField(max_length=50, unique=True, verbose_name='回饋編號')
+    member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='feedbacks', verbose_name='客戶編號')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='feedbacks', verbose_name='商品名稱')
+    comment = models.TextField(verbose_name='留言')
+    product_satisfaction = models.PositiveIntegerField(verbose_name='商品滿意度', default=5)
+    brand_satisfaction = models.PositiveIntegerField(verbose_name='品牌滿意度', default=5)
+    delivery_satisfaction = models.PositiveIntegerField(verbose_name='宅配滿意度', default=5)
+
+
+    def __str__(self):
+        return self.feedback_code
+
+class UpcomingProduct(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    image = models.ImageField(upload_to='upcoming_products/')
+    start_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
 
 
 class UserProfile(models.Model):
@@ -163,17 +162,6 @@ class EmailAddress(models.Model):
 
     def __str__(self):
         return self.email
-    
-class UpcomingProduct(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField()
-    image = models.ImageField(upload_to='upcoming_products/')
-    start_date = models.DateField()
-
-    def __str__(self):
-        return self.name
-
-from django.db import models
 
 class Employee(models.Model):
     profile_picture = models.ImageField(upload_to='employee_profile_pictures/', null=True, blank=True)
