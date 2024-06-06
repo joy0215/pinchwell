@@ -139,39 +139,33 @@
             <a href="{% url 'product_list' %}" class="btn">View Our Product List</a>
         </section>
         <div class="product-carousel">
-            <div class="marquee">
-                <div class="carousel-slides">
-                    <a href="{% url 'product_detail' 67 %}">
-                        <img src="{% static 'images/8.webp' %}" alt="Product 67" >
-                    </a>
-
-                    <a href="{% url 'product_detail' 60 %}">
-                        <img src="{% static 'images/wmnsbl.webp' %}" alt="Product 60" title=" ">
-                    </a>
-
-                    <a href="{% url 'product_detail' 67 %}">
-                        <img src="{% static 'images/8.webp' %}" alt="Product 67" title=" ">
-                    </a>
-
-                    <a href="{% url 'product_detail' 67 %}">
-                        <img src="{% static 'images/8.webp' %}" alt="Product 67" title=" ">
-                    </a>
-                </div>
+            <div class="carousel-slides">
+              <a href="{% url 'product_detail' 67 %}">
+                <img src="{% static 'images/8.webp' %}" alt="Product 67">
+              </a>
+              <a href="{% url 'product_detail' 60 %}">
+                <img src="{% static 'images/wmnsbl.webp' %}" alt="Product 60">
+              </a>
+              <a href="{% url 'product_detail' 68 %}">
+                <img src="{% static 'images/9..webp' %}" alt="Product 68">
+              </a>
+              <a href="{% url 'product_detail' 63 %}">
+                <img src="{% static 'images/kobe4gd.webp' %}" alt="Product 63">
+              </a>
             </div>
-        </div>
-               
-        <div class="advertisement-banner">
-            <div class="marquee">
-                <div class="marquee-content">
-                    <img src="{% static 'images/ad1.png' %}" alt="Ad 1">
-                    <img src="{% static 'images/ad2.png' %}" alt="Ad 2">
-                    <img src="{% static 'images/ad3.jpg' %}" alt="Ad 3">
-                    <img src="{% static 'images/ad4.jpg' %}" alt="Ad 4">
-                </div>
+          </div>
+          
+          <div class="advertisement-banner">
+            <div class="ad-slides">
+              <img src="{% static 'images/ad1.png' %}" alt="Ad 1" class="ad-slide active">
+              <img src="{% static 'images/ad5.png' %}" alt="Ad 2" class="ad-slide">
+              <img src="{% static 'images/ad6.png' %}" alt="Ad 3" class="ad-slide">
+              <img src="{% static 'images/ad7.png' %}" alt="Ad 4" class="ad-slide">
             </div>
-        </div>        
-        
-    </main>
+            <button class="prev">&#10094;</button>
+            <button class="next">&#10095;</button>
+          </div>
+        </main>
 
     <footer style="background-color: #533d28; color: white; padding: 20px 0; margin-top: auto;">
         <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
@@ -196,61 +190,47 @@
     </footer>
 
     <script>
-        var currentSlide = 0;
-        var slides = document.querySelectorAll('.carousel-slides a');
+        // 產品照片跑馬燈效果
+        const carouselSlides = document.querySelector('.carousel-slides');
+        const slides = carouselSlides.getElementsByTagName('a');
+        let currentSlide = 0;
+        
+        function showSlides() {
+          for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = 'none';
+          }
+          currentSlide++;
+          if (currentSlide > slides.length) {
+            currentSlide = 1;
+          }
+          slides[currentSlide - 1].style.display = 'block';
+          setTimeout(showSlides, 3000); // 每3秒切換一張照片
+        }
+        
+        showSlides();
+        
+        // 廣告輪播效果
+        const adSlides = document.querySelectorAll('.ad-slide');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+        let currentAdSlide = 0;
 
-        function showSlide(slideIndex) {
-            const carouselSlides = document.querySelector('.carousel-slides');
-            if (slideIndex >= slides.length) {
-                currentSlide = 0;
-            } else if (slideIndex < 0) {
-                currentSlide = slides.length - 1;
-            } else {
-                currentSlide = slideIndex;
-            }
-            carouselSlides.style.transform = 'translateX(' + (-currentSlide * 100) + '%)';
+        function showAdSlides() {
+        adSlides[currentAdSlide].classList.remove('active');
+        currentAdSlide = (currentAdSlide + 1) % adSlides.length;
+        adSlides[currentAdSlide].classList.add('active');
         }
 
-        function changeSlide(n) {
-            showSlide(currentSlide + n);
-        }
-
-        document.querySelector('.next').addEventListener('click', function() {
-            changeSlide(1);
+        prevBtn.addEventListener('click', () => {
+        currentAdSlide = (currentAdSlide - 1 + adSlides.length) % adSlides.length;
+        showAdSlides();
         });
 
-        document.querySelector('.prev').addEventListener('click', function() {
-            changeSlide(-1);
+        nextBtn.addEventListener('click', () => {
+        showAdSlides();
         });
 
-        // Auto-slide
-        setInterval(function() {
-            changeSlide(1);
-        }, 3000);
-
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const carouselItems = document.querySelectorAll('.product-carousel a');
-            let currentIndex = 0;
-        
-            function showNext() {
-                // 隱藏當前顯示的圖片
-                carouselItems[currentIndex].style.display = 'none';
-                // 更新索引，循環顯示三個不同的圖片
-                currentIndex = (currentIndex + 1) % carouselItems.length;
-                // 顯示下一個圖片
-                carouselItems[currentIndex].style.display = 'block';
-            }
-        
-            // 初始時隱藏除了第一個以外的圖片
-            for (let i = 1; i < carouselItems.length; i++) {
-                carouselItems[i].style.display = 'none';
-            }
-
-            // 設置定時器，每隔一段時間顯示下一張圖片
-            setInterval(showNext, 2000); // 每隔2秒切換一次圖片
-            setInterval(showNext, 1500); // 每隔1.5秒切換一次圖片
-        });
-    </script>
-</body>
-</html>
+        setInterval(showAdSlides, 5000); // every 5 seconds
+      </script>
+    </body>
+    </html>
