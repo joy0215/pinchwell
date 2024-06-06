@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選擇</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #ff6f61, #d9534f);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: transform 0.3s, background-color 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #c94545;
+            transform: scale(1.05);
+        }
+
+        .rotate-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff6f61;
+            color: white;
+            font-family: 'Pacifico', cursive;
+            font-size: 20px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .rotate-btn:hover {
+            transform: rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+    <h1>查看紀錄</h1>
+    <div class="container">
+        <button id="viewOrders" class="btn">查看我的訂單</button>
+        <button id="viewFeedback" class="btn">查看我的回饋</button>
+    </div>
+    <button class="rotate-btn" id="rotateButton">回上頁</button>
+    <script>
+        document.getElementById("viewOrders").addEventListener("click", function() {
+            showMessage("查看我的訂單", "訂單頁面即將顯示");
+        });
+
+        document.getElementById("viewFeedback").addEventListener("click", function() {
+            showMessage("查看我的回饋", "回饋頁面即將顯示");
+        });
+
+        document.getElementById("rotateButton").addEventListener("click", function() {
+            window.history.back();  // 回到上一頁
+        });
+
+        function showMessage(title, message) {
+            let messageBox = document.createElement('div');
+            messageBox.style.position = 'fixed';
+            messageBox.style.top = '50%';
+            messageBox.style.left = '50%';
+            messageBox.style.transform = 'translate(-50%, -50%)';
+            messageBox.style.backgroundColor = 'white';
+            messageBox.style.padding = '20px';
+            messageBox.style.borderRadius = '10px';
+            messageBox.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.2)';
+            messageBox.style.textAlign = 'center';
+            messageBox.style.zIndex = '1000';
+            messageBox.style.animation = 'fadeInMessage 0.5s';
+
+            let messageTitle = document.createElement('h2');
+            messageTitle.innerText = title;
+            let messageContent = document.createElement('p');
+            messageContent.innerText = message;
+            let closeButton = document.createElement('button');
+            closeButton.innerText = '關閉';
+            closeButton.style.marginTop = '20px';
+            closeButton.style.padding = '10px 20px';
+            closeButton.style.border = 'none';
+            closeButton.style.backgroundColor = '#d9534f';
+            closeButton.style.color = 'white';
+            closeButton.style.borderRadius = '5px';
+            closeButton.style.cursor = 'pointer';
+            closeButton.addEventListener('click', function() {
+                document.body.removeChild(messageBox);
+            });
+
+            messageBox.appendChild(messageTitle);
+            messageBox.appendChild(messageContent);
+            messageBox.appendChild(closeButton);
+            document.body.appendChild(messageBox);
+        }
+
+    </script>
+</body>
+</html>

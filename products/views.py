@@ -394,3 +394,6 @@ def confirmation_view(request):
 def orders(request):
 
     return render(request, 'pinchwell/orders.html')
+
+def record(request):
+    return render(request, 'shop/choose.html')

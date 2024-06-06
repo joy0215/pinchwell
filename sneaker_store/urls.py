@@ -43,4 +43,5 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('feedback/thanks/', views.feedback_thanks, name='feedback_thanks'),
     path('orders/', OrdersView.as_view(), name='orders'),
+    path('record/', views.record, name='records'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

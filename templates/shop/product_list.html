@@ -202,8 +202,8 @@
                 <div class="product-card show">
                     <img src="{{ product.photo.url }}" alt="{{ product.name }}">
                     <p>{{ product.name }}</p>
-                    <p>Price: ${{ product.price }}</p>
-                    <p>Brand: {{ product.brand }}</p>
+                    <p>商品價格: ${{ product.price }}</p>
+                    <p>品牌: {{ product.brand }}</p>
                 </div>
             </a>
             {% endfor %}
@@ -214,7 +214,7 @@
     <div class="ad-sidebar">
         <h2>Special Offer</h2>
         <p>Get 20% off on your first purchase!</p>
-        <img src="{% static 'images/ad.png' %}" alt="广告横幅" class="ad-banner">
+        <img src="{% static 'images/ad.png' %}" alt="廣告橫幅" class="ad-banner">
     </div>
 </div>
 
