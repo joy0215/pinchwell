@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.conf import settings
-from .models import Product
+from products.models import Product
 
 class Cart:
     def __init__(self, request):
@@ -10,26 +10,24 @@ class Cart:
             cart = self.session[settings.CART_SESSION_ID] = {}
         self.cart = cart
 
-    def add(self, product, size, quantity=1, update_quantity=False):
+    def add(self, product, size, quantity=1, override_quantity=False):
         product_id = str(product.id)
-        size_key = f"{product_id}_{size}"
-        if size_key not in self.cart:
-            self.cart[size_key] = {'quantity': 0, 'price': str(product.price), 'size': size}
-        if update_quantity:
-            self.cart[size_key]['quantity'] = quantity
+        key = f"{product_id}_{size}"
+        if key not in self.cart:
+            self.cart[key] = {'quantity': 0, 'size': size, 'price': str(product.price)}
+        if override_quantity:
+            self.cart[key]['quantity'] = float(quantity)
         else:
-            self.cart[size_key]['quantity'] += quantity
+            self.cart[key]['quantity'] += float(quantity)
         self.save()
 
     def save(self):
-        self.session[settings.CART_SESSION_ID] = self.cart
         self.session.modified = True
 
-    def remove(self, product, size):
-        product_id = str(product.id)
-        size_key = f"{product_id}_{size}"
-        if size_key in self.cart:
-            del self.cart[size_key]
+    def remove(self, product_id, size):
+        key = f"{product_id}_{size}"
+        if key in self.cart:
+            del self.cart[key]
             self.save()
 
     def __iter__(self):
@@ -37,10 +35,12 @@ class Cart:
         products = Product.objects.filter(id__in=product_ids)
         cart = self.cart.copy()
         for product in products:
-            for key, value in cart.items():
-                if key.startswith(str(product.id)):
-                    value['product'] = product
-                    yield value
+            for key in self.cart:
+                if str(product.id) == key.split('_')[0]:
+                    cart[key]['product'] = product
+                    cart[key]['price'] = Decimal(cart[key]['price'])
+                    cart[key]['total_price'] = cart[key]['price'] * cart[key]['quantity']
+                    yield cart[key]
 
     def __len__(self):
         return sum(item['quantity'] for item in self.cart.values())
@@ -50,10 +50,19 @@ class Cart:
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
-        self.session.modified = True
-    
-    def update(self, product_id, size, quantity):
-        size_key = f"{product_id}_{size}"
-        if size_key in self.cart:
-            self.cart[size_key]['quantity'] = quantity
-            self.save()
+        self.save()
+
+    def get_cart_items(self):
+        product_ids = [key.split('_')[0] for key in self.cart.keys()]
+        products = Product.objects.filter(id__in=product_ids)
+        cart = self.cart.copy()
+        cart_items = []
+        for product in products:
+            for key in self.cart:
+                if str(product.id) == key.split('_')[0]:
+                    cart_item = cart[key]
+                    cart_item['product'] = product
+                    cart_item['price'] = Decimal(cart_item['price'])
+                    cart_item['total_price'] = cart_item['price'] * cart_item['quantity']
+                    cart_items.append(cart_item)
+        return cart_items

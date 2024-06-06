@@ -116,12 +116,18 @@ class Cart(models.Model):
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='carts', verbose_name='顧客編號')
     inventory = models.ForeignKey(Inventory, on_delete=models.CASCADE, related_name='carts', verbose_name='產品編號')
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='價格')
-    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='總價')
     quantity = models.PositiveIntegerField(verbose_name='數量')
     shipping_address = models.CharField(max_length=255, verbose_name='運送地址')
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='總價', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # 自动计算总价
+        self.total_price = self.price * self.quantity
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.order_code
+
 
 class Feedback(models.Model):
     feedback_code = models.CharField(max_length=50, unique=True, verbose_name='回饋編號')

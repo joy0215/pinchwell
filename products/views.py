@@ -17,16 +17,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import Member
 
-
 class MemberUpdateView(LoginRequiredMixin, UpdateView):
     model = Member
     fields = ['username', 'email', 'phone_number', 'birthdate', 'gender', 'bio']
     template_name = 'member_edit.html'
-    success_url = reverse_lazy('index')  # 編輯成功後重定向到主頁
+    success_url = reverse_lazy('index')
 
     def get_object(self, queryset=None):
-        return self.request.user  # 返回當前登入的用戶
-
+        return self.request.user
+    
 def logout_view(request):
     logout(request)
     return redirect('login')  # 登出後重定向到主頁或其他頁面
@@ -170,6 +169,7 @@ def low_stock_warning(request):
 def employee_dashboard(request):
     return render(request, 'employee_dashboard.html')
 
+
 @login_required
 def add_to_cart(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
@@ -180,51 +180,31 @@ def add_to_cart(request, product_id):
     cart = Cart(request)
     cart.add(product=product, size=size)
     messages.success(request, "Product added to cart successfully.")
-    return redirect('cart')
+    return redirect('cart_detail')  # 重定向到購物車詳情頁面
 
-@login_required
-def update_cart(request, product_id):
-    if request.method == 'POST':
-        product = get_object_or_404(Product, pk=product_id)
-        size = request.POST.get('size')
-        quantity = request.POST.get('quantity')
-        
-        if size and quantity:
-            try:
-                quantity = int(quantity)
-                cart = Cart(request)
-                cart.add(product=product, size=size, quantity=quantity, update_quantity=True)
-                messages.success(request, "Cart updated successfully.")
-            except ValueError:
-                messages.error(request, "Invalid quantity. Please enter a valid number.")
-        else:
-            messages.error(request, "Size or quantity is missing.")
-    return redirect('cart')
-
-import logging
-
-logger = logging.getLogger(__name__)
+def cart_detail(request):
+    user = request.user
+    cart_items = Cart.objects.filter(member=user.member) 
+    return render(request, 'shop/cart.html', {'cart': cart_items})
 
 @login_required
 def remove_from_cart(request, product_id):
-    if request.method == 'POST':
-        size = request.POST.get('size')
-        if size:
-            cart = Cart(request)
-            cart.remove(product_id, size)
-            messages.success(request, "Product removed from cart successfully.")
-            if cart.is_empty():
-                messages.info(request, "Your cart is now empty.")
-            return redirect('cart')
-        else:
-            return JsonResponse({'error': 'Invalid request. Please provide size.'}, status=400)
-    else:
-        return JsonResponse({'error': 'Invalid request. Please use POST method.'}, status=400)
-    
-@login_required
-def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'shop/cart.html', {'cart': cart})
+    product = get_object_or_404(Product, id=product_id)
+    size = request.POST.get('size')
+    cart.remove(product.id, size)
+    return redirect('cart_detail')
+
+@login_required
+def update_cart(request, product_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    size = request.POST.get('size')
+    quantity_str = request.POST.get('quantity')
+    if quantity_str:
+        quantity = int(quantity_str)
+        cart.add(product=product, size=size, quantity=quantity, override_quantity=True)
+    return redirect('cart_detail')
 
 # 結賬視圖
 @login_required
@@ -240,9 +220,15 @@ def complete_order(request):
 
 # 訂單確認視圖
 @login_required
-def order_confirmation(request):
-    # 渲染訂單確認頁面
-    return render(request, 'shop/order_confirmation.html', {})
+def confirm_order(request):
+    cart = Cart(request)
+    cart_items = cart.get_cart_items()  # 自定義方法，獲取購物車中的所有商品信息
+    total_price = cart.get_total_price()  # 自定義方法，獲取購物車中商品的總價格
+    context = {
+        'cart_items': cart_items,
+        'total_price': total_price
+    }
+    return render(request, 'shop/order_confirmation.html', context)
 
 # 首頁視圖
 def index(request):
