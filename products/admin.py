@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Product, UpcomingProduct, Inventory,Member,Pincher
+from .models import Product, UpcomingProduct, Inventory,Member,Pincher,Feedback
 
 class InventoryInline(admin.StackedInline):
     model = Inventory
@@ -15,4 +15,4 @@ admin.site.register(Product, ProductAdmin)
 admin.site.register(UpcomingProduct)
 admin.site.register(Member)
 admin.site.register(Pincher)
-
+admin.site.register(Feedback)

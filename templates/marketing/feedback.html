@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>客戶回饋</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -73,97 +72,13 @@
     <div class="container">
         <div class="feedback-form">
             <h2>提交您的回饋</h2>
-            <form id="feedbackForm" class="needs-validation" novalidate>
-                <div class="form-group">
-                    <label for="name">姓名:</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
-                    <div class="invalid-feedback">請輸入您的姓名。</div>
-                </div>
-                <div class="form-group">
-                    <label for="product">商品:</label>
-                    <input type="text" class="form-control" id="product" name="product" required>
-                    <div class="invalid-feedback">請輸入您的商品。</div>
-                </div>
-                <div class="form-group">
-                    <label for="message">留言:</label>
-                    <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
-                    <div class="invalid-feedback">請輸入您的留言。</div>
-                </div>
-                <div class="form-group">
-                    <label>商品滿意度:</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction1" value="非常滿意" required>
-                        <label class="form-check-label" for="productSatisfaction1">非常滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction2" value="滿意">
-                        <label class="form-check-label" for="productSatisfaction2">滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction3" value="一般">
-                        <label class="form-check-label" for="productSatisfaction3">一般</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction4" value="不滿意">
-                        <label class="form-check-label" for="productSatisfaction4">不滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="productSatisfaction" id="productSatisfaction5" value="非常不滿意">
-                        <label class="form-check-label" for="productSatisfaction5">非常不滿意</label>
-                    </div>
-                    <div class="invalid-feedback">請選擇您的商品滿意度。</div>
-                </div>
-                <div class="form-group">
-                    <label>品質滿意度:</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction1" value="非常滿意" required>
-                        <label class="form-check-label" for="qualitySatisfaction1">非常滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction2" value="滿意">
-                        <label class="form-check-label" for="qualitySatisfaction2">滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction3" value="一般">
-                        <label class="form-check-label" for="qualitySatisfaction3">一般</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction4" value="不滿意">
-                        <label class="form-check-label" for="qualitySatisfaction4">不滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="qualitySatisfaction" id="qualitySatisfaction5" value="非常不滿意">
-                        <label class="form-check-label" for="qualitySatisfaction5">非常不滿意</label>
-                    </div>
-                    <div class="invalid-feedback">請選擇您的品質滿意度。</div>
-                </div>
-                <div class="form-group">
-                    <label>運送速度滿意度:</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction1" value="非常滿意" required>
-                        <label class="form-check-label" for="deliverySatisfaction1">非常滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction2" value="滿意">
-                        <label class="form-check-label" for="deliverySatisfaction2">滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction3" value="一般">
-                        <label class="form-check-label" for="deliverySatisfaction3">一般</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction4" value="不滿意">
-                        <label class="form-check-label" for="deliverySatisfaction4">不滿意</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="deliverySatisfaction" id="deliverySatisfaction5" value="非常不滿意">
-                        <label class="form-check-label" for="deliverySatisfaction5">非常不滿意</label>
-                    </div>
-                    <div class="invalid-feedback">請選擇您的運送速度滿意度。</div>
-                </div>
+            <form method="POST" class="needs-validation" novalidate>
+                {% csrf_token %}
+                {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">提交</button>
             </form>
         </div>
+    </div>
 
         
 

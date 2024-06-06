@@ -1,8 +1,26 @@
 from django import forms
-from products.models import UserProfile ,Employee ,Inventory ,SignupProfile, Member
+from products.models import UserProfile ,Employee ,Inventory ,SignupProfile, Member,Feedback
 from django.contrib.auth.forms import User ,UserCreationForm
 import datetime
 
+
+class FeedbackForm(forms.ModelForm):
+    class Meta:
+        model = Feedback
+        fields = ['member', 'product', 'comment', 'product_satisfaction', 'brand_satisfaction', 'delivery_satisfaction']
+        labels = {
+            'member': '客戶編號',
+            'product': '商品名稱',
+            'comment': '留言',
+            'product_satisfaction': '商品滿意度',
+            'brand_satisfaction': '品牌滿意度',
+            'delivery_satisfaction': '宅配滿意度',
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        self.fields['member'].queryset = self.fields['member'].queryset.order_by('member_id')
+        self.fields['member'].label_from_instance = lambda obj: obj.member_id
 
 class SignupForm(forms.ModelForm):
     member_id = forms.CharField(label='會員編號', required=False, widget=forms.TextInput(attrs={'readonly': 'readonly'}))

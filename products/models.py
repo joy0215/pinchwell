@@ -123,7 +123,6 @@ class Cart(models.Model):
     def __str__(self):
         return self.order_code
 
-# 回饋模型
 class Feedback(models.Model):
     feedback_code = models.CharField(max_length=50, unique=True, verbose_name='回饋編號')
     member = models.ForeignKey(Member, on_delete=models.CASCADE, related_name='feedbacks', verbose_name='客戶編號')
@@ -133,10 +132,23 @@ class Feedback(models.Model):
     brand_satisfaction = models.PositiveIntegerField(verbose_name='品牌滿意度', default=5)
     delivery_satisfaction = models.PositiveIntegerField(verbose_name='宅配滿意度', default=5)
 
+    def save(self, *args, **kwargs):
+        if not self.feedback_code:
+            last_feedback = Feedback.objects.all().order_by('id').last()
+            if not last_feedback or not last_feedback.feedback_code:
+                self.feedback_code = 'F0001'
+            else:
+                last_code = last_feedback.feedback_code[1:]  # 去掉前面的 'F'
+                try:
+                    new_code = 'F' + str(int(last_code) + 1).zfill(4)
+                except ValueError:
+                    new_code = 'F0001'
+                self.feedback_code = new_code
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.feedback_code
-
+    
 class UpcomingProduct(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()

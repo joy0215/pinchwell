@@ -7,7 +7,7 @@ from django.views.generic import TemplateView ,View
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate , logout
-from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm
+from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,FeedbackForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Sum
@@ -81,14 +81,15 @@ def signup(request):
             member.password = make_password(password)  # 加密密碼
             member.save()
 
-            return redirect('index')  # 導向到登錄頁面
+            # 使用 messages 來傳遞客戶編號
+            messages.success(request, f'註冊成功！您的客戶編號是 {member.member_id}')
+            return redirect('signup')  # 導向到註冊頁面，這樣可以顯示彈窗
         else:
             print(form.errors)  # 印出錯誤訊息
     else:
         form = SignupForm()
 
     return render(request, 'signup.html', {'form': form})
-
 
 
 # 商品列表視圖
@@ -263,8 +264,20 @@ from django.contrib.auth.forms import UserCreationForm
 def marketing_page(request):
     return render(request, 'marketing/marketing.html')
 
-def feedback(request):
-    return render(request, 'marketing/feedback.html')
+
+def feedback_view(request):
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('feedback_thanks')
+    else:
+        form = FeedbackForm()
+
+    return render(request, 'marketing/feedback.html', {'form': form})
+
+def feedback_thanks(request):
+    return render(request, 'shop/feedback_thanks.html')
 
 
 def employee_login(request):
