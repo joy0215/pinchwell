@@ -7,14 +7,14 @@ from django.views.generic import TemplateView ,View
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate , logout
-from sneaker_store.forms import UserProfileForm,EmployeePasswordForm, EmployeeEditForm,FeedbackForm
+from sneaker_store.forms import InventoryUpdateForm,EmployeePasswordForm, EmployeeEditForm,FeedbackForm
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Sum
 from .cart import Cart
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy ,reverse
 from .models import Member
 
 class MemberUpdateView(LoginRequiredMixin, UpdateView):
@@ -170,30 +170,27 @@ def employee_dashboard(request):
     return render(request, 'employee_dashboard.html')
 
 
-@login_required
-def add_to_cart(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
-    size = request.POST.get('size')
-    if not size:
-        messages.error(request, "Please select a size.")
-        return redirect('product_detail', product_id=product_id)
+from django.views.decorators.http import require_POST
+
+@require_POST
+def update_cart(request, product_id):
     cart = Cart(request)
-    cart.add(product=product, size=size)
-    messages.success(request, "Product added to cart successfully.")
-    return redirect('cart_detail')  # 重定向到購物車詳情頁面
+    product = Product.objects.get(id=product_id)
+    size = request.POST.get('size')
+    quantity = request.POST.get('quantity')
+    cart.add(product, size, quantity, override_quantity=True)
+    return redirect('cart_detail')
 
-def cart_detail(request):
-    user = request.user
-    cart_items = Cart.objects.filter(member=user.member) 
-    return render(request, 'shop/cart.html', {'cart': cart_items})
-
-@login_required
+@require_POST
 def remove_from_cart(request, product_id):
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
     size = request.POST.get('size')
-    cart.remove(product.id, size)
+    cart.remove(product_id, size)
     return redirect('cart_detail')
+
+def cart_detail(request):
+    cart = Cart(request)
+    return render(request, 'shop/cart.html', {'cart': cart})
 
 @login_required
 def update_cart(request, product_id):
@@ -204,6 +201,15 @@ def update_cart(request, product_id):
     if quantity_str:
         quantity = int(quantity_str)
         cart.add(product=product, size=size, quantity=quantity, override_quantity=True)
+    return redirect('cart_detail')
+
+@require_POST
+def add_to_cart(request, product_id):
+    cart = Cart(request)
+    product = Product.objects.get(id=product_id)
+    size = request.POST.get('size')
+    quantity = request.POST.get('quantity')
+    cart.add(product, size, quantity, override_quantity=True)
     return redirect('cart_detail')
 
 # 結賬視圖
@@ -329,14 +335,17 @@ def inventory_query(request):
 from .models import Product, Inventory
 
 
-def inventory_edit(request):
-    products = Product.objects.all()  # 獲取所有產品
-    total_stocks = {product.id: product.inventory_set.aggregate(total_stock=Sum('stock'))['total_stock'] for product in products}
-    context = {
-        'products': products,
-        'total_stocks': total_stocks,
-    }
-    return render(request, 'inventory_edit.html', context)
+
+def edit_inventory(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        # Handle form submission, update product, etc.
+        pass
+    else:
+        # Display form with product details for editing
+        pass
+
+    return render(request, 'edit_inventory.html', {'product': product})
 
 def testform_view(request, product_id):
     # 獲取所有尺碼的庫存數據，以字典形式傳遞到模板

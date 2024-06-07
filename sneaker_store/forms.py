@@ -4,6 +4,15 @@ from django.contrib.auth.forms import User ,UserCreationForm
 import datetime
 
 
+class InventoryUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['quantity']
+        widgets = {
+            'quantity': forms.NumberInput(attrs={'min': 0}),
+        }
+
+
 class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback

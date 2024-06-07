@@ -77,18 +77,18 @@
 <body>
     <h1>編輯庫存 - {{ product.name }}</h1>
     <div class="inventory-edit-container">
-        <form class="update-form" action="{% url 'update_inventory' product.id %}" method="post">
+        <form class="update-form" action="{% url 'edit_inventory' product.id %}" method="post">
             {% csrf_token %}
-            {% for item in inventory_items %}
+            {% for size, form in forms.items %}
             <div class="inventory-item">
-                <p>{{ item.size }}：</p>
-                <input type="number" name="quantity_{{ item.size }}" value="{{ item.stock }}">
-                <span>現有庫存：{{ item.stock }}</span>
+                <p>{{ size }}：</p>
+                {{ form.quantity }}
+                <span>現有庫存：{{ form.instance.quantity }}</span>
             </div>
             {% endfor %}
             <button type="submit">更新庫存</button>
         </form>
-        <a href="{% url 'inventory_edit' %}" class="back-link">返回</a>
+        <a href="{% url 'inventory_list' %}" class="back-link">返回</a>
     </div>
 </body>
 </html>

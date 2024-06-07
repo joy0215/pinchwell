@@ -224,11 +224,7 @@
                             <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
                             <input type="submit" value="Update">
                         </form>
-                        {% for item in cart %}
-                            {{ item.quantity }}
-                        {% endfor %}
-                    </td>                    
-                    
+                    </td>
                     <td>
                         <form class="remove-form" action="{% url 'remove_from_cart' item.product.id %}" method="post">
                             {% csrf_token %}
@@ -241,8 +237,7 @@
             </tbody>
         </table>
         <p class="total-price">Total: ${{ cart.get_total_price }}</p>
-        <a href="{% url 'order_confirmation' %}" class="checkout-btn">結帳</a>
-        <a href="/login" class="btn">Proceed to Login</a>
+        <a href="{% url 'order_confirmation' %}" class="checkout-btn">Checkout</a>
     {% else %}
         <p class="empty-cart">Your cart is empty.</p>
     {% endif %}
