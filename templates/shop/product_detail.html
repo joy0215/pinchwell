@@ -10,11 +10,11 @@
 </head>
 <style>
     #cart-button-img {
-    width: 80px;
-    /* 可根據需要調整高度 */
-    /* height: auto; */
-}
-    </style>>
+        width: 80px;
+        /* 可根據需要調整高度 */
+        /* height: auto; */
+    }
+</style>
 <body>
 
 <div class="navbar">
@@ -41,12 +41,13 @@
                     <option value="{{ size_choice.0 }}">{{ size_choice.1 }}</option>
                 {% endfor %}
             </select>
+            <!-- 將數量輸入框改為隱藏的 -->
+            <input type="hidden" name="quantity" value="1">
             <input type="image" id="cart-button-img" src="{% static 'images/add_to_cart_button.png' %}" alt="加入購物車">
-
         </form>
 
         <a href="{% url 'product_list' %}" class="btn" style="position: absolute; top: 35px; left: 10px; border: 2px solid #ccc; padding: 8px 15px; border-radius: 5px; background-color: white; color: #f08080;">
-            Back to Product List
+            返回產品列表
         </a>
     </div>
 </div>
@@ -66,26 +67,25 @@ document.getElementById('cart-form').addEventListener('submit', function(event) 
             'X-CSRFToken': formData.get('csrfmiddlewaretoken')
         }
     })
-    .then(response => {
-        if (response.ok) {
-            // 如果請求成功，重定向到產品列表頁面
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // 如果請求成功，顯示成功訊息
+            alert('成功加入購物車！');
+            // 重定向到產品列表頁面
             window.location.href = "{% url 'product_list' %}";
         } else {
             // 處理錯誤情況
-            alert('Failed to add to cart. Please try again.');
+            alert(data.error || '加入購物車成功，歡迎再逛逛！');
         }
     })
     .catch(error => {
         // 處理網絡錯誤
-        alert('Network error. Please try again.');
+        alert('網絡錯誤，請重試。');
     });
 });
 
 </script>
-<script>
-
-    </script>
-    
 
 </body>
 </html>

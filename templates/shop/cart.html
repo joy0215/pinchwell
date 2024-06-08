@@ -1,5 +1,5 @@
+{% load humanize %}
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,185 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="{% static 'css/cart.css' %}">
-    <style>
-        /* Add custom styles here */
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navbar {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            font-size: 24px;
-        }
-
-        .cart-container {
-            margin: 50px auto;
-            padding: 20px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 90%; /* Increase the maximum width to 90% */
-            width: 90%; /* Make sure the width is also 90% */
-            display: flex; /* 將容器設置為 Flexbox */
-            flex-direction: column; /* 將子元素排列成垂直列 */
-            align-items: center; /* 垂直居中子元素 */
-            position: relative; /* 適用絕對定位的基準 */
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        td {
-            vertical-align: middle;
-        }
-
-        select, input[type="number"], input[type="submit"] {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        select {
-            width: 80px;
-        }
-
-        input[type="number"] {
-            width: 60px;
-        }
-
-        input[type="submit"] {
-            background-color: #333;
-            color: white;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #555;
-        }
-
-        .btn {
-            display: inline-block;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #555;
-        }
-
-        .empty-cart {
-            text-align: center;
-            color: #777;
-            font-size: 18px;
-            margin-top: 20px;
-        }
-
-        .total-price {
-            text-align: right;
-            margin-top: 20px;
-            font-size: 20px;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-            max-width: 500px;
-            border-radius: 8px;
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.3s;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        .checkout-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-            z-index: 1000;
-        }
-
-        .checkout-btn:hover {
-            background-color: #555;
-        }
-    </style>
 </head>
 <body>
 
 <div class="navbar">
     Shopping Cart
 </div>
-<h1> </h1>
+
 <a href="{% url 'product_list' %}" class="btn">Back to Product List</a>
 <div class="cart-container">
     {% if cart %}
@@ -217,7 +45,7 @@
                             <input type="submit" value="Update">
                         </form>
                     </td>
-                    <td>${{ item.price }}</td>
+                    <td class="price-value">${{ item.price|floatformat:"2"|intcomma }}</td>
                     <td>
                         <form class="quantity-form" action="{% url 'update_cart' item.product.id %}" method="post">
                             {% csrf_token %}
@@ -236,7 +64,7 @@
                 {% endfor %}
             </tbody>
         </table>
-        <p class="total-price">Total: ${{ cart.get_total_price }}</p>
+        <p class="total-price"><span id="total-price-value"></span></p>
         <a href="{% url 'order_confirmation' %}" class="checkout-btn">Checkout</a>
     {% else %}
         <p class="empty-cart">Your cart is empty.</p>
@@ -251,114 +79,123 @@
         <p>Your cart has been successfully updated.</p>
     </div>
 </div>
-
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const sizeForms = document.querySelectorAll(".size-form");
-    const quantityForms = document.querySelectorAll(".quantity-form");
-    const removeForms = document.querySelectorAll(".remove-form");
-    const modal = document.getElementById("myModal");
-    const span = document.getElementsByClassName("close")[0];
-
-    function showModal() {
-        modal.style.display = "block";
-    }
-
-    function hideModal() {
-        modal.style.display = "none";
-    }
-
-    sizeForms.forEach(form => {
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            const formData = new FormData(form);
-            const url = form.getAttribute("action");
-
-            fetch(url, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
-                }
-            }).then(response => {
-                if (response.ok) {
-                    showModal();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    console.error("Error updating cart.");
-                }
-            }).catch(error => {
-                console.error("Error updating cart:", error);
+    document.addEventListener("DOMContentLoaded", function() {
+        const sizeForms = document.querySelectorAll(".size-form");
+        const quantityForms = document.querySelectorAll(".quantity-form");
+        const removeForms = document.querySelectorAll(".remove-form");
+        const modal = document.getElementById("myModal");
+        const span = document.getElementsByClassName("close")[0];
+    
+        function showModal() {
+            modal.style.display = "block";
+        }
+    
+        function hideModal() {
+            modal.style.display = "none";
+        }
+    
+        sizeForms.forEach(form => {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const url = form.getAttribute("action");
+    
+                fetch(url, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        showModal();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        console.error("Error updating cart.");
+                    }
+                }).catch(error => {
+                    console.error("Error updating cart:", error);
+                });
             });
         });
-    });
-
-    quantityForms.forEach(form => {
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            const formData = new FormData(form);
-            const url = form.getAttribute("action");
-
-            fetch(url, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
-                }
-            }).then(response => {
-                if (response.ok) {
-                    showModal();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    console.error("Error updating cart.");
-                }
-            }).catch(error => {
-                console.error("Error updating cart:", error);
+    
+        quantityForms.forEach(form => {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const url = form.getAttribute("action");
+    
+                fetch(url, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        showModal();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        console.error("Error updating cart.");
+                    }
+                }).catch(error => {
+                    console.error("Error updating cart:", error);
+                });
             });
         });
-    });
-
-    removeForms.forEach(form => {
-        form.addEventListener("submit", function(event) {
-            event.preventDefault();
-            const formData = new FormData(form);
-            const url = form.getAttribute("action");
-
-            fetch(url, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    "X-CSRFToken": formData.get("csrfmiddlewaretoken")
-                }
-            }).then(response => {
-                if (response.ok) {
-                    showModal();
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                } else {
-                    console.error("Error removing product.");
-                }
-            }).catch(error => {
-                console.error("Error removing product:", error);
+    
+        removeForms.forEach(form => {
+            form.addEventListener("submit", function(event) {
+                event.preventDefault();
+                const formData = new FormData(form);
+                const url = form.getAttribute("action");
+    
+                fetch(url, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": formData.get("csrfmiddlewaretoken")
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        showModal();
+                        setTimeout(() => {
+                            window.location.reload();
+                        }, 1000);
+                    } else {
+                        console.error("Error removing product.");
+                    }
+                }).catch(error => {
+                    console.error("Error removing product:", error);
+                });
             });
         });
-    });
-
-    span.onclick = function() {
-        hideModal();
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
+    
+        span.onclick = function() {
             hideModal();
         }
-    }
-});
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                hideModal();
+            }
+        }
+    
+        // Format total price
+        const totalPriceElement = document.getElementById("total-price-value");
+        const prices = document.querySelectorAll(".price-value");
+        let totalPrice = 0;
+        prices.forEach(price => {
+            totalPrice += parseFloat(price.textContent.replace('$', '').replace(',', ''));
+        });
+        totalPriceElement.textContent = "Total: NT$" + totalPrice.toFixed(2);
+    
+    });
 </script>
 
 </body>

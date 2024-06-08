@@ -172,13 +172,48 @@ def employee_dashboard(request):
 
 from django.views.decorators.http import require_POST
 
+@login_required
+def add_to_cart(request, product_id):
+    product = get_object_or_404(Product, id=product_id)
+    size = request.POST.get('size')
+    quantity = request.POST.get('quantity')
+
+    # 檢查 size 是否存在
+    if size is None:
+        return JsonResponse({'error': 'Size is required'}, status=400)
+
+    # 檢查 quantity 是否存在，並嘗試轉換為整數
+    if quantity is None:
+        return JsonResponse({'error': 'Quantity is required'}, status=400)
+
+    try:
+        quantity = int(quantity)
+        if quantity <= 0:
+            return JsonResponse({'error': 'Quantity must be greater than zero'}, status=400)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid quantity'}, status=400)
+
+    cart = Cart(request)
+    cart.add(product, size, quantity, override_quantity=True)
+    return JsonResponse({'message': 'Product added to cart'})
+
 @require_POST
 def update_cart(request, product_id):
     cart = Cart(request)
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
     size = request.POST.get('size')
-    quantity = request.POST.get('quantity')
-    cart.add(product, size, quantity, override_quantity=True)
+    quantity_str = request.POST.get('quantity')
+    
+    if quantity_str:
+        try:
+            quantity = int(quantity_str)
+            if quantity <= 0:
+                return JsonResponse({'error': 'Quantity must be greater than zero'}, status=400)
+        except ValueError:
+            return JsonResponse({'error': 'Invalid quantity'}, status=400)
+        
+        cart.add(product=product, size=size, quantity=quantity, override_quantity=True)
+    
     return redirect('cart_detail')
 
 @require_POST
@@ -190,27 +225,7 @@ def remove_from_cart(request, product_id):
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'shop/cart.html', {'cart': cart})
-
-@login_required
-def update_cart(request, product_id):
-    cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
-    size = request.POST.get('size')
-    quantity_str = request.POST.get('quantity')
-    if quantity_str:
-        quantity = int(quantity_str)
-        cart.add(product=product, size=size, quantity=quantity, override_quantity=True)
-    return redirect('cart_detail')
-
-@require_POST
-def add_to_cart(request, product_id):
-    cart = Cart(request)
-    product = Product.objects.get(id=product_id)
-    size = request.POST.get('size')
-    quantity = request.POST.get('quantity')
-    cart.add(product, size, quantity, override_quantity=True)
-    return redirect('cart_detail')
+    return render(request, 'shop/cart.html', {"cart": cart})
 
 # 結賬視圖
 @login_required

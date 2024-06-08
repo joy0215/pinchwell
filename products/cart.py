@@ -1,4 +1,3 @@
-# cart.py
 from decimal import Decimal
 from django.conf import settings
 from products.models import Product
@@ -17,10 +16,11 @@ class Cart:
         if key not in self.cart:
             self.cart[key] = {'quantity': 0, 'size': size, 'price': str(product.price)}
         if override_quantity:
-            self.cart[key]['quantity'] = float(quantity)
+            self.cart[key]['quantity'] = int(quantity)
         else:
-            self.cart[key]['quantity'] += float(quantity)
+            self.cart[key]['quantity'] += int(quantity)
         self.save()
+
 
     def save(self):
         self.session.modified = True
@@ -48,6 +48,7 @@ class Cart:
 
     def get_total_price(self):
         return sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
+
 
     def clear(self):
         del self.session[settings.CART_SESSION_ID]
