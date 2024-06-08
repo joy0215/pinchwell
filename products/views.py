@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Product, Member ,UpcomingProduct ,Employee ,EmployeeProfile ,Inventory
+from .models import Product, Member ,UpcomingProduct ,Employee ,EmployeeProfile ,Inventory,Givemoney
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView ,View 
@@ -407,3 +407,40 @@ def orders(request):
 
 def record(request):
     return render(request, 'shop/choose.html')
+
+from django.core.mail import send_mail
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def send_order_confirmation(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        name = data.get('name')
+        email = data.get('email')
+        address = data.get('address')
+        phone = data.get('phone')
+        total_amount = data.get('total_amount')
+
+        try:
+            order = Givemoney.objects.create(
+                name=name,
+                email=email,
+                address=address,
+                phone=phone,
+                total_amount=total_amount
+            )
+
+            subject = '訂單確認'
+            message = f"親愛的 {name},\n\n您的訂單已成功下訂。\n訂單編號: {order.order_number}\n總金額: {total_amount}\n\n謝謝您的購買！"
+            from_email = 'your_email@gmail.com'
+            recipient_list = [email]
+
+            send_mail(subject, message, from_email, recipient_list)
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)

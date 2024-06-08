@@ -45,4 +45,5 @@ urlpatterns = [
     path('orders/', OrdersView.as_view(), name='orders'),
     path('record/', views.record, name='records'),
     path('inventory/edit/<int:product_id>/', views.edit_inventory, name='edit_inventory'),
+    path('send_order_confirmation/', views.send_order_confirmation, name='send_order_confirmation'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

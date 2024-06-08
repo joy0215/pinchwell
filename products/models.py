@@ -237,3 +237,23 @@ class SignupProfile(models.Model):
     birthdate = models.DateField(null=True, blank=True)
     bio = models.TextField(max_length=500, blank=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+
+class Givemoney(models.Model):
+    order_number = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    address = models.CharField(max_length=255)
+    phone = models.CharField(max_length=20)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.order_number:
+            now = timezone.now()
+            date_str = now.strftime('%Y%m%d')
+            count = Givemoney.objects.filter(created_at__date=now.date()).count() + 1
+            self.order_number = f"{date_str}OR{count:03d}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.order_number
