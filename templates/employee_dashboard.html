@@ -1,76 +1,22 @@
+{% load static  %}
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>員工介面</title>
-    <style>
-        body {
-            background-color: #F5F5F5; /* 淺灰色背景 */
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 600px; /* 縮小寬度使其更集中 */
-            margin: 50px auto;
-            padding: 30px;
-            background-color: #ffffff; /* 白色背景 */
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 柔和的陰影 */
-            text-align: center;
-        }
-
-        h1 {
-            color: #333333; /* 深灰色 */
-            margin-bottom: 20px; /* 增加標題下方的間距 */
-            font-size: 2em;
-        }
-
-        .employee-name {
-            color: #555555; /* 中灰色 */
-            font-size: 1.2em;
-            margin-bottom: 40px; /* 增加姓名下方的間距 */
-        }
-
-        .buttons {
-            display: flex;
-            flex-direction: column; /* 使按鈕縱向排列 */
-            gap: 15px; /* 增加按鈕間的間距 */
-            align-items: center; /* 使按鈕居中 */
-        }
-
-        .button {
-            padding: 15px 30px; /* 增加內邊距 */
-            background-color: #FF5733; /* 明亮的橙色 */
-            color: #ffffff; /* 白色文字 */
-            text-decoration: none;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            font-weight: bold;
-            transition: background-color 0.3s, transform 0.3s; /* 添加背景色和縮放過渡效果 */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 小陰影增加立體感 */
-        }
-
-        .button:hover {
-            background-color: #C70039; /* 深橙色 */
-            transform: translateY(-3px); /* 懸停時上移效果 */
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 </head>
 <body>
     <div class="container">
         <h1>員工介面</h1>
         <div class="employee-name">
-            您好!
+            偉大的掐好成員 您好!
         </div>
         <div class="buttons">
-            <a href="{% url 'employee_profile' %}" class="button">員工資料</a>
             <a href="{% url 'inventory_query' %}" class="button">存貨查詢</a>
-            <a href="{% url 'inventory_edit' %}" class="button">存貨編輯</a>
-            <a href="{% url 'low_stock_warning' %}" class="button">庫存預警</a>
+            <a href="{% url 'inventory_alert' %}" class="button">庫存預警</a>
+            <a href="{% url 'inventory_list' %}" class="button">庫存編輯</a>
         </div>
     </div>
 </body>

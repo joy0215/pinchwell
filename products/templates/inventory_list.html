@@ -1,0 +1,24 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="{% static 'css/inlist.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>商品列表</h1>
+        <form method="get" action="{% url 'edit_inventory' product_id=0 %}" onsubmit="this.action = '{% url 'edit_inventory' product_id=0 %}'.replace('0', document.querySelector('.product-select').value);">
+            <select name="product" class="product-select">
+                <option value="">選擇商品</option>
+                {% for product in products %}
+                    <option value="{{ product.pk }}">{{product.product_code}} - {{ product.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="button">編輯選擇的商品</button>
+        </form>
+    </div>
+</body>
+</html>

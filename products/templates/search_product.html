@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索商品</title>
+    <style>
+        body {
+            background-color: #F5F5F5;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+        }
+
+        .product-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-list li {
+            margin-bottom: 10px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #FF5733;
+            color: #ffffff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #C70039;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>搜索商品</h1>
+        <form method="get" action="{% url 'search_product' %}" class="search-bar">
+            <input type="text" name="query" value="{{ query }}" placeholder="輸入商品編號" required>
+            <button type="submit" class="button">搜索</button>
+        </form>
+        {% if products %}
+            <ul class="product-list">
+                {% for product in products %}
+                    <li>
+                        <a href="{% url 'edit_product_stock' product.pk %}" class="button">{{ product.name }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% elif query %}
+            <p>未找到符合的商品。</p>
+        {% endif %}
+    </div>
+</body>
+</html>

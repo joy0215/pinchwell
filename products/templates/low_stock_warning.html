@@ -39,7 +39,6 @@
             padding: 10px;
             border-radius: 5px;
             background-color: #f2f2f2;
-            display: none; /* 預設隱藏 */
         }
         .product-info {
             font-size: 16px; /* 調整字體大小 */
@@ -48,22 +47,6 @@
         }
         .report {
             margin-top: 20px; /* 調整上方間距 */
-        }
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .pagination button {
-            padding: 10px 20px;
-            margin: 0 5px;
-            border: none;
-            border-radius: 5px;
-            background-color: #48c9b0; /* 淺綠 */
-            color: white;
-            cursor: pointer;
-        }
-        .pagination button:hover {
-            background-color: #16a085; /* 深綠 */
         }
     </style>
 </head>
@@ -75,80 +58,13 @@
             {% for product in low_stock_products %}
                 <li>
                     <div class="product-info">
-                        {{ product.product.name }} - 尺寸：{{ product.size }} - 現有庫存：{{ product.stock }} 雙
+                        {{ product.product.name }} - 尺寸：{{ product.size }} - 現有庫存：{{ product.quantity }} 雙
                     </div>
                 </li>
+            {% empty %}
+                <p>No products with low stock found.</p>
             {% endfor %}
         </ul>
-
-        <!-- 庫存預警區域 -->
-        <div class="warning-section">
-            <h2>未來可能的庫存預警</h2>
-            <p>在這裡顯示將來可能出現的庫存預警信息。</p>
-            <!-- 這裡可以添加更多庫存預警相關的內容 -->
-        </div>
-
-        <!-- 報表部分 -->
-        <div class="report">
-            <h2>全部球鞋名稱報表</h2>
-            <ul id="shoeList">
-                {% for product in all_products %}
-                    <li class="shoe-item">{{ product.name }}</li>
-                {% endfor %}
-            </ul>
-            <div class="pagination">
-                <button id="prevPage" onclick="showPrevPage()">上一頁</button>
-                <button id="nextPage" onclick="showNextPage()">下一頁</button>
-            </div>
-        </div>
     </div>
-
-    <script>
-        var shoeList = document.getElementById("shoeList");
-        var shoes = document.querySelectorAll('.shoe-item');
-        var currentPage = 0;
-        var shoesPerPage = 5;
-
-        function showNextPage() {
-            var startIndex = currentPage * shoesPerPage;
-            var endIndex = (currentPage + 1) * shoesPerPage;
-
-            for (var i = 0; i < shoes.length; i++) {
-                if (i >= startIndex && i < endIndex) {
-                    shoes[i].style.display = 'block';
-                } else {
-                    shoes[i].style.display = 'none';
-                }
-            }
-
-            currentPage++;
-
-            if (endIndex >= shoes.length) {
-                currentPage = 0;
-            }
-        }
-
-        function showPrevPage() {
-            currentPage--;
-
-            if (currentPage < 0) {
-                currentPage = Math.ceil(shoes.length / shoesPerPage) - 1;
-            }
-
-            var startIndex = currentPage * shoesPerPage;
-            var endIndex = (currentPage + 1) * shoesPerPage;
-
-            for (var i = 0; i < shoes.length; i++) {
-                if (i >= startIndex && i < endIndex) {
-                    shoes[i].style.display = 'block';
-                } else {
-                    shoes[i].style.display = 'none';
-                }
-            }
-        }
-
-        // 初始化顯示第一頁
-        showNextPage();
-    </script>
 </body>
 </html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>編輯商品庫存</title>
+    <style>
+        body {
+            background-color: #F5F5F5;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333333;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        .form-container form {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #FF5733;
+            color: #ffffff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #C70039;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>編輯商品庫存</h1>
+        <div class="form-container">
+            <h2>{{ product.name }}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% for form in forms %}
+                    <div class="form-group">
+                        {{ form.non_field_errors }}
+                        {{ form.size.label_tag }}
+                        {{ form.size }}
+                        {{ form.quantity.label_tag }}
+                        {{ form.quantity }}
+                        {{ form.errors }}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="button">保存</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

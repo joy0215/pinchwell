@@ -323,7 +323,6 @@ def edit_employee_profile(request, employee_id):
 
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .models import Inventory, Product
 
 def inventory_query(request):
     if request.method == 'POST':
@@ -346,6 +345,7 @@ def inventory_query(request):
         inventories = Inventory.objects.none()
         context = {'inventories': inventories}
         return render(request, 'inventory_query.html', context)
+
 
 from .models import Product, Inventory
 
@@ -444,3 +444,85 @@ def send_order_confirmation(request):
             return JsonResponse({'success': False, 'error': str(e)})
 
     return JsonResponse({'success': False, 'error': 'Invalid request'}, status=400)
+
+from sneaker_store.forms import InventoryForm
+def update_inventory(request, pk):
+    inventory = get_object_or_404(Inventory, pk=pk)
+    if request.method == 'POST':
+        form = InventoryForm(request.POST, instance=inventory)
+        if form.is_valid():
+            form.save()
+            return redirect('inventory_list')  # 假設有一個顯示所有庫存的視圖
+    else:
+        form = InventoryForm(instance=inventory)
+    return render(request, 'update_inventory.html', {'form': form})
+
+def employee_dashboard(request):
+    products = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    return render(request, 'employee_dashboard.html', context)
+
+def inventory_list(request):
+    products = Product.objects.all()
+    context = {
+        'products': products,
+    }
+    return render(request, 'inventory_list.html', context)
+
+@login_required
+def edit_inventory_view(request, inventory_id):
+    inventory = get_object_or_404(Inventory, pk=inventory_id)
+    
+    if request.method == 'POST':
+        form = InventoryUpdateForm(request.POST, instance=inventory)
+        if form.is_valid():
+            form.save()
+            return redirect('employee_dashboard')  # 更新成功後返回員工介面
+    else:
+        form = InventoryUpdateForm(instance=inventory)
+
+    return render(request, 'update_inventory.html', {'form': form})
+
+@login_required
+def search_product_view(request):
+    products = []
+    query = request.GET.get('query', '')
+
+    if query:
+        products = Product.objects.filter(product_number__icontains=query)
+
+    return render(request, 'search_product.html', {'products': products, 'query': query})
+
+@login_required
+def edit_product_stock_view(request, product_id):
+    product = get_object_or_404(Product, pk=product_id)
+    inventories = Inventory.objects.filter(product=product)
+
+    if request.method == 'POST':
+        for inventory in inventories:
+            form = InventoryForm(request.POST, instance=inventory)
+            if form.is_valid():
+                # 檢查是否已經存在相同的 product_id 和 size 的庫存記錄
+                existing_inventory = Inventory.objects.filter(product=product, size=inventory.size).first()
+                if existing_inventory:
+                    existing_inventory.quantity = form.cleaned_data['quantity']
+                    existing_inventory.save()
+                else:
+                    form.save()
+        return redirect('employee_dashboard')
+    else:
+        forms = [InventoryForm(instance=inventory) for inventory in inventories]
+
+    return render(request, 'edit_product_stock.html', {'product': product, 'forms': forms})
+
+def inventory_alert(request):
+    # 檢索庫存中庫存量小於五的產品
+    low_stock_products = Inventory.objects.filter(quantity__lt=5)
+
+    context = {
+        'low_stock_products': low_stock_products
+    }
+
+    return render(request, 'low_stock_warning.html', context)

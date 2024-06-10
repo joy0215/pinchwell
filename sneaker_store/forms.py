@@ -88,17 +88,6 @@ class EmployeeEditForm(forms.ModelForm):
         super(EmployeeEditForm, self).__init__(*args, **kwargs)
         self.fields['profile_picture'].required = False
 
-class InventoryUpdateForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        product_id = kwargs.pop('product_id')
-        super(InventoryUpdateForm, self).__init__(*args, **kwargs)
-        
-        # 根據 product_id 從 Inventory 中獲取庫存尺寸
-        inventory_sizes = Inventory.objects.filter(product_id=product_id).values_list('size', flat=True)
-        
-        # 為每個尺寸創建一個表單字段
-        for size in inventory_sizes:
-            self.fields[f'size_{size}'] = forms.IntegerField(label=size, initial=0)
 
 
 class PasswordForm(forms.Form):
@@ -124,3 +113,28 @@ class SignupProfileForm(forms.ModelForm):
         model = SignupProfile
         fields = ('location', 'birthdate', 'bio','gender')
 
+
+class InventoryUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['size', 'quantity']  # 更新字段名稱
+        labels = {
+            'size': '尺寸',
+            'quantity': '庫存量',  # 更新字段名稱
+        }
+        widgets = {
+            'size': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
+
+
+class InventoryForm(forms.ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['size', 'quantity']  # 更新字段名稱
+        labels = {
+            'size': '尺寸',
+            'quantity': '庫存量',
+        }
+        widgets = {
+            'size': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }
